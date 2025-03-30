@@ -69,41 +69,83 @@
                 num = sumDigits(num);
             }
             return num;
+            return num;
         }
 
         function calculateGrid() {
-            let dob = document.getElementById("dob").value;
+            let dob = document.getElementById("dob").value; // "YYYY-MM-DD"
             let gender = document.getElementById("gender").value;
             if (!dob) { alert("Please enter a valid date."); return; }
 
-            let [year, month, day] = dob.split("-").map(Number);
-            let bhagyank = reduceToSingleDigit(year + month + day);
-            let moolank = reduceToSingleDigit(day);
-            let kuaRaw = gender === "Male" ? (11 - reduceToSingleDigit(year)) : (4 + reduceToSingleDigit(year));
-            let kua = reduceToSingleDigit(kuaRaw);
+            let dateParts = dob.split("-");
+            let year = parseInt(dateParts[0], 10);
+            let month = parseInt(dateParts[1], 10);
+            let day = parseInt(dateParts[2], 10);
+
+            // Format parts for digit extraction
+            let yearStr = year.toString();
+            let monthStr = month.toString().padStart(2, '0');
+            let dayStr = day.toString().padStart(2, '0');
+            let fullDateStr = yearStr + monthStr + dayStr;
+
+            // Calculate Bhagyank (sum of all digits in YYYYMMDD)
+            let bhagyank = reduceToSingleDigit(sumDigits(fullDateStr));
+
+            // Calculate Moolank (sum of digits in DD)
+            let moolank = reduceToSingleDigit(sumDigits(dayStr)); // Use dayStr in case day is single digit
+
+            // Calculate Kua
+            let yearSumReduced = reduceToSingleDigit(sumDigits(yearStr));
+            let kuaRaw = gender === "Male" ? (11 - yearSumReduced) : (4 + yearSumReduced);
+            let kuaReduced = reduceToSingleDigit(kuaRaw);
+
+            // Handle Kua=5 exception
+            if (kuaReduced === 5) {
+                kuaReduced = (gender === "Male") ? 2 : 8;
+            }
+            let kua = kuaReduced; // Final Kua number
 
             document.getElementById("bhagyank").innerText = bhagyank;
             document.getElementById("moolank").innerText = moolank;
             document.getElementById("kua").innerText = kua;
 
-            let grid = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] };
-            let numbers = (day.toString() + month.toString() + year.toString()).split('').map(Number);
-            numbers.push(bhagyank);
-            if (!(moolank >= 1 && moolank <= 10 || moolank === 20 || moolank === 30)) {
-                numbers.push(moolank);
-            }
-            numbers.push(kua); // Ensure Kua is added correctly
+            // --- Grid Population ---
 
-            let positionMap = { 1: 8, 2: 3, 3: 4, 4: 1, 5: 5, 6: 9, 7: 6, 8: 7, 9: 2 };
-            numbers.forEach(num => {
-                if (grid[positionMap[num]]) {
-                    grid[positionMap[num]].push(num);
+            // Clear previous grid content
+            for (let i = 1; i <= 9; i++) {
+                document.getElementById("c" + i).innerText = '';
+            }
+
+            // Collect all numbers for the grid
+            let gridNumbers = [];
+            // Add individual digits from DOB (YYYYMMDD), excluding 0
+            fullDateStr.split('').forEach(digitChar => {
+                let digit = parseInt(digitChar, 10);
+                if (digit !== 0) {
+                    gridNumbers.push(digit);
                 }
             });
 
-            for (let i = 1; i <= 9; i++) {
-                document.getElementById("c" + i).innerText = grid[i].join(' ');
-            }
+            // Add calculated numbers
+            gridNumbers.push(bhagyank);
+            gridNumbers.push(moolank); // Add Moolank (removing the previous complex condition)
+            gridNumbers.push(kua);
+
+            // Lo Shu Grid position mapping (Number -> Cell ID Suffix)
+            // 4 9 2  -> c1 c2 c3
+            // 3 5 7  -> c4 c5 c6
+            // 8 1 6  -> c7 c8 c9
+            let positionMap = { 4: 1, 9: 2, 2: 3, 3: 4, 5: 5, 7: 6, 8: 7, 1: 8, 6: 9 };
+
+            // Populate the grid cells
+            gridNumbers.forEach(num => {
+                if (num !== 0 && positionMap[num]) { // Ensure number is valid and has a position
+                    let cellIdSuffix = positionMap[num];
+                    let cell = document.getElementById("c" + cellIdSuffix);
+                    // Append number with a space separator if cell is not empty
+                    cell.innerText += (cell.innerText ? ' ' : '') + num;
+                }
+            });
         }
     </script>
 </body>
