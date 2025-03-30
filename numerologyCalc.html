@@ -243,6 +243,13 @@
         // --- Export Function ---
 
         function exportToExcel() {
+            // Check if SheetJS library is loaded
+            if (typeof XLSX === 'undefined') {
+                alert("Error: Excel library (SheetJS) failed to load. Please check your internet connection and ensure nothing is blocking the script.");
+                console.error("XLSX object not found. SheetJS might not be loaded.");
+                return;
+            }
+
             if (usersData.length === 0) {
                 alert("Please add at least one user before exporting.");
                 return;
