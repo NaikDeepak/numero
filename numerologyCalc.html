@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo Shu Grid Calculator</title>
+    <title>Multi-User Lo Shu Grid Calculator</title>
+    <!-- Include SheetJS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,21 +28,70 @@
             align-items: center;
             justify-content: center;
         }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #inputArea, #userList, #exportSection {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label, input, select, button {
+            margin: 5px;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Lo Shu Grid Calculator</h2>
-    <label>Date of Birth: <input type="date" id="dob"></label><br><br>
-    <label>Gender:
-        <select id="gender">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
-    </label><br><br>
-    <label>Full Name: <input type="text" id="name"></label><br><br>
-    <button onclick="calculateGrid()">Calculate</button>
+    <h2>Multi-User Lo Shu Grid Calculator</h2>
 
+    <div id="inputArea">
+        <h3>Add User</h3>
+        <label>Full Name: <input type="text" id="name" placeholder="Enter Full Name"></label>
+        <label>Date of Birth: <input type="date" id="dob"></label>
+        <label>Gender:
+            <select id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </label>
+        <button onclick="addUser()">Add User</button>
+    </div>
+
+    <div id="userList">
+        <h3>User List</h3>
+        <table id="userDataTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User data will be added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="exportSection">
+        <h3>Export Data</h3>
+        <button onclick="exportToExcel()">Calculate All & Export to Excel</button>
+    </div>
+
+    <!-- Removed single result display and Lo Shu Grid -->
+    <!--
     <h3>Results</h3>
     <p><b>Bhagyank:</b> <span id="bhagyank"></span></p>
     <p><b>Moolank:</b> <span id="moolank"></span></p>
@@ -58,29 +109,53 @@
         <div class="cell" id="c8"></div>
         <div class="cell" id="c9"></div>
     </div>
+    -->
 
     <script>
-        function sumDigits(num) {
-            return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+        let usersData = []; // Array to store data for multiple users
+
+        // --- Helper Functions ---
+        function sumDigits(numStr) { // Expects string
+            return numStr.toString().split('').reduce((sum, digit) => {
+                const parsedDigit = parseInt(digit, 10);
+                return sum + (isNaN(parsedDigit) ? 0 : parsedDigit); // Handle potential non-digits safely
+            }, 0);
         }
 
         function reduceToSingleDigit(num) {
-            while (num > 9) {
-                num = sumDigits(num);
+            // Ensure input is treated as a number for the loop condition
+            let currentNum = typeof num === 'string' ? parseInt(num, 10) : num;
+             if (isNaN(currentNum)) return 0; // Handle invalid input
+
+            while (currentNum > 9) {
+                // sumDigits expects a string
+                currentNum = sumDigits(currentNum.toString());
             }
-            return num;
-            return num;
+            return currentNum;
         }
 
-        function calculateGrid() {
-            let dob = document.getElementById("dob").value; // "YYYY-MM-DD"
-            let gender = document.getElementById("gender").value;
-            if (!dob) { alert("Please enter a valid date."); return; }
+        // --- Core Calculation Logic (Refactored) ---
+        function calculateNumerologyData(dob, gender) {
+            // Input validation within the function
+            if (!dob || typeof dob !== 'string' || !gender) {
+                 console.error("Invalid input to calculateNumerologyData:", dob, gender);
+                 return null; // Return null or throw error for invalid input
+            }
 
             let dateParts = dob.split("-");
+            if (dateParts.length !== 3) {
+                console.error("Invalid date format:", dob);
+                return null;
+            }
+
             let year = parseInt(dateParts[0], 10);
             let month = parseInt(dateParts[1], 10);
             let day = parseInt(dateParts[2], 10);
+
+            if (isNaN(year) || isNaN(month) || isNaN(day)) {
+                console.error("Invalid date components:", year, month, day);
+                return null;
+            }
 
             // Format parts for digit extraction
             let yearStr = year.toString();
@@ -96,23 +171,14 @@
 
             // Calculate Kua
             let yearSumReduced = reduceToSingleDigit(sumDigits(yearStr));
+            // Ensure Kua calculation handles potential negative results from 11 - sum before reducing
             let kuaRaw = gender === "Male" ? (11 - yearSumReduced) : (4 + yearSumReduced);
+             // If raw Kua is 0 or negative, specific rules might apply, but reducing handles most cases.
+             // Let's ensure reduction handles potential non-numeric results if sumDigits failed.
             let kuaReduced = reduceToSingleDigit(kuaRaw);
-
             let kua = kuaReduced; // Final Kua number
 
-            document.getElementById("bhagyank").innerText = bhagyank;
-            document.getElementById("moolank").innerText = moolank;
-            document.getElementById("kua").innerText = kua;
-
-            // --- Grid Population ---
-
-            // Clear previous grid content
-            for (let i = 1; i <= 9; i++) {
-                document.getElementById("c" + i).innerText = '';
-            }
-
-            // Collect all numbers for the grid
+            // --- Grid Number Collection ---
             let gridNumbers = [];
             // Add individual digits from DOB (YYYYMMDD), excluding 0
             fullDateStr.split('').forEach(digitChar => {
@@ -130,22 +196,135 @@
             }
             gridNumbers.push(kua);
 
-            // Lo Shu Grid position mapping (Number -> Cell ID Suffix)
-            // 4 9 2  -> c1 c2 c3
-            // 3 5 7  -> c4 c5 c6
-            // 8 1 6  -> c7 c8 c9
-            let positionMap = { 4: 1, 9: 2, 2: 3, 3: 4, 5: 5, 7: 6, 8: 7, 1: 8, 6: 9 };
+            // Return all calculated data
+            return { bhagyank, moolank, kua, gridNumbers };
+        }
 
-            // Populate the grid cells
-            gridNumbers.forEach(num => {
-                if (num !== 0 && positionMap[num]) { // Ensure number is valid and has a position
-                    let cellIdSuffix = positionMap[num];
-                    let cell = document.getElementById("c" + cellIdSuffix);
-                    // Append number with a space separator if cell is not empty
-                    cell.innerText += (cell.innerText ? ' ' : '') + num;
-                }
+        // --- UI Interaction Functions ---
+
+        function addUser() {
+            const nameInput = document.getElementById("name");
+            const dobInput = document.getElementById("dob");
+            const genderInput = document.getElementById("gender");
+
+            const name = nameInput.value.trim();
+            const dob = dobInput.value;
+            const gender = genderInput.value;
+
+            if (!name || !dob) {
+                alert("Please enter both Name and Date of Birth.");
+                return;
+            }
+
+            // Add user to the array
+            usersData.push({ name, dob, gender });
+
+            // Update the display table
+            updateUserTable();
+
+            // Clear input fields
+            nameInput.value = '';
+            dobInput.value = '';
+            // Optionally reset gender or leave as is
+        }
+
+        function updateUserTable() {
+            const tableBody = document.getElementById("userDataTable").querySelector("tbody");
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            usersData.forEach(user => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = user.name;
+                row.insertCell(1).textContent = user.dob;
+                row.insertCell(2).textContent = user.gender;
             });
         }
+
+        // --- Export Function ---
+
+        function exportToExcel() {
+            if (usersData.length === 0) {
+                alert("Please add at least one user before exporting.");
+                return;
+            }
+
+            const dataForExcel = [];
+            // Define headers for Excel
+            const headers = [
+                "Name", "Date of Birth", "Gender",
+                "Bhagyank", "Moolank", "Kua",
+                "Grid 4", "Grid 9", "Grid 2", // Corresponds to cells c1, c2, c3
+                "Grid 3", "Grid 5", "Grid 7", // Corresponds to cells c4, c5, c6
+                "Grid 8", "Grid 1", "Grid 6"  // Corresponds to cells c7, c8, c9
+            ];
+            dataForExcel.push(headers);
+
+             // Lo Shu Grid position mapping (Number -> Grid Header Name)
+             // Using header names directly for clarity
+            const positionToHeaderMap = {
+                4: "Grid 4", 9: "Grid 9", 2: "Grid 2",
+                3: "Grid 3", 5: "Grid 5", 7: "Grid 7",
+                8: "Grid 8", 1: "Grid 1", 6: "Grid 6"
+            };
+            // Create reverse map: Header Name -> Index in headers array
+            const headerToIndexMap = {};
+            headers.forEach((h, i) => { headerToIndexMap[h] = i; });
+
+
+            // Process each user
+            usersData.forEach(user => {
+                const calculatedData = calculateNumerologyData(user.dob, user.gender);
+
+                if (!calculatedData) {
+                    console.warn(`Skipping user ${user.name} due to calculation error.`);
+                    return; // Skip this user if calculation failed
+                }
+
+                // Initialize row data with placeholders matching headers
+                const rowData = new Array(headers.length).fill(''); // Fill with empty strings initially
+
+                // Populate basic info and calculated numbers
+                rowData[headerToIndexMap["Name"]] = user.name;
+                rowData[headerToIndexMap["Date of Birth"]] = user.dob;
+                rowData[headerToIndexMap["Gender"]] = user.gender;
+                rowData[headerToIndexMap["Bhagyank"]] = calculatedData.bhagyank;
+                rowData[headerToIndexMap["Moolank"]] = calculatedData.moolank;
+                rowData[headerToIndexMap["Kua"]] = calculatedData.kua;
+
+                // Populate grid data
+                const gridCellContents = {}; // Store numbers for each grid cell header
+
+                calculatedData.gridNumbers.forEach(num => {
+                    if (num !== 0 && positionToHeaderMap[num]) {
+                        const headerName = positionToHeaderMap[num];
+                        if (!gridCellContents[headerName]) {
+                            gridCellContents[headerName] = [];
+                        }
+                        gridCellContents[headerName].push(num);
+                    }
+                });
+
+                // Add grid cell contents to the rowData array
+                for (const headerName in gridCellContents) {
+                    if (headerToIndexMap.hasOwnProperty(headerName)) {
+                         const index = headerToIndexMap[headerName];
+                         // Join numbers with a space for display in the cell
+                         rowData[index] = gridCellContents[headerName].join(' ');
+                    }
+                }
+
+                dataForExcel.push(rowData);
+            });
+
+            // Create worksheet and workbook using SheetJS
+            const ws = XLSX.utils.aoa_to_sheet(dataForExcel);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Numerology Data");
+
+            // Trigger download
+            XLSX.writeFile(wb, "NumerologyExport.xlsx");
+        }
+
     </script>
 </body>
 
