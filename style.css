@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
 /* style.css - Styles for Numerology Calculator - Mystical Black/Orange Theme */
 
 /* --- CSS Variables --- */
@@ -86,20 +88,41 @@ body.light-mode {
 
 /* --- Base & Typography --- */
 body {
-    font-family: 'Merriweather', serif; /* More mystical serif font */
+    font-family: 'Merriweather', serif; /* Default body font */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     background-color: var(--bg-color);
-    /* Subtle background pattern */
-    background-image: linear-gradient(var(--bg-pattern-color) 1px, transparent 1px), linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px);
-    background-size: 25px 25px; /* Slightly larger pattern */
+    /* Layered background: Pattern on top of Image */
+    background-image:
+        /* Pattern Layer (Top) */
+        linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px),
+        /* Background Image Layer (Bottom) */
+        url('images/mystical-background.jpg');
+    background-size:
+        25px 25px, /* Pattern size */
+        25px 25px, /* Pattern size */
+        cover;     /* Image size */
+    background-repeat:
+        repeat,    /* Pattern repeat */
+        repeat,    /* Pattern repeat */
+        no-repeat; /* Image repeat */
+    background-position:
+        top left,  /* Pattern position */
+        top left,  /* Pattern position */
+        center center; /* Image position */
+    background-attachment:
+        scroll,    /* Pattern attachment */
+        scroll,    /* Pattern attachment */
+        fixed;     /* Image attachment (parallax effect) */
+    background-blend-mode: overlay; /* Blend image with bg-color */
     color: var(--text-color);
     font-size: 16px;
-    line-height: 1.8; /* Increased line height */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+    line-height: 1.8;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* --- Header --- */
@@ -118,12 +141,13 @@ header {
 }
 
 header h1 {
+    font-family: 'Cinzel', serif; /* Apply Cinzel font */
     margin: 0;
-    font-size: 2.4em;
-    font-weight: 700; /* Bold */
+    font-size: 2.6em; /* Slightly larger */
+    font-weight: 700;
     color: var(--header-text);
     text-shadow: 1px 1px 3px var(--shadow-color);
-    letter-spacing: 1.5px; /* More spacing */
+    letter-spacing: 2px; /* More spacing for Cinzel */
     transition: color 0.3s ease;
 }
 
@@ -143,10 +167,11 @@ main {
 }
 
 main h2 {
+    font-family: 'Playfair Display', serif; /* Apply Playfair Display */
     text-align: center;
-    color: var(--accent-color); /* Use accent color */
+    color: var(--accent-color);
     margin-bottom: 35px;
-    font-size: 2.2em; /* Slightly larger */
+    font-size: 2.3em; /* Adjust size */
     font-weight: 600;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 15px;
@@ -267,12 +292,13 @@ td:last-child {
 }
 
 #inputArea h3, #userList h3, #exportSection h3 {
+    font-family: 'Playfair Display', serif; /* Apply Playfair Display */
     margin-top: 0;
-    color: var(--accent-color); /* Accent color */
+    color: var(--accent-color);
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 12px;
     margin-bottom: 25px;
-    font-size: 1.8em; /* Larger section titles */
+    font-size: 1.9em; /* Adjust size */
     font-weight: 600;
     transition: color 0.3s ease, border-color 0.3s ease;
 }
