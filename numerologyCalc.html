@@ -375,8 +375,14 @@
                    }
                }
 
-                dataForExcel.push(rowData);
-                console.log(`[Export] Row data added for ${user.name}:`, rowData); // Log the final row data
+               // Final sanitization of the entire rowData array before adding
+               const sanitizedRowData = rowData.map(cellValue => {
+                   // Replace null or undefined with empty string, otherwise keep the value
+                   return (cellValue === null || cellValue === undefined) ? '' : cellValue;
+               });
+
+               dataForExcel.push(sanitizedRowData);
+               console.log(`[Export] Sanitized row data added for ${user.name}:`, sanitizedRowData); // Log the final sanitized row data
            });
 
            // Create worksheet and workbook using SheetJS, wrapped in try/catch
