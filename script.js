@@ -327,3 +327,32 @@ function exportToExcel() {
        alert("An error occurred while generating the Excel file. Please check the console (F12) for details.");
    }
 }
+
+
+// --- Theme Toggle Functionality ---
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('checkbox');
+    const body = document.body;
+    const currentTheme = localStorage.getItem('theme');
+
+    // Apply saved theme on load
+    if (currentTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.checked = true;
+    } else {
+        // Default to dark mode if no preference saved or if it's explicitly 'dark'
+        body.classList.remove('light-mode');
+        themeToggle.checked = false; // Ensure checkbox reflects dark mode
+    }
+
+    // Listener for theme toggle
+    themeToggle.addEventListener('change', function() {
+        if (this.checked) {
+            body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+});

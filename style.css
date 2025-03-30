@@ -1,115 +1,209 @@
-/* style.css - Styles for Numerology Calculator - Augury Inspired Theme */
+/* style.css - Styles for Numerology Calculator - Mystical Black/Orange Theme */
+
+/* --- CSS Variables --- */
+:root {
+    /* Dark Mode (Default) */
+    --bg-color: #1a1a1a; /* Very dark grey/off-black */
+    --bg-pattern-color: rgba(255, 165, 0, 0.05); /* Subtle orange pattern */
+    --text-color: #e0e0e0; /* Light grey text */
+    --text-muted-color: #a0a0a0; /* Muted grey text */
+    --header-bg: #111111; /* Near black */
+    --header-text: #ffffff;
+    --accent-color: #ff8c00; /* Dark Orange */
+    --accent-hover: #ffa500; /* Lighter Orange */
+    --accent-text-color: #111111; /* Text on orange buttons */
+    --border-color: rgba(255, 140, 0, 0.3); /* Orange border, semi-transparent */
+    --border-strong-color: #ff8c00;
+    --section-bg: rgba(40, 40, 40, 0.85); /* Dark grey, semi-transparent */
+    --section-border: rgba(255, 140, 0, 0.4);
+    --table-bg: rgba(45, 45, 45, 0.7);
+    --table-header-bg: linear-gradient(to bottom, #333333, #222222);
+    --table-header-text: #ff8c00;
+    --table-row-even-bg: rgba(55, 55, 55, 0.3);
+    --table-row-hover-bg: rgba(80, 80, 80, 0.5);
+    --table-border-color: rgba(255, 140, 0, 0.2);
+    --grid-bg: rgba(20, 20, 20, 0.7);
+    --grid-border: #ff8c00;
+    --grid-cell-bg: #2a2a2a;
+    --grid-cell-text: #ff8c00;
+    --grid-cell-empty-bg: rgba(42, 42, 42, 0.5);
+    --grid-cell-empty-text: rgba(255, 140, 0, 0.3);
+    --input-bg: rgba(10, 10, 10, 0.8);
+    --input-text: #e0e0e0;
+    --input-border: rgba(255, 140, 0, 0.3);
+    --input-focus-border: #ff8c00;
+    --input-focus-shadow: rgba(255, 140, 0, 0.4);
+    --button-bg: linear-gradient(to bottom, #ff8c00, #e67e00);
+    --button-text: #111111;
+    --button-hover-bg: linear-gradient(to bottom, #ffa500, #ff8c00);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-strong-color: rgba(0, 0, 0, 0.5);
+    --switch-bg: #555;
+    --switch-slider-bg: #ccc;
+    --switch-checked-bg: #ff8c00;
+    --switch-checked-slider-bg: #fff;
+}
+
+body.light-mode {
+    /* Light Mode Overrides */
+    --bg-color: #fffaf0; /* Floral white / light cream */
+    --bg-pattern-color: rgba(0, 0, 0, 0.03); /* Subtle black pattern */
+    --text-color: #333333; /* Dark grey text */
+    --text-muted-color: #666666;
+    --header-bg: #ffffff;
+    --header-text: #111111;
+    /* Accent remains orange */
+    --border-color: rgba(255, 140, 0, 0.4);
+    --border-strong-color: #ff8c00;
+    --section-bg: rgba(255, 255, 255, 0.9); /* White, slightly transparent */
+    --section-border: rgba(221, 221, 221, 0.8); /* Lighter border */
+    --table-bg: rgba(255, 255, 255, 0.8);
+    --table-header-bg: linear-gradient(to bottom, #fff8e1, #ffecb3); /* Light yellow */
+    --table-header-text: #cc5200; /* Darker orange */
+    --table-row-even-bg: rgba(255, 248, 225, 0.5); /* Cornsilk */
+    --table-row-hover-bg: rgba(255, 235, 205, 0.6); /* BlanchedAlmond */
+    --table-border-color: #eee;
+    --grid-bg: rgba(255, 248, 225, 0.7); /* Cornsilk */
+    --grid-border: #ffcc66; /* Lighter orange */
+    --grid-cell-bg: #ffffff;
+    --grid-cell-text: #ff8c00;
+    --grid-cell-empty-bg: #f9f9f9;
+    --grid-cell-empty-text: #ccc;
+    --input-bg: #ffffff;
+    --input-text: #333333;
+    --input-border: #ccc;
+    --input-focus-border: #ff8c00;
+    --input-focus-shadow: rgba(255, 140, 0, 0.3);
+    /* Button remains orange */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-strong-color: rgba(0, 0, 0, 0.2);
+    --switch-bg: #ccc;
+    --switch-slider-bg: #fff;
+    --switch-checked-bg: #ff8c00;
+    --switch-checked-slider-bg: #fff;
+}
+
 
 /* --- Base & Typography --- */
 body {
-    font-family: 'Poppins', sans-serif; /* Using Poppins if available, fallback to sans-serif */
+    font-family: 'Merriweather', serif; /* More mystical serif font */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #0a043c; /* Dark blue background */
-    /* Subtle background pattern like Augury */
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-    color: #d0d0e0; /* Light grey/lavender text */
+    background-color: var(--bg-color);
+    /* Subtle background pattern */
+    background-image: linear-gradient(var(--bg-pattern-color) 1px, transparent 1px), linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px);
+    background-size: 25px 25px; /* Slightly larger pattern */
+    color: var(--text-color);
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.8; /* Increased line height */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
 }
 
 /* --- Header --- */
 header {
-    background-color: #140a54; /* Slightly lighter dark blue */
-    color: #fff;
+    background-color: var(--header-bg);
+    color: var(--header-text);
     padding: 20px 40px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    border-bottom: 3px solid #d4af37; /* Gold border */
-    position: relative; /* For potential absolute elements later */
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border-bottom: 3px solid var(--border-strong-color);
+    position: relative;
+    display: flex; /* Align title and switch */
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 header h1 {
     margin: 0;
     font-size: 2.4em;
-    font-weight: 600; /* Semi-bold */
-    color: #fff;
-    text-shadow: 1px 1px 3px rgba(212, 175, 55, 0.3); /* Subtle gold shadow */
-    letter-spacing: 1px;
+    font-weight: 700; /* Bold */
+    color: var(--header-text);
+    text-shadow: 1px 1px 3px var(--shadow-color);
+    letter-spacing: 1.5px; /* More spacing */
+    transition: color 0.3s ease;
 }
 
 /* --- Main Content Area --- */
 main {
     flex-grow: 1;
-    padding: 40px; /* Increased padding */
+    padding: 40px;
     width: 90%;
     max-width: 1200px;
     margin: 40px auto;
-    background-color: rgba(20, 10, 84, 0.85); /* Semi-transparent dark blue */
-    backdrop-filter: blur(5px); /* Frosted glass effect */
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    background-color: var(--section-bg);
+    backdrop-filter: blur(3px); /* Subtle blur */
+    box-shadow: 0 6px 15px var(--shadow-strong-color);
     border-radius: 12px;
-    border: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold border */
+    border: 1px solid var(--section-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 main h2 {
     text-align: center;
-    color: #f0e68c; /* Khaki/Light Gold color */
+    color: var(--accent-color); /* Use accent color */
     margin-bottom: 35px;
-    font-size: 2em;
-    font-weight: 500;
-    border-bottom: 2px solid rgba(212, 175, 55, 0.5); /* Gold underline */
+    font-size: 2.2em; /* Slightly larger */
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 15px;
     display: inline-block;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 /* --- Footer --- */
 footer {
-    background-color: #140a54; /* Match header background */
-    color: #a0a0c0; /* Lighter text than body */
+    background-color: var(--header-bg); /* Match header */
+    color: var(--text-muted-color);
     text-align: center;
     padding: 25px;
     margin-top: auto;
     font-size: 0.9em;
-    border-top: 3px solid #d4af37; /* Gold border */
+    border-top: 3px solid var(--border-strong-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* --- Lo Shu Grid Styles --- */
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 50px); /* Larger cells */
+    grid-template-columns: repeat(3, 50px);
     gap: 5px;
     justify-content: center;
     margin: 15px auto;
     padding: 8px;
-    background-color: rgba(10, 4, 60, 0.7); /* Darker blue grid background */
-    border: 1px solid #d4af37; /* Gold border */
+    background-color: var(--grid-bg);
+    border: 1px solid var(--grid-border);
     border-radius: 8px;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+    box-shadow: inset 0 0 8px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .cell {
     width: 50px;
     height: 50px;
-    border: 1px solid rgba(212, 175, 55, 0.5); /* Gold border */
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.1em;
     font-weight: bold;
-    background-color: #1e106d; /* Dark blue cell background */
-    color: #f0e68c; /* Light Gold text */
+    background-color: var(--grid-cell-bg);
+    color: var(--grid-cell-text);
     border-radius: 5px;
     overflow: hidden;
     text-align: center;
     padding: 3px;
     box-sizing: border-box;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.cell:empty { /* Style empty cells differently */
-    background-color: rgba(30, 16, 109, 0.5);
-    color: rgba(240, 230, 140, 0.3);
+.cell:empty {
+    background-color: var(--grid-cell-empty-bg);
+    color: var(--grid-cell-empty-text);
 }
 
 /* --- Table Styles --- */
@@ -118,37 +212,41 @@ table {
     margin: 35px 0;
     border-collapse: separate;
     border-spacing: 0;
-    background-color: rgba(30, 16, 109, 0.6); /* Table background */
+    background-color: var(--table-bg);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 10px var(--shadow-color);
+    transition: background-color 0.3s ease;
 }
 
 th, td {
     border: none;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.2); /* Subtle gold lines */
+    border-bottom: 1px solid var(--table-border-color);
     padding: 14px 18px;
     text-align: left;
     vertical-align: middle;
-    color: #d0d0e0; /* Default text color */
+    color: var(--text-color); /* Use main text color */
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 th {
-    background: linear-gradient(to bottom, rgba(40, 20, 120, 0.9), rgba(30, 16, 109, 0.9)); /* Dark blue gradient */
-    color: #ffd700; /* Gold header text */
-    font-weight: 600;
+    background: var(--table-header-bg);
+    color: var(--table-header-text);
+    font-weight: 700; /* Bolder */
     text-transform: uppercase;
     font-size: 0.95em;
-    letter-spacing: 0.8px;
-    border-bottom: 2px solid #d4af37; /* Stronger gold border */
+    letter-spacing: 1px; /* More spacing */
+    border-bottom: 2px solid var(--border-strong-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Alternating row colors */
 tbody tr:nth-child(even) {
-    background-color: rgba(40, 20, 120, 0.3); /* Slightly different blue for even rows */
+    background-color: var(--table-row-even-bg);
+    transition: background-color 0.3s ease;
 }
 tbody tr:hover {
-    background-color: rgba(60, 30, 150, 0.5); /* Lighter purple hover */
+    background-color: var(--table-row-hover-bg);
 }
 
 /* Center grid within the table cell */
@@ -160,78 +258,143 @@ td:last-child {
 #inputArea, #userList, #exportSection {
     margin-bottom: 35px;
     padding: 30px;
-    border: 1px solid rgba(212, 175, 55, 0.4); /* Gold border */
+    border: 1px solid var(--section-border);
     border-radius: 12px;
-    background-color: rgba(20, 10, 84, 0.9); /* Slightly more opaque */
+    background-color: var(--section-bg);
     text-align: center;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 8px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 #inputArea h3, #userList h3, #exportSection h3 {
     margin-top: 0;
-    color: #f0e68c; /* Light Gold */
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--accent-color); /* Accent color */
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 12px;
     margin-bottom: 25px;
-    font-size: 1.6em;
-    font-weight: 500;
+    font-size: 1.8em; /* Larger section titles */
+    font-weight: 600;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 /* --- Form Element Styles --- */
 label {
     margin: 12px 8px;
     font-weight: 500;
-    color: #b0b0d0; /* Lighter text for labels */
-    display: inline-block; /* Better spacing */
+    color: var(--text-muted-color); /* Muted text */
+    display: inline-block;
+    transition: color 0.3s ease;
 }
 
 input[type="text"], input[type="date"], select {
     padding: 12px 15px;
     border-radius: 6px;
-    border: 1px solid rgba(212, 175, 55, 0.3); /* Gold border */
+    border: 1px solid var(--input-border);
     min-width: 200px;
-    background-color: rgba(10, 4, 60, 0.8); /* Dark input background */
-    color: #e0e0ff; /* Light text in inputs */
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    box-shadow: inset 0 2px 5px var(--shadow-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     font-size: 1em;
 }
 
 input[type="text"]:focus, input[type="date"]:focus, select:focus {
-    border-color: #ffd700; /* Brighter Gold border on focus */
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4); /* Gold glow on focus */
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 8px var(--input-focus-shadow);
     outline: none;
-    background-color: rgba(20, 10, 84, 0.9);
+    background-color: var(--section-bg); /* Use section bg on focus */
 }
 
 /* Style date input placeholder text */
 input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.8) sepia(1) saturate(5) hue-rotate(10deg); /* Style calendar icon */
+    filter: invert(75%) sepia(50%) saturate(500%) hue-rotate(330deg); /* Orange icon */
+    cursor: pointer;
+}
+body.light-mode input[type="date"]::-webkit-calendar-picker-indicator {
+     filter: invert(50%) sepia(90%) saturate(1500%) hue-rotate(350deg); /* Darker orange in light mode */
 }
 
 
 button {
-    background: linear-gradient(to bottom, #e6c35c, #d4af37); /* Gold gradient button */
-    color: #140a54; /* Dark blue text on button */
+    background: var(--button-bg);
+    color: var(--button-text);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 14px 25px; /* Larger padding */
+    padding: 14px 25px;
     border-radius: 8px;
     font-size: 1.1em;
     font-weight: bold;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    margin-top: 10px; /* Add margin to buttons */
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.1);
+    box-shadow: 0 3px 6px var(--shadow-color);
+    margin-top: 10px;
 }
 
 button:hover {
-    background: linear-gradient(to bottom, #f0d06e, #e6c35c); /* Lighter gold on hover */
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-    transform: translateY(-2px); /* More lift on hover */
+    background: var(--button-hover-bg);
+    box-shadow: 0 5px 10px var(--shadow-strong-color);
+    transform: translateY(-2px);
 }
 
 button:active {
     transform: translateY(0px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* --- Theme Toggle Switch --- */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between switch and text */
+}
+.theme-switch-wrapper span {
+    color: var(--text-muted-color);
+    font-size: 0.8em;
+    transition: color 0.3s ease;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* Width of the switch */
+    height: 24px; /* Height of the switch */
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--switch-bg);
+    transition: .4s;
+    border-radius: 24px; /* Rounded switch */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px; /* Size of the knob */
+    width: 18px;
+    left: 3px; /* Position of the knob */
+    bottom: 3px;
+    background-color: var(--switch-slider-bg);
+    transition: .4s;
+    border-radius: 50%; /* Circular knob */
+}
+
+input:checked + .slider {
+    background-color: var(--switch-checked-bg);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px); /* Move knob to the right */
+    background-color: var(--switch-checked-slider-bg);
 }
