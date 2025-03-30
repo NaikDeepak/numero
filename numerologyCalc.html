@@ -124,7 +124,10 @@
 
             // Add calculated numbers
             gridNumbers.push(bhagyank);
-            gridNumbers.push(moolank); // Add Moolank (removing the previous complex condition)
+            // Add Moolank only if the original day (DD) is not 1-9, 10, 20, or 30
+            if (!(day >= 1 && day <= 9 || day === 10 || day === 20 || day === 30)) {
+                gridNumbers.push(moolank);
+            }
             gridNumbers.push(kua);
 
             // Lo Shu Grid position mapping (Number -> Cell ID Suffix)
