@@ -99,10 +99,6 @@
             let kuaRaw = gender === "Male" ? (11 - yearSumReduced) : (4 + yearSumReduced);
             let kuaReduced = reduceToSingleDigit(kuaRaw);
 
-            // Handle Kua=5 exception
-            if (kuaReduced === 5) {
-                kuaReduced = (gender === "Male") ? 2 : 8;
-            }
             let kua = kuaReduced; // Final Kua number
 
             document.getElementById("bhagyank").innerText = bhagyank;
