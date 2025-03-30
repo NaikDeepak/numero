@@ -280,12 +280,14 @@
 
             // Process each user
             usersData.forEach(user => {
+                console.log(`[Export] Processing user: ${user.name}`); // Log user being processed
                 const calculatedData = calculateNumerologyData(user.dob, user.gender);
 
                 if (!calculatedData) {
-                    console.warn(`Skipping user ${user.name} due to calculation error.`);
+                    console.warn(`[Export] Skipping user ${user.name} due to calculation error.`);
                     return; // Skip this user if calculation failed
                 }
+                console.log(`[Export] Calculated data for ${user.name}:`, calculatedData); // Log calculated data
 
                 // Initialize row data with placeholders matching headers
                 const rowData = new Array(headers.length).fill(''); // Fill with empty strings initially
@@ -321,6 +323,7 @@
                 }
 
                 dataForExcel.push(rowData);
+                console.log(`[Export] Row data added for ${user.name}:`, rowData); // Log the final row data
             });
 
             // Create worksheet and workbook using SheetJS
