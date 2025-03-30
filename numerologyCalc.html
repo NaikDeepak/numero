@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lo Shu Grid Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Lo Shu Grid Calculator</h2>
+    <label>Date of Birth: <input type="date" id="dob"></label><br><br>
+    <label>Gender:
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </label><br><br>
+    <label>Full Name: <input type="text" id="name"></label><br><br>
+    <button onclick="calculateGrid()">Calculate</button>
+
+    <h3>Results</h3>
+    <p><b>Bhagyank:</b> <span id="bhagyank"></span></p>
+    <p><b>Moolank:</b> <span id="moolank"></span></p>
+    <p><b>Kua Number:</b> <span id="kua"></span></p>
+
+    <h3>Lo Shu Grid</h3>
+    <div class="grid" id="loShuGrid">
+        <div class="cell" id="c1"></div>
+        <div class="cell" id="c2"></div>
+        <div class="cell" id="c3"></div>
+        <div class="cell" id="c4"></div>
+        <div class="cell" id="c5"></div>
+        <div class="cell" id="c6"></div>
+        <div class="cell" id="c7"></div>
+        <div class="cell" id="c8"></div>
+        <div class="cell" id="c9"></div>
+    </div>
+
+    <script>
+        function sumDigits(num) {
+            return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+        }
+
+        function reduceToSingleDigit(num) {
+            while (num > 9) {
+                num = sumDigits(num);
+            }
+            return num;
+        }
+
+        function calculateGrid() {
+            let dob = document.getElementById("dob").value;
+            let gender = document.getElementById("gender").value;
+            if (!dob) { alert("Please enter a valid date."); return; }
+
+            let [year, month, day] = dob.split("-").map(Number);
+            let bhagyank = reduceToSingleDigit(year + month + day);
+            let moolank = reduceToSingleDigit(day);
+            let kuaRaw = gender === "Male" ? (11 - reduceToSingleDigit(year)) : (4 + reduceToSingleDigit(year));
+            let kua = reduceToSingleDigit(kuaRaw);
+
+            document.getElementById("bhagyank").innerText = bhagyank;
+            document.getElementById("moolank").innerText = moolank;
+            document.getElementById("kua").innerText = kua;
+
+            let grid = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [] };
+            let numbers = (day.toString() + month.toString() + year.toString()).split('').map(Number);
+            numbers.push(bhagyank);
+            if (!(moolank >= 1 && moolank <= 10 || moolank === 20 || moolank === 30)) {
+                numbers.push(moolank);
+            }
+            numbers.push(kua); // Ensure Kua is added correctly
+
+            let positionMap = { 1: 8, 2: 3, 3: 4, 4: 1, 5: 5, 6: 9, 7: 6, 8: 7, 9: 2 };
+            numbers.forEach(num => {
+                if (grid[positionMap[num]]) {
+                    grid[positionMap[num]].push(num);
+                }
+            });
+
+            for (let i = 1; i <= 9; i++) {
+                document.getElementById("c" + i).innerText = grid[i].join(' ');
+            }
+        }
+    </script>
+</body>
+
+</html>
