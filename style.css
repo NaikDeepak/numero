@@ -1,0 +1,131 @@
+/* style.css - Styles for Numerology Calculator */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nicer default font */
+    margin: 0; /* Remove default body margin */
+    padding: 0;
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack header, main, footer vertically */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    background-color: #f4f0e8; /* Light beige background */
+    color: #333; /* Darker text color */
+}
+
+header {
+    background-color: #4a4a7c; /* Deep purple header */
+    color: #fff;
+    padding: 15px 30px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: normal;
+}
+
+main {
+    flex-grow: 1; /* Allow main content to fill available space */
+    padding: 20px;
+    width: 90%; /* Limit content width */
+    max-width: 1200px; /* Max width for larger screens */
+    margin: 20px auto; /* Center main content */
+    background-color: #fff; /* White background for content area */
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+footer {
+    background-color: #333; /* Dark footer */
+    color: #ccc;
+    text-align: center;
+    padding: 15px;
+    margin-top: auto; /* Push footer to the bottom */
+    font-size: 0.9em;
+}
+
+/* Existing styles adapted */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 40px); /* Slightly smaller cells */
+    gap: 3px;
+    justify-content: center; /* Center grid within its container */
+    margin: 5px auto; /* Add some margin */
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc; /* Lighter border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    background-color: #f9f9f9; /* Light background for cells */
+}
+
+table {
+    width: 100%; /* Make table fill its container */
+    margin: 20px 0; /* Adjust margin */
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px 12px; /* Adjust padding */
+    text-align: left;
+    vertical-align: middle; /* Align cell content vertically */
+}
+
+th {
+    background-color: #e9e4d9; /* Header background matching theme */
+    color: #4a4a7c; /* Header text color */
+    font-weight: bold;
+}
+
+/* Center grid within the table cell */
+td:last-child { /* Target the last cell (Lo Shu Grid) */
+   text-align: center;
+}
+
+#inputArea, #userList, #exportSection {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 8px; /* More rounded corners */
+    background-color: #fdfdfd; /* Slightly off-white background */
+    text-align: center; /* Center content within sections */
+}
+
+#inputArea h3, #userList h3, #exportSection h3 {
+    margin-top: 0;
+    color: #4a4a7c; /* Theme color for headings */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+label, input, select, button {
+    margin: 8px 5px; /* Adjust spacing */
+    padding: 8px 10px; /* Add padding to form elements */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+input[type="text"], input[type="date"], select {
+    min-width: 150px; /* Ensure inputs have a decent width */
+}
+
+button {
+    background-color: #6a6aaf; /* Button color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 10px 15px;
+}
+
+button:hover {
+    background-color: #4a4a7c; /* Darker hover color */
+}

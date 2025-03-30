@@ -4,60 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-User Lo Shu Grid Calculator</title>
+    <title>Numerology Insights Calculator</title> <!-- Updated Title -->
     <!-- Include SheetJS library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 50px);
-            gap: 5px;
-            justify-content: center;
-        }
-
-        .cell {
-            width: 50px;
-            height: 50px;
-            border: 1px solid black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        #inputArea, #userList, #exportSection {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        label, input, select, button {
-            margin: 5px;
-        }
-    </style>
+    <!-- Link external CSS file -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h2>Multi-User Lo Shu Grid Calculator</h2>
 
-    <div id="inputArea">
-        <h3>Add User</h3>
+    <header>
+        <h1>Numerology Insights</h1>
+        <!-- Potential navigation links can go here later -->
+    </header>
+
+    <main>
+        <h2>Lo Shu Grid Calculator</h2>
+
+        <div id="inputArea">
+            <h3>Add User Details</h3>
         <label>Full Name: <input type="text" id="name" placeholder="Enter Full Name"></label>
         <label>Date of Birth: <input type="date" id="dob"></label>
         <label>Gender:
@@ -114,6 +79,12 @@
         <div class="cell" id="c9"></div>
     </div>
     -->
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Numerology Insights. All rights reserved.</p>
+        <!-- Other footer links or info can go here -->
+    </footer>
 
     <!-- Link the external JavaScript file -->
     <script src="script.js"></script>
