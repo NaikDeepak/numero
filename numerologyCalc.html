@@ -77,6 +77,10 @@
                     <th>Name</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>
+                    <th>Bhagyank</th>
+                    <th>Moolank</th>
+                    <th>Kua</th>
+                    <th>Lo Shu Grid</th>
                 </tr>
             </thead>
             <tbody>
@@ -133,6 +137,33 @@
             }
             return currentNum;
         }
+
+        // --- Grid HTML Generation ---
+        function generateGridHtml(gridNumbers) {
+            // Lo Shu Grid position mapping (Number -> Cell Index 0-8)
+            // 4 9 2  -> 0 1 2
+            // 3 5 7  -> 3 4 5
+            // 8 1 6  -> 6 7 8
+            const positionMap = { 4: 0, 9: 1, 2: 2, 3: 3, 5: 4, 7: 5, 8: 6, 1: 7, 6: 8 };
+            let cells = Array(9).fill(''); // Initialize 9 empty cells
+
+            // Populate cell contents based on gridNumbers
+            gridNumbers.forEach(num => {
+                if (num !== 0 && positionMap.hasOwnProperty(num)) {
+                    let cellIndex = positionMap[num];
+                    cells[cellIndex] += (cells[cellIndex] ? ' ' : '') + num; // Append number with space
+                }
+            });
+
+            // Generate HTML string for the grid
+            let gridHtml = '<div class="grid">'; // Use the existing .grid style
+            for(let i = 0; i < 9; i++) {
+                gridHtml += `<div class="cell">${cells[i]}</div>`; // Use the existing .cell style
+            }
+            gridHtml += '</div>';
+            return gridHtml;
+        }
+
 
         // --- Core Calculation Logic (Refactored) ---
         function calculateNumerologyData(dob, gender) {
@@ -233,10 +264,31 @@
             tableBody.innerHTML = ''; // Clear existing rows
 
             usersData.forEach(user => {
+                const calculatedData = calculateNumerologyData(user.dob, user.gender);
                 const row = tableBody.insertRow();
+
                 row.insertCell(0).textContent = user.name;
                 row.insertCell(1).textContent = user.dob;
                 row.insertCell(2).textContent = user.gender;
+
+                if (calculatedData) {
+                    // Sanitize numbers before display (similar to export)
+                    const displayBhagyank = typeof calculatedData.bhagyank === 'number' && !isNaN(calculatedData.bhagyank) ? calculatedData.bhagyank : '-';
+                    const displayMoolank = typeof calculatedData.moolank === 'number' && !isNaN(calculatedData.moolank) ? calculatedData.moolank : '-';
+                    const displayKua = typeof calculatedData.kua === 'number' && !isNaN(calculatedData.kua) ? calculatedData.kua : '-';
+
+                    row.insertCell(3).textContent = displayBhagyank;
+                    row.insertCell(4).textContent = displayMoolank;
+                    row.insertCell(5).textContent = displayKua;
+                    // Generate and insert the grid HTML
+                    row.insertCell(6).innerHTML = generateGridHtml(calculatedData.gridNumbers);
+                } else {
+                    // Add placeholder cells if calculation failed
+                    row.insertCell(3).textContent = 'Error';
+                    row.insertCell(4).textContent = 'Error';
+                    row.insertCell(5).textContent = 'Error';
+                    row.insertCell(6).textContent = 'Error calculating grid';
+                }
             });
         }
 
