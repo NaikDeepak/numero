@@ -367,25 +367,34 @@
 
                 // Add grid cell contents to the rowData array
                 for (const headerName in gridCellContents) {
-                    if (headerToIndexMap.hasOwnProperty(headerName)) {
-                         const index = headerToIndexMap[headerName];
-                         // Join numbers with a space for display in the cell
-                         rowData[index] = gridCellContents[headerName].join(' ');
-                    }
-                }
+                   if (headerToIndexMap.hasOwnProperty(headerName)) {
+                       const index = headerToIndexMap[headerName];
+                       // Ensure the joined result is always a string, even if empty
+                       const cellString = gridCellContents[headerName] ? gridCellContents[headerName].join(' ') : '';
+                       rowData[index] = cellString;
+                   }
+               }
 
                 dataForExcel.push(rowData);
                 console.log(`[Export] Row data added for ${user.name}:`, rowData); // Log the final row data
-            });
+           });
 
-            // Create worksheet and workbook using SheetJS
-            const ws = XLSX.utils.aoa_to_sheet(dataForExcel);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Numerology Data");
+           // Create worksheet and workbook using SheetJS, wrapped in try/catch
+           try {
+               console.log("[Export] Preparing worksheet data:", dataForExcel); // Log final data array
+               const ws = XLSX.utils.aoa_to_sheet(dataForExcel);
+               const wb = XLSX.utils.book_new();
+               XLSX.utils.book_append_sheet(wb, ws, "Numerology Data");
 
-            // Trigger download
-            XLSX.writeFile(wb, "NumerologyExport.xlsx");
-        }
+               // Trigger download
+               console.log("[Export] Triggering file download...");
+               XLSX.writeFile(wb, "NumerologyExport.xlsx");
+               console.log("[Export] Download triggered successfully.");
+           } catch (error) {
+               console.error("[Export] Error during Excel generation/download:", error);
+               alert("An error occurred while generating the Excel file. Please check the console (F12) for details.");
+           }
+       }
 
     </script>
 </body>
