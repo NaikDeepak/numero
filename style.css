@@ -1,133 +1,154 @@
-/* style.css - Styles for Numerology Calculator - Astro Inspired Theme */
+/* style.css - Styles for Numerology Calculator - Augury Inspired Theme */
 
+/* --- Base & Typography --- */
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Cleaner font */
+    font-family: 'Poppins', sans-serif; /* Using Poppins if available, fallback to sans-serif */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #fdfbf5; /* Very light cream background */
-    color: #4d4d4d; /* Dark grey text */
+    background-color: #0a043c; /* Dark blue background */
+    /* Subtle background pattern like Augury */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #d0d0e0; /* Light grey/lavender text */
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
+/* --- Header --- */
 header {
-    background: linear-gradient(to right, #ff9933, #ff6600); /* Orange gradient */
+    background-color: #140a54; /* Slightly lighter dark blue */
     color: #fff;
     padding: 20px 40px;
     text-align: center;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    border-bottom: 3px solid #ffcc66; /* Lighter orange border */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-bottom: 3px solid #d4af37; /* Gold border */
+    position: relative; /* For potential absolute elements later */
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.2em;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    font-size: 2.4em;
+    font-weight: 600; /* Semi-bold */
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(212, 175, 55, 0.3); /* Subtle gold shadow */
+    letter-spacing: 1px;
 }
 
+/* --- Main Content Area --- */
 main {
     flex-grow: 1;
-    padding: 30px; /* More padding */
-    width: 95%; /* Slightly wider */
-    max-width: 1300px; /* Wider max width */
-    margin: 30px auto; /* More margin */
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Softer shadow */
-    border-radius: 10px;
-    border: 1px solid #eee;
+    padding: 40px; /* Increased padding */
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: rgba(20, 10, 84, 0.85); /* Semi-transparent dark blue */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Subtle gold border */
 }
 
-main h2 { /* Style the main section title */
+main h2 {
     text-align: center;
-    color: #ff6600; /* Orange color */
-    margin-bottom: 30px;
-    font-size: 1.8em;
-    border-bottom: 2px solid #ffcc66;
-    padding-bottom: 10px;
-    display: inline-block; /* Allow centering */
+    color: #f0e68c; /* Khaki/Light Gold color */
+    margin-bottom: 35px;
+    font-size: 2em;
+    font-weight: 500;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.5); /* Gold underline */
+    padding-bottom: 15px;
+    display: inline-block;
+    letter-spacing: 0.5px;
 }
 
+/* --- Footer --- */
 footer {
-    background-color: #4d4d4d; /* Dark grey footer */
-    color: #e0e0e0; /* Lighter text */
+    background-color: #140a54; /* Match header background */
+    color: #a0a0c0; /* Lighter text than body */
     text-align: center;
-    padding: 20px;
+    padding: 25px;
     margin-top: auto;
-    font-size: 0.95em;
-    border-top: 3px solid #333;
+    font-size: 0.9em;
+    border-top: 3px solid #d4af37; /* Gold border */
 }
 
-/* Grid Styles */
+/* --- Lo Shu Grid Styles --- */
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 45px); /* Slightly larger cells */
-    gap: 4px; /* Slightly larger gap */
+    grid-template-columns: repeat(3, 50px); /* Larger cells */
+    gap: 5px;
     justify-content: center;
-    margin: 10px auto; /* More margin */
-    padding: 5px;
-    background-color: #fff8e1; /* Light yellow background for grid area */
-    border: 1px solid #ffcc66; /* Orange border */
-    border-radius: 5px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+    margin: 15px auto;
+    padding: 8px;
+    background-color: rgba(10, 4, 60, 0.7); /* Darker blue grid background */
+    border: 1px solid #d4af37; /* Gold border */
+    border-radius: 8px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
 }
 
 .cell {
-    width: 45px;
-    height: 45px;
-    border: 1px solid #ffcc66; /* Orange border */
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(212, 175, 55, 0.5); /* Gold border */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1em; /* Slightly larger font */
+    font-size: 1.1em;
     font-weight: bold;
-    background-color: #fff; /* White cell background */
-    color: #ff6600; /* Orange text */
-    border-radius: 3px;
-    overflow: hidden; /* Hide overflow if numbers get too long */
+    background-color: #1e106d; /* Dark blue cell background */
+    color: #f0e68c; /* Light Gold text */
+    border-radius: 5px;
+    overflow: hidden;
     text-align: center;
-    padding: 2px; /* Small padding */
-    box-sizing: border-box; /* Include padding/border in size */
+    padding: 3px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Table Styles */
+.cell:empty { /* Style empty cells differently */
+    background-color: rgba(30, 16, 109, 0.5);
+    color: rgba(240, 230, 140, 0.3);
+}
+
+/* --- Table Styles --- */
 table {
     width: 100%;
-    margin: 30px 0; /* More margin */
-    border-collapse: separate; /* Use separate for rounded corners */
+    margin: 35px 0;
+    border-collapse: separate;
     border-spacing: 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-    border-radius: 8px; /* Rounded corners for table */
-    overflow: hidden; /* Clip content to rounded corners */
+    background-color: rgba(30, 16, 109, 0.6); /* Table background */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 th, td {
-    border: none; /* Remove individual borders */
-    border-bottom: 1px solid #f0f0f0; /* Light horizontal lines */
-    padding: 12px 15px; /* More padding */
+    border: none;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2); /* Subtle gold lines */
+    padding: 14px 18px;
     text-align: left;
     vertical-align: middle;
+    color: #d0d0e0; /* Default text color */
 }
 
 th {
-    background: linear-gradient(to bottom, #fff8e1, #ffecb3); /* Light yellow gradient */
-    color: #cc5200; /* Darker orange text */
-    font-weight: bold;
-    text-transform: uppercase; /* Uppercase headers */
-    font-size: 0.9em;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #ffcc66; /* Stronger bottom border */
+    background: linear-gradient(to bottom, rgba(40, 20, 120, 0.9), rgba(30, 16, 109, 0.9)); /* Dark blue gradient */
+    color: #ffd700; /* Gold header text */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95em;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #d4af37; /* Stronger gold border */
 }
 
 /* Alternating row colors */
 tbody tr:nth-child(even) {
-    background-color: #fffaf0; /* Very light orange for even rows */
+    background-color: rgba(40, 20, 120, 0.3); /* Slightly different blue for even rows */
 }
 tbody tr:hover {
-    background-color: #fff0e1; /* Slightly darker hover */
+    background-color: rgba(60, 30, 150, 0.5); /* Lighter purple hover */
 }
 
 /* Center grid within the table cell */
@@ -135,69 +156,82 @@ td:last-child {
    text-align: center;
 }
 
-/* Section Styles */
+/* --- Section Styles (Input, List, Export) --- */
 #inputArea, #userList, #exportSection {
-    margin-bottom: 30px;
-    padding: 25px;
-    border: 1px solid #ffcc66; /* Orange border */
-    border-radius: 10px;
-    background-color: #fffaf5; /* Very light orange background */
+    margin-bottom: 35px;
+    padding: 30px;
+    border: 1px solid rgba(212, 175, 55, 0.4); /* Gold border */
+    border-radius: 12px;
+    background-color: rgba(20, 10, 84, 0.9); /* Slightly more opaque */
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
 
 #inputArea h3, #userList h3, #exportSection h3 {
     margin-top: 0;
-    color: #cc5200; /* Darker orange */
-    border-bottom: 1px solid #ffcc66;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-size: 1.4em;
+    color: #f0e68c; /* Light Gold */
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    font-size: 1.6em;
+    font-weight: 500;
 }
 
-/* Form Element Styles */
+/* --- Form Element Styles --- */
 label {
-    margin: 10px 5px;
-    font-weight: bold;
-    color: #555;
+    margin: 12px 8px;
+    font-weight: 500;
+    color: #b0b0d0; /* Lighter text for labels */
+    display: inline-block; /* Better spacing */
 }
 
 input[type="text"], input[type="date"], select {
-    padding: 10px 12px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    min-width: 180px; /* Wider inputs */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Gold border */
+    min-width: 200px;
+    background-color: rgba(10, 4, 60, 0.8); /* Dark input background */
+    color: #e0e0ff; /* Light text in inputs */
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1em;
 }
 
 input[type="text"]:focus, input[type="date"]:focus, select:focus {
-    border-color: #ff9933; /* Orange border on focus */
-    box-shadow: 0 0 5px rgba(255, 153, 51, 0.3); /* Orange glow on focus */
+    border-color: #ffd700; /* Brighter Gold border on focus */
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4); /* Gold glow on focus */
     outline: none;
+    background-color: rgba(20, 10, 84, 0.9);
 }
 
+/* Style date input placeholder text */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8) sepia(1) saturate(5) hue-rotate(10deg); /* Style calendar icon */
+}
+
+
 button {
-    background: linear-gradient(to bottom, #ff9933, #ff6600); /* Orange gradient button */
-    color: white;
+    background: linear-gradient(to bottom, #e6c35c, #d4af37); /* Gold gradient button */
+    color: #140a54; /* Dark blue text on button */
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 12px 20px; /* Larger padding */
-    border-radius: 5px;
-    font-size: 1.05em;
+    padding: 14px 25px; /* Larger padding */
+    border-radius: 8px;
+    font-size: 1.1em;
     font-weight: bold;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.2);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    margin-top: 10px; /* Add margin to buttons */
 }
 
 button:hover {
-    background: linear-gradient(to bottom, #ffaa44, #ff7711); /* Lighter orange on hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transform: translateY(-1px); /* Slight lift on hover */
+    background: linear-gradient(to bottom, #f0d06e, #e6c35c); /* Lighter gold on hover */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    transform: translateY(-2px); /* More lift on hover */
 }
 
 button:active {
-    transform: translateY(0px); /* Press down effect */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transform: translateY(0px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
