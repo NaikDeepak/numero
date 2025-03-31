@@ -6,8 +6,8 @@ import NumerologyGrid from "../NumerologyGrid" // Adjust path
 // Read BASE API URL from environment variable, fallback to localhost for development
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api"
 
-// Helper function to fetch data from the API
-async function fetchNumerologyData(dob, gender) {
+// Helper function to fetch data from the API (now includes name)
+async function fetchNumerologyData(dob, gender, name) {
   try {
     const response = await fetch(`${API_BASE_URL}/calculate`, {
       // Append endpoint path
@@ -15,7 +15,8 @@ async function fetchNumerologyData(dob, gender) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ dob, gender }),
+      // Include name in the request body
+      body: JSON.stringify({ dob, gender, name }),
     })
     if (!response.ok) {
       const errorData = await response.json()
@@ -31,7 +32,7 @@ async function fetchNumerologyData(dob, gender) {
 }
 
 function GridCalculator() {
-  // State for input fields
+  // State for input fields (name was already here, good!)
   const [name, setName] = useState("")
   const [dob, setDob] = useState("")
   const [gender, setGender] = useState("Male") // Default gender
@@ -41,17 +42,24 @@ function GridCalculator() {
   // State to hold calculated data for display in the table
   const [calculatedUsersData, setCalculatedUsersData] = useState({}) // { userId: { moolank: ..., bhagyank: ..., report: ... }, ... }
 
-  // Function to add a new user (only adds basic info)
+  // Function to add a new user (includes name validation)
   const addUser = () => {
-    // Basic validation
-    if (!name.trim() || !dob) {
-      alert("Please enter both Name and Date of Birth.")
-      return
+    // Basic validation - ensure name is also entered
+    const trimmedName = name.trim();
+    if (!trimmedName || !dob) {
+      alert("Please enter Full Name and Date of Birth.")
+      return;
     }
+    // Optional: Add more specific name validation if needed (e.g., check for letters)
+    if (!/^[a-zA-Z\s]+$/.test(trimmedName)) {
+        alert("Please enter a valid name containing only letters and spaces.");
+        return;
+    }
+
 
     const newUser = {
       id: Date.now(), // Simple unique ID using timestamp
-      name: name.trim(),
+      name: trimmedName, // Use trimmed name
       dob: dob,
       gender: gender,
     }
@@ -59,7 +67,7 @@ function GridCalculator() {
     setUsersData((prevUsers) => [...prevUsers, newUser]) // Add new user to the list
 
     // Clear input fields
-    setName("")
+    setName("") // Clear name field
     setDob("")
     setGender("Male") // Reset gender to default
     // No immediate calculation needed here
@@ -73,7 +81,8 @@ function GridCalculator() {
         return calculatedUsersData[user.id] // Return cached data
       }
 
-      const data = await fetchNumerologyData(user.dob, user.gender)
+      // Pass user.name to the fetch function
+      const data = await fetchNumerologyData(user.dob, user.gender, user.name)
       if (data) {
         setCalculatedUsersData((prevData) => ({
           ...prevData,
@@ -82,10 +91,10 @@ function GridCalculator() {
         return data
       }
       // Return an object indicating error for consistent handling in UserTableRow
-      // Remove report from here as it's fetched separately
-      return { moolank: "Error", bhagyank: "Error", kua: "Error", gridNumbers: null }
+      // Include nameNumerology: null in the error structure
+      return { moolank: "Error", bhagyank: "Error", kua: "Error", gridNumbers: null, nameNumerology: null }
     },
-    [calculatedUsersData]
+    [calculatedUsersData] // Dependency remains the same
   ) // Dependency: re-create if cache changes (though unlikely needed here)
 
   // Function to export data to Excel (fetches all data first)
@@ -113,6 +122,9 @@ function GridCalculator() {
       "Grid 8",
       "Grid 1",
       "Grid 6", // Bottom row
+      "Destiny No.",      // New header
+      "Soul Urge No.",    // New header
+      "Personality No.", // New header
       // Removed "Report" header
     ]
 
@@ -137,8 +149,8 @@ function GridCalculator() {
     // Fetch calculated data for all users concurrently
     alert("Calculating data for export... Please wait.") // Inform user
     const calculatedDataPromises = usersData.map((user) =>
-      // Use the same fetch function as the table rows
-      fetchNumerologyData(user.dob, user.gender).then((data) => ({ user, data }))
+      // Pass user.name to fetchNumerologyData for export
+      fetchNumerologyData(user.dob, user.gender, user.name).then((data) => ({ user, data }))
     )
 
     const results = await Promise.all(calculatedDataPromises)
@@ -161,6 +173,17 @@ function GridCalculator() {
           typeof calculatedData.moolank === "number" && !isNaN(calculatedData.moolank) ? calculatedData.moolank : ""
         rowData[headerToIndexMap["Kua"]] =
           typeof calculatedData.kua === "number" && !isNaN(calculatedData.kua) ? calculatedData.kua : ""
+
+        // Populate Name Numerology data if available
+        if (calculatedData.nameNumerology) {
+            rowData[headerToIndexMap["Destiny No."]] = calculatedData.nameNumerology.destinyNumber ?? "";
+            rowData[headerToIndexMap["Soul Urge No."]] = calculatedData.nameNumerology.soulUrgeNumber ?? "";
+            rowData[headerToIndexMap["Personality No."]] = calculatedData.nameNumerology.personalityNumber ?? "";
+        } else {
+             rowData[headerToIndexMap["Destiny No."]] = "";
+             rowData[headerToIndexMap["Soul Urge No."]] = "";
+             rowData[headerToIndexMap["Personality No."]] = "";
+        }
         // Removed report from export
 
         // Populate grid data
@@ -223,6 +246,7 @@ function GridCalculator() {
       {/* Input Area */}
       <div id='inputArea'>
         <h3>Add User Details</h3>
+        {/* Name input was already present, ensure it's correctly bound */}
         <label>
           Full Name:
           <input
@@ -231,6 +255,7 @@ function GridCalculator() {
             placeholder='Enter Full Name'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required // Make visually required, validation is in addUser
           />
         </label>
         <label>
@@ -259,6 +284,10 @@ function GridCalculator() {
               <th>Bhagyank</th>
               <th>Moolank</th>
               <th>Kua</th>
+              {/* Add Name Numerology Headers */}
+              <th>Destiny</th>
+              <th>Soul Urge</th>
+              <th>Personality</th>
               <th>Numerology Grid</th>
               <th>Actions</th> {/* Changed header to Actions */}
             </tr>
@@ -266,10 +295,10 @@ function GridCalculator() {
           <tbody>
             {usersData.length === 0 ? (
               <tr>
-                <td colSpan='8' style={{ textAlign: "center" }}>
+                {/* Update colspan to 11 */}
+                <td colSpan='11' style={{ textAlign: "center" }}>
                   No users added yet.
                 </td>{" "}
-                {/* Keep colspan 8 */}
               </tr>
             ) : (
               usersData.map((user) => (
@@ -313,14 +342,18 @@ function UserTableRow({ user, getOrFetchUserData }) {
   const moolank = isLoading ? "..." : userData ? userData.moolank : "-"
   const kua = isLoading ? "..." : userData ? userData.kua : "-"
   const gridNumbersArray = isLoading ? null : userData ? userData.gridNumbers : null
+  // Extract Name Numerology numbers
+  const destiny = isLoading ? "..." : userData?.nameNumerology ? userData.nameNumerology.destinyNumber : "-"
+  const soulUrge = isLoading ? "..." : userData?.nameNumerology ? userData.nameNumerology.soulUrgeNumber : "-"
+  const personality = isLoading ? "..." : userData?.nameNumerology ? userData.nameNumerology.personalityNumber : "-"
   // Removed report state
 
   // Handler for downloading the PDF
   const handleDownloadPdf = async () => {
-    // Construct the URL for the PDF endpoint using the base URL
+    // Construct the URL for the PDF endpoint using the base URL, adding the name
     const pdfUrl = `${API_BASE_URL}/report/pdf?dob=${encodeURIComponent(user.dob)}&gender=${encodeURIComponent(
       user.gender
-    )}`
+    )}&name=${encodeURIComponent(user.name)}` // Add name parameter
 
     try {
       const response = await fetch(pdfUrl)
@@ -354,6 +387,10 @@ function UserTableRow({ user, getOrFetchUserData }) {
       <td data-label='Bhagyank'>{bhagyank}</td>
       <td data-label='Moolank'>{moolank}</td>
       <td data-label='Kua'>{kua}</td>
+      {/* Add cells for Name Numerology */}
+      <td data-label='Destiny'>{destiny}</td>
+      <td data-label='Soul Urge'>{soulUrge}</td>
+      <td data-label='Personality'>{personality}</td>
       <td data-label='Grid'>
         {isLoading ? (
           "..." // Simple loading indicator

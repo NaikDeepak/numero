@@ -120,6 +120,42 @@ function calculatePersonalYear(birthDay, birthMonth, targetYear) {
     return reduceToSingleDigit(sum);
 }
 
+
+// --- Name Numerology Constants and Helpers ---
+
+const pythagoreanMap = {
+    A: 1, J: 1, S: 1,
+    B: 2, K: 2, T: 2,
+    C: 3, L: 3, U: 3,
+    D: 4, M: 4, V: 4,
+    E: 5, N: 5, W: 5,
+    F: 6, O: 6, X: 6,
+    G: 7, P: 7, Y: 7,
+    H: 8, Q: 8, Z: 8,
+    I: 9, R: 9
+};
+
+const vowels = "AEIOU";
+
+/**
+ * Reduces a number to a single digit or a master number (11, 22) by summing its digits repeatedly.
+ * @param {number} num - The number to reduce.
+ * @returns {number} The reduced single digit or master number.
+ */
+function reduceToSingleDigitOrMaster(num) {
+    let currentNum = typeof num === 'string' ? parseInt(num, 10) : num;
+    if (isNaN(currentNum)) return 0;
+
+    // Keep summing digits until the number is 9 or less, or it's 11 or 22
+    while (currentNum > 9 && currentNum !== 11 && currentNum !== 22) {
+        currentNum = sumDigits(currentNum.toString());
+    }
+    return currentNum;
+}
+
+// --- End Name Numerology Helpers ---
+
+
 /**
  * Calculates Personal Month number.
  * @param {number} personalYear - The calculated Personal Year number.
@@ -219,10 +255,56 @@ function calculateTimeFactorScore(entityDobParts, targetDateParts, targetDateNum
     return Math.round((score / maxScore) * 100); // Normalize to 0-100
 }
 
+/**
+ * Calculates Name Numerology numbers (Destiny, Soul Urge, Personality) using the Pythagorean system.
+ * @param {string} fullName - The full name string.
+ * @returns {object|null} An object with destinyNumber, soulUrgeNumber, personalityNumber, or null if input is invalid.
+ */
+function calculateNameNumbers(fullName) {
+    if (!fullName || typeof fullName !== 'string' || fullName.trim().length === 0) {
+        console.error("Invalid input for calculateNameNumbers:", fullName);
+        return null;
+    }
+
+    const normalizedName = fullName.toUpperCase().replace(/[^A-Z]/g, ''); // Keep only letters
+    if (normalizedName.length === 0) {
+        console.error("No valid letters found in name:", fullName);
+        return null;
+    }
+
+    let destinySum = 0;
+    let soulUrgeSum = 0;
+    let personalitySum = 0;
+
+    for (const char of normalizedName) {
+        const value = pythagoreanMap[char];
+        if (value) {
+            destinySum += value;
+            if (vowels.includes(char)) {
+                soulUrgeSum += value;
+            } else {
+                personalitySum += value;
+            }
+        }
+    }
+
+    const destinyNumber = reduceToSingleDigitOrMaster(destinySum);
+    const soulUrgeNumber = reduceToSingleDigitOrMaster(soulUrgeSum);
+    // Personality number typically doesn't retain master numbers
+    const personalityNumber = reduceToSingleDigit(personalitySum);
+
+    return {
+        destinyNumber,
+        soulUrgeNumber,
+        personalityNumber
+    };
+}
+
 
 // Export the main calculation function and helpers
 export {
     calculateNumerologyData,
+    calculateNameNumbers, // Add the new function here
     calculatePersonalYear,
     calculatePersonalMonth,
     calculatePersonalDay,

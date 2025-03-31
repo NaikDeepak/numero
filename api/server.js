@@ -10,7 +10,8 @@ import {
     calculatePersonalMonth,
     calculatePersonalDay,
     calculateCompatibilityScore,
-    calculateTimeFactorScore
+    calculateTimeFactorScore,
+    calculateNameNumbers // Import the new function
 } from './utils/numerologyUtils.js';
 
 // --- Load JSON Data using createRequire ---
@@ -35,6 +36,9 @@ const missingNumberRemedies = loadJsonData('./data/missingNumberRemedies.json');
 const repeatingNumberImpact = loadJsonData('./data/repeatingNumberImpact.json');
 const compatibilityData = loadJsonData('./data/compatibilityData.json'); // Load compatibility data
 const iplTeamsData = loadJsonData('./data/iplTeams.json'); // Load IPL team data
+const nameDestinyMeanings = loadJsonData('./data/nameDestinyMeanings.json');
+const nameSoulUrgeMeanings = loadJsonData('./data/nameSoulUrgeMeanings.json');
+const namePersonalityMeanings = loadJsonData('./data/namePersonalityMeanings.json');
 // --- End JSON Data Loading ---
 
 // Add logging to check loaded data
@@ -49,21 +53,38 @@ const port = process.env.PORT || 3001;
 app.use(cors()) // Enable CORS for all origins (adjust for production)
 app.use(express.json()) // Parse JSON request bodies
 
-// API Endpoint for Numerology Calculation
+// API Endpoint for Numerology Calculation (including Name)
 app.post("/api/calculate", (req, res) => {
-  const { dob, gender } = req.body
+  const { dob, gender, name } = req.body // Add name
 
-  // Basic validation for presence of dob and gender
+  // Basic validation for presence of dob and gender (name is optional here)
   if (!dob || !gender) {
     return res.status(400).json({ error: "Missing required fields: dob and gender" })
   }
 
   try {
+    // Calculate DOB-based numerology
     const numerologyData = calculateNumerologyData(dob, gender)
 
     if (numerologyData) {
-      // Return only the calculation data, report generation moved to separate endpoint
-      res.json(numerologyData)
+      let responseData = { ...numerologyData }; // Start with DOB data
+
+      // Calculate Name Numerology if name is provided
+      if (name && name.trim().length > 0) {
+        const nameData = calculateNameNumbers(name);
+        if (nameData) {
+          responseData.nameNumerology = nameData; // Add name data to the response
+        } else {
+          // Optionally inform the client if name calculation failed but DOB was ok
+          console.warn(`Name numerology calculation failed for name: ${name}`);
+          responseData.nameNumerology = null; // Indicate failure or absence
+        }
+      } else {
+        responseData.nameNumerology = null; // Indicate name was not provided or empty
+      }
+
+      // Return the combined data
+      res.json(responseData)
     } else {
       // calculateNumerologyData returns null for invalid input format/values
       res.status(400).json({ error: "Invalid input data provided (e.g., date format, values)." })
@@ -78,14 +99,16 @@ app.post("/api/calculate", (req, res) => {
 // PDFDocument import moved to top
 
 app.get("/api/report/pdf", (req, res) => {
-  const { dob, gender } = req.query // Get data from query parameters
+  const { dob, gender, name } = req.query // Get data from query parameters, add name
 
   // Basic validation
   if (!dob || !gender) {
     return res.status(400).json({ error: "Missing required query parameters: dob and gender" })
   }
+  // Name is optional for the report, but good to have
 
   try {
+    // Calculate DOB numerology
     const numerologyData = calculateNumerologyData(dob, gender)
 
     if (!numerologyData) {
@@ -116,8 +139,9 @@ app.get("/api/report/pdf", (req, res) => {
     // Create a new PDF document
     const doc = new PDFDocument({ size: "A4", margin: margin })
 
-    // Set headers for PDF download
-    const filename = `Numerology_Report_${dob.replace(/-/g, "")}.pdf`
+    // Set headers for PDF download - include name if available
+    const namePart = name ? `_${name.replace(/\s+/g, "_")}` : "";
+    const filename = `Numerology_Report_${dob.replace(/-/g, "")}${namePart}.pdf`
     res.setHeader("Content-Type", "application/pdf")
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`)
 
@@ -136,8 +160,12 @@ app.get("/api/report/pdf", (req, res) => {
     doc
       .font(fonts.body)
       .fontSize(12)
-      .fillColor(colors.muted)
-      .text(`For Date of Birth: ${dob} (${gender})`, { align: "center" })
+      .fillColor(colors.muted);
+    // Include name in sub-header if available
+    const subHeaderText = name
+        ? `For: ${name} (DOB: ${dob}, Gender: ${gender})`
+        : `For Date of Birth: ${dob} (${gender})`;
+    doc.text(subHeaderText, { align: "center" });
     doc.moveDown(2)
 
     // --- Section Helper ---
@@ -285,6 +313,34 @@ app.get("/api/report/pdf", (req, res) => {
         doc.text("No missing numbers (1-9) found in the chart.")
       }
     })
+
+    // 5. Name Numerology Analysis (if name provided)
+    let nameData = null;
+    if (name && name.trim().length > 0) {
+        nameData = calculateNameNumbers(name);
+    }
+
+    if (nameData) {
+        addSection("Name Numerology Analysis", () => {
+            const { destinyNumber, soulUrgeNumber, personalityNumber } = nameData;
+
+            doc.font(fonts.bodyBold).text("Destiny Number: ", { continued: true });
+            doc.font(fonts.body).text(`${destinyNumber} - ${nameDestinyMeanings[destinyNumber] || "No specific meaning found."}`);
+            doc.moveDown(0.5);
+
+            doc.font(fonts.bodyBold).text("Soul Urge Number: ", { continued: true });
+            doc.font(fonts.body).text(`${soulUrgeNumber} - ${nameSoulUrgeMeanings[soulUrgeNumber] || "No specific meaning found."}`);
+            doc.moveDown(0.5);
+
+            doc.font(fonts.bodyBold).text("Personality Number: ", { continued: true });
+            doc.font(fonts.body).text(`${personalityNumber} - ${namePersonalityMeanings[personalityNumber] || "No specific meaning found."}`);
+        });
+    } else if (name) {
+         addSection("Name Numerology Analysis", () => {
+            doc.text("Could not calculate name numerology. Please ensure the name contains valid letters.");
+         });
+    }
+
 
     // --- Finalize PDF ---
     doc.end()

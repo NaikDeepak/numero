@@ -452,9 +452,6 @@ function CompatibilityChecker() {
       </div>
     </>
   )
-  // Note: The previous SEARCH/REPLACE block already moved the Calculate button and wrapped the Download button.
-  // This block is just cleaning up the leftover button from the previous state.
-  // Ensure the Calculate button is outside the conditional rendering.
 }
 
 export default CompatibilityChecker
