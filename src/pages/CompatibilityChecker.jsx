@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 // Removed import { calculateNumerologyData } from '../numerologyUtils';
 import NumerologyGrid from '../NumerologyGrid'; // Adjust path
 
-// Define API URL (adjust if your backend runs elsewhere)
-const API_URL = 'http://localhost:3001/api/calculate';
+// Read API URL from environment variable, fallback to localhost for development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/calculate';
 
 // Helper function to fetch data from the API
 async function fetchNumerologyData(dob, gender) {

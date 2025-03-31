@@ -123,6 +123,9 @@ Thumbs.db
 .yarn/install-state.gz
 .pnp.*
 
+# Environment variables file
+.env
+
 # Aider specific files (keep these if you use Aider)
 .aider*
 
