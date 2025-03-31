@@ -3,6 +3,7 @@ import iplTeamsData from "../data/iplTeams.js" // Import from within src
 
 // Read API URL from environment variable, fallback to localhost for development
 const API_URL = import.meta.env.VITE_API_URL || "/api" // Base API URL
+console.log("API_URL:", API_URL) // Debugging line to check the API URL
 
 function TeamWinPercentage() {
   const [selectedTeamKey1, setSelectedTeamKey1] = useState("") // Renamed state
