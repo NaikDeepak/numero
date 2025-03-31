@@ -128,3 +128,4 @@ Thumbs.db
 
 # Qodana specific files (keep these if you use Qodana)
 .qodana/
+.qodo
