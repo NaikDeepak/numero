@@ -44,7 +44,42 @@
     --switch-slider-bg: #ccc;
     --switch-checked-bg: #ff8c00;
     --switch-checked-slider-bg: #fff;
+
+    /* New Theme Variables (Inspired by AoE - adjust as needed) */
+    --header-bg-dark: linear-gradient(to bottom, #2a2a2a, #111111);
+    --header-bg-light: linear-gradient(to bottom, #f0e6d2, #d8c8a8); /* Parchment/Stone */
+    --header-border-dark: #ff8c00; /* Keep orange accent */
+    --header-border-light: #a0522d; /* Sienna/Brown */
+    --header-text-dark: #e0e0e0;
+    --header-text-light: #4a2c0f; /* Dark Brown */
+    --header-icon-dark: #ff8c00;
+    --header-icon-light: #a0522d;
+
+    --navbar-bg-dark: rgba(10, 10, 10, 0.8); /* Dark, slightly transparent */
+    --navbar-bg-light: rgba(255, 255, 255, 0.7); /* Light, slightly transparent */
+    --navbar-border-dark: rgba(255, 140, 0, 0.3);
+    --navbar-border-light: rgba(160, 82, 45, 0.4); /* Sienna border */
+    --nav-link-text-dark: #a0a0a0;
+    --nav-link-text-light: #664228; /* Brownish text */
+    --nav-link-hover-bg-dark: rgba(255, 140, 0, 0.15);
+    --nav-link-hover-bg-light: rgba(160, 82, 45, 0.1);
+    --nav-link-active-text-dark: #ff8c00;
+    --nav-link-active-text-light: #a0522d;
+    --nav-link-active-border-dark: #ff8c00;
+    --nav-link-active-border-light: #a0522d;
+    --nav-icon-color-dark: #a0a0a0;
+    --nav-icon-color-light: #664228;
+    --nav-icon-active-color-dark: #ff8c00;
+    --nav-icon-active-color-light: #a0522d;
+
+    --footer-bg-dark: #111111;
+    --footer-bg-light: #d8c8a8; /* Match header gradient bottom */
+    --footer-text-dark: #a0a0a0;
+    --footer-text-light: #4a2c0f;
+    --footer-border-dark: #ff8c00;
+    --footer-border-light: #a0522d;
 }
+
 
 body.light-mode {
     /* Light Mode Overrides */
@@ -125,36 +160,82 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* --- Header --- */
-header {
-    background-color: var(--header-bg);
-    color: var(--header-text);
-    padding: 20px 40px;
-    text-align: center;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    border-bottom: 3px solid var(--border-strong-color);
-    position: relative;
-    display: flex; /* Align title and switch */
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+/* Optional: Main App Container */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-header h1 {
-    font-family: 'Cinzel', serif; /* Apply Cinzel font */
+
+/* --- New Header Styles --- */
+.app-header {
+    background: var(--header-bg-dark); /* Use new variable */
+    color: var(--header-text-dark);
+    padding: 15px 30px; /* Adjust padding */
+    border-bottom: 4px solid var(--header-border-dark); /* Thicker border */
+    box-shadow: 0 5px 10px var(--shadow-strong-color);
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    /* Optional: Add a subtle texture */
+    /* background-image: url('images/stone-texture.png'); */
+}
+body.light-mode .app-header {
+    background: var(--header-bg-light);
+    color: var(--header-text-light);
+    border-bottom-color: var(--header-border-light);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px; /* Limit width */
+    margin: 0 auto; /* Center content */
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between icon and title */
+}
+
+.app-header h1 {
+    font-family: 'Cinzel', serif;
     margin: 0;
-    font-size: 2.6em; /* Slightly larger */
+    font-size: 2.8em; /* Larger */
     font-weight: 700;
-    color: var(--header-text);
-    text-shadow: 1px 1px 3px var(--shadow-color);
-    letter-spacing: 2px; /* More spacing for Cinzel */
+    color: inherit; /* Inherit from .app-header */
+    text-shadow: 1px 1px 2px var(--shadow-strong-color);
+    letter-spacing: 2.5px;
     transition: color 0.3s ease;
 }
 
+.header-icon {
+    font-size: 2.5em; /* Adjust icon size */
+    color: var(--header-icon-dark);
+    transition: color 0.3s ease;
+}
+body.light-mode .header-icon {
+    color: var(--header-icon-light);
+}
+
+/* Adjust Theme Toggle Wrapper */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.theme-toggle-label { /* New class for the label text */
+    color: var(--text-muted-color);
+    font-size: 0.8em;
+    transition: color 0.3s ease;
+}
+
+
 /* --- Main Content Area --- */
-main {
+.main-content { /* Changed from main to class */
     flex-grow: 1;
-    padding: 40px;
+    padding: 30px; /* Adjust padding */
     width: 90%;
     max-width: 1200px;
     margin: 40px auto;
@@ -166,8 +247,8 @@ main {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-main h2 {
-    font-family: 'Cinzel', serif; /* Apply Cinzel font */
+.main-content h2 { /* Target h2 within main-content */
+    font-family: 'Cinzel', serif;
     text-align: center;
     color: var(--accent-color);
     margin-bottom: 35px;
@@ -180,17 +261,33 @@ main h2 {
     transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-/* --- Footer --- */
-footer {
-    background-color: var(--header-bg); /* Match header */
-    color: var(--text-muted-color);
-    text-align: center;
-    padding: 25px;
-    margin-top: auto;
+
+/* --- New Footer Styles --- */
+.app-footer {
+    background-color: var(--footer-bg-dark);
+    color: var(--footer-text-dark);
+    padding: 20px 30px;
+    margin-top: auto; /* Pushes footer to bottom */
     font-size: 0.9em;
-    border-top: 3px solid var(--border-strong-color);
+    border-top: 3px solid var(--footer-border-dark);
+    box-shadow: 0 -4px 8px var(--shadow-color);
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+body.light-mode .app-footer {
+    background-color: var(--footer-bg-light);
+    color: var(--footer-text-light);
+    border-top-color: var(--footer-border-light);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 
 /* --- Lo Shu Grid Styles --- */
 .grid {
@@ -474,4 +571,183 @@ input:checked + .slider:before {
     color: var(--grid-cell-empty-text);
     /* Optional: Add a placeholder like a dot */
     /* content: '·'; */
+}
+
+
+/* --- New Navbar Styles --- */
+.app-navbar {
+    background-color: var(--navbar-bg-dark);
+    padding: 10px 0; /* Vertical padding */
+    border-bottom: 1px solid var(--navbar-border-dark);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    backdrop-filter: blur(2px); /* Subtle blur for transparency */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+body.light-mode .app-navbar {
+    background-color: var(--navbar-bg-light);
+    border-bottom-color: var(--navbar-border-light);
+}
+
+.app-navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Center nav items */
+    gap: 30px; /* Space between nav items */
+}
+
+.app-nav-item {
+    /* No specific styles needed currently */
+}
+
+.app-nav-link {
+    color: var(--nav-link-text-dark);
+    text-decoration: none;
+    padding: 12px 20px; /* More padding */
+    border-radius: 6px;
+    transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+    font-weight: 500;
+    font-family: 'Merriweather', serif;
+    font-size: 1.1em;
+    display: flex; /* Align icon and text */
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    border-bottom: 3px solid transparent; /* Placeholder for active border */
+}
+body.light-mode .app-nav-link {
+    color: var(--nav-link-text-light);
+}
+
+.app-nav-link .nav-icon {
+    font-size: 1.2em; /* Icon size */
+    color: var(--nav-icon-color-dark);
+    transition: color 0.3s ease;
+}
+body.light-mode .app-nav-link .nav-icon {
+    color: var(--nav-icon-color-light);
+}
+
+
+.app-nav-link:hover {
+    color: var(--nav-link-active-text-dark); /* Use active color on hover */
+    background-color: var(--nav-link-hover-bg-dark);
+}
+body.light-mode .app-nav-link:hover {
+    color: var(--nav-link-active-text-light);
+    background-color: var(--nav-link-hover-bg-light);
+}
+.app-nav-link:hover .nav-icon {
+    color: var(--nav-icon-active-color-dark); /* Use active color on hover */
+}
+body.light-mode .app-nav-link:hover .nav-icon {
+    color: var(--nav-icon-active-color-light);
+}
+
+
+.app-nav-link.active {
+    color: var(--nav-link-active-text-dark);
+    font-weight: bold;
+    border-bottom-color: var(--nav-link-active-border-dark); /* Use border instead of background */
+    background-color: transparent; /* Remove background for active */
+}
+body.light-mode .app-nav-link.active {
+    color: var(--nav-link-active-text-light);
+    border-bottom-color: var(--nav-link-active-border-light);
+}
+
+.app-nav-link.active .nav-icon {
+    color: var(--nav-icon-active-color-dark);
+}
+body.light-mode .app-nav-link.active .nav-icon {
+    color: var(--nav-icon-active-color-light);
+}
+
+
+/* --- Compatibility Checker Styles --- */
+.compatibility-container {
+    display: flex;
+    justify-content: space-around; /* Space out the two person sections */
+    gap: 30px; /* Gap between sections */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    margin-bottom: 30px;
+}
+
+.person-input-section {
+    flex: 1; /* Allow sections to grow */
+    min-width: 300px; /* Minimum width before wrapping */
+    padding: 25px;
+    border: 1px solid var(--section-border);
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.1); /* Slightly different background */
+    text-align: center;
+}
+body.light-mode .person-input-section {
+     background-color: rgba(255,255,255,0.2);
+}
+
+
+.person-input-section h3 {
+    margin-top: 0;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.person-input-section label {
+    display: block; /* Stack labels and inputs */
+    margin: 15px auto; /* Center labels */
+    width: fit-content; /* Adjust width to content */
+}
+
+.person-input-section input,
+.person-input-section select {
+    display: block; /* Ensure inputs are block level */
+    margin: 5px auto 10px auto; /* Center inputs */
+}
+
+.grid-display {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+}
+.grid-display h4 {
+    margin-bottom: 10px;
+    color: var(--text-muted-color);
+}
+.grid-display p {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+    margin-top: 10px;
+}
+
+
+.report-section {
+    margin-top: 30px;
+    padding: 25px;
+    border: 1px solid var(--section-border);
+    border-radius: 10px;
+    background-color: var(--section-bg);
+}
+
+.report-section h3 {
+     margin-top: 0;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.report-section pre {
+    white-space: pre-wrap; /* Wrap text */
+    word-wrap: break-word; /* Break long words */
+    font-family: 'Merriweather', serif;
+    font-size: 1em;
+    line-height: 1.7;
+    color: var(--text-color);
+    background-color: var(--input-bg); /* Match input background */
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--input-border);
 }
