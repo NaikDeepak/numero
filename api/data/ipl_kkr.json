@@ -5,7 +5,8 @@
     "Price": "₹13 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Retained",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "October 12, 1997"
   },
   {
     "No.": "2",
@@ -13,7 +14,8 @@
     "Price": "₹12 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Retained",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "August 4, 1991"
   },
   {
     "No.": "3",
@@ -21,7 +23,8 @@
     "Price": "₹12 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Retained",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "May 26, 1988"
   },
   {
     "No.": "4",
@@ -29,7 +32,8 @@
     "Price": "₹12 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Retained",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "April 29, 1988"
   },
   {
     "No.": "5",
@@ -37,7 +41,8 @@
     "Price": "₹4 crore",
     "Type": "Indian (uncapped)",
     "Acquisition": "Retained",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "November 24, 1998"
   },
   {
     "No.": "6",
@@ -45,15 +50,17 @@
     "Price": "₹4 crore",
     "Type": "Indian (uncapped)",
     "Acquisition": "Retained",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "January 14, 1994"
   },
   {
     "No.": "7",
-    "Player": "Venkatesh Iyer ",
+    "Player": "Venkatesh Iyer",
     "Price": "₹23.75 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "December 25, 1993"
   },
   {
     "No.": "8",
@@ -61,7 +68,8 @@
     "Price": "₹3.60 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Wicketkeeper/Batter"
+    "Role": "Wicketkeeper/Batter",
+    "Date of Birth": "December 17, 1992"
   },
   {
     "No.": "9",
@@ -69,7 +77,8 @@
     "Price": "₹2 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Wicketkeeper/Batter"
+    "Role": "Wicketkeeper/Batter",
+    "Date of Birth": "November 28, 1997"
   },
   {
     "No.": "10",
@@ -77,7 +86,8 @@
     "Price": "₹6.50 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "November 16, 1993"
   },
   {
     "No.": "11",
@@ -85,7 +95,8 @@
     "Price": "₹3 crore",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "January 1, 2000"
   },
   {
     "No.": "12",
@@ -93,7 +104,8 @@
     "Price": "₹1.80 crore",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "13",
@@ -101,7 +113,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "September 11, 1997"
   },
   {
     "No.": "14",
@@ -109,7 +122,8 @@
     "Price": "₹1.50 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "October 23, 1993"
   },
   {
     "No.": "15",
@@ -117,15 +131,17 @@
     "Price": "₹75 lakh",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "September 10, 1989"
   },
   {
     "No.": "16",
-    "Player": "Spencer Johnson (Australia)\n",
+    "Player": "Spencer Johnson (Australia)",
     "Price": "₹2.80 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "17",
@@ -133,15 +149,17 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "January 1, 2000"
   },
   {
     "No.": "18",
-    "Player": "Ajinkya Rahane ",
+    "Player": "Ajinkya Rahane",
     "Price": "₹1.5 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "June 6, 1988"
   },
   {
     "No.": "19",
@@ -149,7 +167,8 @@
     "Price": "₹40 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "January 1, 1999"
   },
   {
     "No.": "20",
@@ -157,7 +176,8 @@
     "Price": "₹2 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "June 18, 1987"
   },
   {
     "No.": "21",
@@ -165,6 +185,7 @@
     "Price": "₹75 lakh",
     "Type": "Indian (capped)",
     "Acquisition": "Post-auction replacement for Umran Malik",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "February 28, 1998"
   }
 ]

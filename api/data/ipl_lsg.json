@@ -5,7 +5,8 @@
     "Price": "₹21 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Retained",
-    "Role": "Wicketkeeper/Batter"
+    "Role": "Wicketkeeper/Batter",
+    "Date of Birth": "October 2, 1995"
   },
   {
     "No.": "2",
@@ -13,7 +14,8 @@
     "Price": "₹11 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Retained",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "September 5, 1999"
   },
   {
     "No.": "3",
@@ -21,7 +23,8 @@
     "Price": "₹11 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Retained",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "4",
@@ -29,7 +32,8 @@
     "Price": "₹4 crore",
     "Type": "Indian (uncapped)",
     "Acquisition": "Retained",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "October 3, 1999"
   },
   {
     "No.": "5",
@@ -37,7 +41,8 @@
     "Price": "₹2 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Replacement",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "October 16, 1991"
   },
   {
     "No.": "6",
@@ -45,7 +50,8 @@
     "Price": "₹27 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "Wicketkeeper/Batter"
+    "Role": "Wicketkeeper/Batter",
+    "Date of Birth": "October 4, 1997"
   },
   {
     "No.": "7",
@@ -53,7 +59,8 @@
     "Price": "₹7.50 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "June 10, 1989"
   },
   {
     "No.": "8",
@@ -61,15 +68,17 @@
     "Price": "₹3.40 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "October 20, 1991"
   },
   {
     "No.": "9",
-    "Player": "Aiden Markram (South Africa) ",
+    "Player": "Aiden Markram (South Africa)",
     "Price": "₹2.00 crore",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "October 4, 1994"
   },
   {
     "No.": "10",
@@ -77,7 +86,8 @@
     "Price": "₹9.75 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "December 15, 1996"
   },
   {
     "No.": "11",
@@ -85,7 +95,8 @@
     "Price": "₹4.20 crore",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "October 28, 1997"
   },
   {
     "No.": "12",
@@ -93,7 +104,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Wicketkeeper/Batter"
+    "Role": "Wicketkeeper/Batter",
+    "Date of Birth": "January 1, 2000"
   },
   {
     "No.": "13",
@@ -101,7 +113,8 @@
     "Price": "₹8 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "January 15, 1993"
   },
   {
     "No.": "14",
@@ -109,7 +122,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "NA"
   },
   {
     "No.": "15",
@@ -117,7 +131,8 @@
     "Price": "₹75 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "16",
@@ -125,7 +140,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "17",
@@ -133,7 +149,8 @@
     "Price": "₹2.4 crore",
     "Type": "Indian (capped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "September 5, 1994"
   },
   {
     "No.": "18",
@@ -141,7 +158,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "19",
@@ -149,7 +167,8 @@
     "Price": "₹75 lakh",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "20",
@@ -157,7 +176,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "Bowler"
+    "Role": "Bowler",
+    "Date of Birth": "NA"
   },
   {
     "No.": "21",
@@ -165,7 +185,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "NA"
   },
   {
     "No.": "22",
@@ -173,7 +194,8 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "January 1, 2000"
   },
   {
     "No.": "23",
@@ -181,14 +203,16 @@
     "Price": "₹30 lakh",
     "Type": "Indian (uncapped)",
     "Acquisition": "Auction",
-    "Role": "All-rounder"
+    "Role": "All-rounder",
+    "Date of Birth": "January 1, 2000"
   },
   {
     "No.": "24",
-    "Player": "Matthew Breetzke ",
+    "Player": "Matthew Breetzke",
     "Price": "₹75 lakh",
     "Type": "Overseas (capped)",
     "Acquisition": "Auction",
-    "Role": "Batter"
+    "Role": "Batter",
+    "Date of Birth": "NA"
   }
 ]

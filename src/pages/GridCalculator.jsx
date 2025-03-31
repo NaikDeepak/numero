@@ -348,13 +348,13 @@ function UserTableRow({ user, getOrFetchUserData }) {
 
   return (
     <tr>
-      <td>{user.name}</td>
-      <td>{user.dob}</td>
-      <td>{user.gender}</td>
-      <td>{bhagyank}</td>
-      <td>{moolank}</td>
-      <td>{kua}</td>
-      <td>
+      <td data-label='Name'>{user.name}</td>
+      <td data-label='DOB'>{user.dob}</td>
+      <td data-label='Gender'>{user.gender}</td>
+      <td data-label='Bhagyank'>{bhagyank}</td>
+      <td data-label='Moolank'>{moolank}</td>
+      <td data-label='Kua'>{kua}</td>
+      <td data-label='Grid'>
         {isLoading ? (
           "..." // Simple loading indicator
         ) : gridNumbersArray ? (
@@ -364,7 +364,7 @@ function UserTableRow({ user, getOrFetchUserData }) {
         )}
       </td>
       {/* Actions Cell */}
-      <td>
+      <td data-label='Actions'>
         <button onClick={handleDownloadPdf} disabled={isLoading || !userData || userData.moolank === "Error"}>
           {isLoading ? "Loading..." : "Download PDF"}
         </button>
