@@ -429,3 +429,49 @@ input:checked + .slider:before {
     transform: translateX(26px); /* Move knob to the right */
     background-color: var(--switch-checked-slider-bg);
 }
+
+
+/* --- Numerology Grid Component Styles --- */
+.numerology-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 35px); /* Adjust size as needed */
+    grid-template-rows: repeat(3, 35px);    /* Adjust size as needed */
+    gap: 3px; /* Small gap between cells */
+    justify-content: center; /* Center the grid horizontally */
+    margin: 5px auto; /* Center within the table cell */
+    padding: 5px;
+    background-color: var(--grid-bg);
+    border: 1px solid var(--grid-border);
+    border-radius: 4px;
+    width: min-content; /* Make grid only as wide as its content */
+    box-shadow: inset 0 0 5px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.grid-cell {
+    width: 35px; /* Match grid column size */
+    height: 35px; /* Match grid row size */
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em; /* Adjust font size */
+    font-weight: bold;
+    background-color: var(--grid-cell-bg);
+    color: var(--grid-cell-text);
+    border-radius: 3px;
+    overflow: hidden; /* Hide overflow if numbers are too long */
+    text-align: center;
+    padding: 2px; /* Small padding */
+    box-sizing: border-box;
+    line-height: 1.1; /* Adjust line height for multiple numbers */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    word-break: break-all; /* Break long strings of numbers if needed */
+}
+
+.grid-cell:empty {
+    background-color: var(--grid-cell-empty-bg);
+    color: var(--grid-cell-empty-text);
+    /* Optional: Add a placeholder like a dot */
+    /* content: '·'; */
+}
