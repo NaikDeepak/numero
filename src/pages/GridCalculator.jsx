@@ -39,7 +39,7 @@ function GridCalculator() {
   // State for the list of users (stores only basic info now)
   const [usersData, setUsersData] = useState([]);
   // State to hold calculated data for display in the table
-  const [calculatedUsersData, setCalculatedUsersData] = useState({}); // { userId: { moolank: ..., bhagyank: ... }, ... }
+  const [calculatedUsersData, setCalculatedUsersData] = useState({}); // { userId: { moolank: ..., bhagyank: ..., report: ... }, ... }
 
   // Function to add a new user (only adds basic info)
   const addUser = () => {
@@ -81,7 +81,7 @@ function GridCalculator() {
       return data;
     }
     // Return an object indicating error for consistent handling in UserTableRow
-    return { moolank: 'Error', bhagyank: 'Error', kua: 'Error', gridNumbers: null };
+    return { moolank: 'Error', bhagyank: 'Error', kua: 'Error', gridNumbers: null, report: 'Error generating report.' };
   }, [calculatedUsersData]); // Dependency: re-create if cache changes (though unlikely needed here)
 
 
@@ -98,7 +98,8 @@ function GridCalculator() {
       "Bhagyank", "Moolank", "Kua",
       "Grid 4", "Grid 9", "Grid 2", // Top row
       "Grid 3", "Grid 5", "Grid 7", // Middle row
-      "Grid 8", "Grid 1", "Grid 6"  // Bottom row
+      "Grid 8", "Grid 1", "Grid 6", // Bottom row
+      "Report" // Add Report header
     ];
 
     // Map Lo Shu grid numbers to their corresponding header names
@@ -136,6 +137,7 @@ function GridCalculator() {
         rowData[headerToIndexMap["Bhagyank"]] = (typeof calculatedData.bhagyank === 'number' && !isNaN(calculatedData.bhagyank)) ? calculatedData.bhagyank : '';
         rowData[headerToIndexMap["Moolank"]] = (typeof calculatedData.moolank === 'number' && !isNaN(calculatedData.moolank)) ? calculatedData.moolank : '';
         rowData[headerToIndexMap["Kua"]] = (typeof calculatedData.kua === 'number' && !isNaN(calculatedData.kua)) ? calculatedData.kua : '';
+        rowData[headerToIndexMap["Report"]] = calculatedData.report || 'N/A'; // Add report to export
 
         // Populate grid data
         const gridCellContents = {}; // Temporary store: { "Grid 4": [4, 4], "Grid 9": [9], ... }
@@ -240,12 +242,13 @@ function GridCalculator() {
               <th>Moolank</th>
               <th>Kua</th>
               <th>Numerology Grid</th>
+              <th>Report</th> {/* Add Report column header */}
             </tr>
           </thead>
           <tbody>
             {usersData.length === 0 ? (
               <tr>
-                <td colSpan="7" style={{ textAlign: 'center' }}>No users added yet.</td>
+                <td colSpan="8" style={{ textAlign: 'center' }}>No users added yet.</td> {/* Updated colspan */}
               </tr>
             ) : (
               usersData.map((user) => (
@@ -287,6 +290,7 @@ function UserTableRow({ user, getOrFetchUserData }) {
   const moolank = isLoading ? '...' : (userData ? userData.moolank : '-');
   const kua = isLoading ? '...' : (userData ? userData.kua : '-');
   const gridNumbersArray = isLoading ? null : (userData ? userData.gridNumbers : null);
+  const report = isLoading ? 'Loading report...' : (userData ? userData.report : 'N/A');
 
   return (
     <tr>
@@ -304,6 +308,10 @@ function UserTableRow({ user, getOrFetchUserData }) {
         ) : (
           '-' // Show dash if no grid or error
         )}
+      </td>
+      {/* Report Cell */}
+      <td style={{ whiteSpace: 'pre-wrap', textAlign: 'left', fontSize: '0.85em' }}> {/* Style report cell */}
+        {report}
       </td>
     </tr>
   );

@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { calculateNumerologyData } from './utils/numerologyUtils.js'; // Use .js extension for relative imports in ESM
+import { calculateNumerologyData } from './utils/numerologyUtils.js';
+import { generateNumerologyReport } from './utils/reportGenerator.js'; // Import the report generator
 
 const app = express();
-const port = process.env.PORT || 3001; // Use environment variable or default port
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors()); // Enable CORS for all origins (adjust for production)
@@ -22,7 +23,14 @@ app.post('/api/calculate', (req, res) => {
     const numerologyData = calculateNumerologyData(dob, gender);
 
     if (numerologyData) {
-      res.json(numerologyData); // Send back the calculated data
+      // Generate the report using the calculated data
+      const report = generateNumerologyReport(numerologyData);
+
+      // Include the report in the response
+      res.json({
+        ...numerologyData,
+        report: report // Add the report string
+      });
     } else {
       // calculateNumerologyData returns null for invalid input format/values
       res.status(400).json({ error: 'Invalid input data provided (e.g., date format, values).' });
