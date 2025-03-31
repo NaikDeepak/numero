@@ -1,0 +1,186 @@
+[
+  {
+    "No.": "1",
+    "Player": "Jasprit Bumrah",
+    "Price": "₹18 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "2",
+    "Player": "Suryakumar Yadav",
+    "Price": "₹16.35 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "3",
+    "Player": "Hardik Pandya",
+    "Price": "₹16.35 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "4",
+    "Player": "Rohit Sharma",
+    "Price": "₹16.30 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "5",
+    "Player": "Tilak Varma",
+    "Price": "₹8 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "6",
+    "Player": "Trent Boult (New Zealand)",
+    "Price": "₹12.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "7",
+    "Player": "Naman Dhir",
+    "Price": "₹5.25 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "RTM",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "8",
+    "Player": "Robin Minz",
+    "Price": "₹65 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "9",
+    "Player": "Karn Sharma",
+    "Price": "₹50 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "10",
+    "Player": "Ryan Rickelton (South Africa)",
+    "Price": "₹1 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "11",
+    "Player": "Deepak Chahar",
+    "Price": "₹9.25 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "12",
+    "Player": "Mujeeb-ur-Rahman (Afghanistan)",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Replacement",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "13",
+    "Player": "Will Jacks (England)",
+    "Price": "₹5.25 crore",
+    "Type": "Overseas (capped) ",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "14",
+    "Player": "Ashwani Kumar",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "15",
+    "Player": "Mitchell Santner (New Zealand)",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "16",
+    "Player": "Reece Topley (England)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "17",
+    "Player": "Shrijith Krishnan",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "18",
+    "Player": "Raj Bawa",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "19",
+    "Player": "Satyanarayana Raju",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "20",
+    "Player": "Bevon Jacobs (New Zealad)",
+    "Price": "₹30 lakh",
+    "Type": "Overseas (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "21",
+    "Player": "Arjun Tendulkar",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "22",
+    "Player": "Corbin Bosch (South Africa)",
+    "Price": "Not available",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Replacement",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "23",
+    "Player": "Vignesh Puthur",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  }
+]

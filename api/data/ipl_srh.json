@@ -1,0 +1,162 @@
+[
+  {
+    "No.": "1",
+    "Player": "Heinrich Klaasen (South Africa)",
+    "Price": "₹23 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "2",
+    "Player": "Pat Cummins (Australia)",
+    "Price": "₹18 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "3",
+    "Player": "Abhishek Sharma ",
+    "Price": "₹14 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "4",
+    "Player": "Travis Head (Australia)",
+    "Price": "₹14 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "5",
+    "Player": "Nitish Kumar Reddy",
+    "Price": "₹6 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "6",
+    "Player": "Mohammad Shami",
+    "Price": "₹10 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "7",
+    "Player": "Harshal Patel",
+    "Price": "₹8 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "8",
+    "Player": "Ishan Kishan",
+    "Price": "₹11.25 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "9",
+    "Player": "Rahul Chahar",
+    "Price": "₹3.2 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "10",
+    "Player": "Adam Zampa (Australia)",
+    "Price": "₹2.4 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "11",
+    "Player": "Atharva Taide",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "12",
+    "Player": "Abhinav Manohar",
+    "Price": "₹3.2 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "13",
+    "Player": "Simarjeet Singh",
+    "Price": "₹1.5 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "14",
+    "Player": "Zeeshan Ansari",
+    "Price": "₹40 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "15",
+    "Player": "Jaydev Unadkat ",
+    "Price": "₹1 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "16",
+    "Player": "Wiaan Mulder (South Africa)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Replacement",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "17",
+    "Player": "Kamindu Mendis\n(Sri Lanka)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "18",
+    "Player": "Aniket Verma",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "19",
+    "Player": "Eshan Malinga (Sri Lanka)",
+    "Price": "₹1.20 crore",
+    "Type": "Overseas (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "20",
+    "Player": "Sachin Baby",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  }
+]

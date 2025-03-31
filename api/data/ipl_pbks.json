@@ -1,0 +1,202 @@
+[
+  {
+    "No.": "1",
+    "Player": "Shashank Singh",
+    "Price": "₹5.5 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "2",
+    "Player": "Prabhsimran Singh",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "3",
+    "Player": "Arshdeep Singh",
+    "Price": "₹18 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "RTM",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "4",
+    "Player": "Shreyas Iyer",
+    "Price": "₹26.75 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "5",
+    "Player": "Yuzvendra Chahal",
+    "Price": "₹18 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "6",
+    "Player": "Marcus Stoinis (Australia)",
+    "Price": "₹11 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "7",
+    "Player": "Glenn Maxwell (Australia)",
+    "Price": "₹4.20 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "8",
+    "Player": "Nehal Wadhera",
+    "Price": "₹4.20 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "9",
+    "Player": "Harpreet Brar",
+    "Price": "₹1.50 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "10",
+    "Player": "Vishnu Vinod",
+    "Price": "₹95 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "11",
+    "Player": "Vijaykumar Vyshak",
+    "Price": "₹1.80 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "12",
+    "Player": "Yash Thakur",
+    "Price": "₹1.60 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "13",
+    "Player": "Marco Jansen (South Africa)",
+    "Price": "₹7.00 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "14",
+    "Player": "Josh Inglis (Australia)",
+    "Price": "₹2.60 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "15",
+    "Player": "Lockie Ferguson (New Zealand)",
+    "Price": "₹2.00 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "16",
+    "Player": "Azmatullah Omarzai (Afghanistan) ",
+    "Price": "₹2.4 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "17",
+    "Player": "Harnoor Pannu",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "18",
+    "Player": "Kuldeep Sen",
+    "Price": "₹80 lakh",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "19",
+    "Player": "Priyansh Arya",
+    "Price": "₹3.80 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "20",
+    "Player": "Aaron Hardie (Australia)",
+    "Price": "₹1.25 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "21",
+    "Player": "Suryash Shedge",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder "
+  },
+  {
+    "No.": "22",
+    "Player": "Musheer Khan",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "23",
+    "Player": "Xavier Bartlett",
+    "Price": "₹80 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "24",
+    "Player": "Pyla Avinash",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "25",
+    "Player": "Praveen Dubey ",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  }
+]

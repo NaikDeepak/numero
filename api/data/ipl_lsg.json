@@ -1,0 +1,194 @@
+[
+  {
+    "No.": "1",
+    "Player": "Nicholas Pooran (West Indies)",
+    "Price": "₹21 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "2",
+    "Player": "Ravi Bishnoi",
+    "Price": "₹11 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "3",
+    "Player": "Mayank Yadav",
+    "Price": "₹11 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "4",
+    "Player": "Ayush Badoni",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "5",
+    "Player": "Shardul Thakur",
+    "Price": "₹2 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Replacement",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "6",
+    "Player": "Rishabh Pant",
+    "Price": "₹27 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "7",
+    "Player": "David Miller (South Africa)",
+    "Price": "₹7.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "8",
+    "Player": "Mitchell Marsh (Australia)",
+    "Price": "₹3.40 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "9",
+    "Player": "Aiden Markram (South Africa) ",
+    "Price": "₹2.00 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "10",
+    "Player": "Avesh Khan",
+    "Price": "₹9.75 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "11",
+    "Player": "Abdul Samad",
+    "Price": "₹4.20 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "12",
+    "Player": "Aryan Juyal",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "13",
+    "Player": "Akash Deep",
+    "Price": "₹8 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "14",
+    "Player": "Himmat Singh",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "15",
+    "Player": "M Siddharth",
+    "Price": "₹75 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "16",
+    "Player": "Digvesh Singh",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "17",
+    "Player": "Shahbaz Ahmed",
+    "Price": "₹2.4 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "18",
+    "Player": "Akash Singh",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "19",
+    "Player": "Shamar Joseph (West Indies)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "20",
+    "Player": "Prince Yadav",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "21",
+    "Player": "Yuvraj Chaudhary",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "22",
+    "Player": "Rajvardhan Hangargekar",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "23",
+    "Player": "Arshin Kulkarni",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "24",
+    "Player": "Matthew Breetzke ",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  }
+]

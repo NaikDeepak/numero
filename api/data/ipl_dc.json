@@ -1,0 +1,178 @@
+[
+  {
+    "No.": "1",
+    "Player": "Axar Patel",
+    "Price": "₹16.50 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "2",
+    "Player": "Kuldeep Yadav",
+    "Price": "₹13.25 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "3",
+    "Player": "Tristan Stubbs (South Africa)",
+    "Price": "₹10 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "4",
+    "Player": "Abishek Porel",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Batter/Wicketkeeper"
+  },
+  {
+    "No.": "5",
+    "Player": "Mitchell Starc (Australia)",
+    "Price": "₹11.75 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "6",
+    "Player": "KL Rahul",
+    "Price": "₹14 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter/Wicketkeeper"
+  },
+  {
+    "No.": "7",
+    "Player": "Jake Fraser-Mcgurk (Australia)",
+    "Price": "₹9 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "RTM",
+    "Role": "Batter"
+  },
+  {
+    "No.": "8",
+    "Player": "T Natarajan",
+    "Price": "₹10.75 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "9",
+    "Player": "Karun Nair",
+    "Price": "₹50 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "10",
+    "Player": "Sameer Rizvi",
+    "Price": "₹95 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "11",
+    "Player": "Ashutosh Sharma",
+    "Price": "₹3.80 crore",
+    "Type": "Indian (uncapped)\n",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "12",
+    "Player": "Mohit Sharma",
+    "Price": "₹2.20 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "13",
+    "Player": "Faf du Plessis (South Africa)",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "14",
+    "Player": "Mukesh Kumar",
+    "Price": "₹8 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "RTM",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "15",
+    "Player": "Darshan Nalkande",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "16",
+    "Player": "Vipraj Nigam",
+    "Price": "₹50 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "17",
+    "Player": "Dushmantha Chameera (Sri Lanka)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "18",
+    "Player": "Donovan Ferreira",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "19",
+    "Player": "Ajay Mandal",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "20",
+    "Player": "Manvanth Kumar",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "21",
+    "Player": "Madhav Tiwari",
+    "Price": "₹40 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "22",
+    "Player": "Tripurana Vijay",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  }
+]

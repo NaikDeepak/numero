@@ -1,0 +1,170 @@
+[
+  {
+    "No.": "1",
+    "Player": "Rinku Singh",
+    "Price": "₹13 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "2",
+    "Player": "Varun Chakaravarthy",
+    "Price": "₹12 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "3",
+    "Player": "Sunil Narine (West Indies)",
+    "Price": "₹12 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "4",
+    "Player": "Andre Russell (West Indies)",
+    "Price": "₹12 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "5",
+    "Player": "Harshit Rana",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "6",
+    "Player": "Ramandeep Singh",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "7",
+    "Player": "Venkatesh Iyer ",
+    "Price": "₹23.75 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "8",
+    "Player": "Quinton de Kock (South Africa)",
+    "Price": "₹3.60 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "9",
+    "Player": "Rahmanullah Gurbaz (Afghanistan)",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "10",
+    "Player": "Anrich Nortje (South Africa)",
+    "Price": "₹6.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "11",
+    "Player": "Angkrish Raghuvanshi",
+    "Price": "₹3 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "12",
+    "Player": "Vaibhav Arora",
+    "Price": "₹1.80 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "13",
+    "Player": "Mayank Markande",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "14",
+    "Player": "Rovman Powell (West Indies)",
+    "Price": "₹1.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "15",
+    "Player": "Manish Pandey",
+    "Price": "₹75 lakh",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "16",
+    "Player": "Spencer Johnson (Australia)\n",
+    "Price": "₹2.80 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "17",
+    "Player": "Luvnith Sisodia",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "18",
+    "Player": "Ajinkya Rahane ",
+    "Price": "₹1.5 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "19",
+    "Player": "Anukul Roy",
+    "Price": "₹40 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "20",
+    "Player": "Moeen Ali (England)",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "21",
+    "Player": "Chetan Sakariya",
+    "Price": "₹75 lakh",
+    "Type": "Indian (capped)",
+    "Acquisition": "Post-auction replacement for Umran Malik",
+    "Role": "Bowler"
+  }
+]

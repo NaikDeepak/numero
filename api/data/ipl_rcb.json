@@ -1,0 +1,178 @@
+[
+  {
+    "No.": "1",
+    "Player": "Virat Kohli",
+    "Price": "₹21 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "2",
+    "Player": "Rajat Patidar",
+    "Price": "₹11 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "3",
+    "Player": "Yash Dayal",
+    "Price": "₹5 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "4",
+    "Player": "Liam Livingstone (England)",
+    "Price": "₹8.75 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "5",
+    "Player": "Phil Salt (England)",
+    "Price": "₹11.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "6",
+    "Player": "Jitesh Sharma",
+    "Price": "₹11 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "7",
+    "Player": "Josh Hazlewood (Australia)",
+    "Price": "₹12.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "8",
+    "Player": "Rasikh Dar",
+    "Price": "₹6 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "9",
+    "Player": "Suyash Sharma",
+    "Price": "₹2.60 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "10",
+    "Player": "Krunal Pandya",
+    "Price": "₹5.75 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "11",
+    "Player": "Bhuvneshwar Kumar",
+    "Price": "₹10.75 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "12",
+    "Player": "Swapnil Singh",
+    "Price": "₹50 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "RTM",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "13",
+    "Player": "Tim David\n(Australia)",
+    "Price": "₹3 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "14",
+    "Player": "Romario Shepherd (West Indies)",
+    "Price": "₹1.5 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "15",
+    "Player": "Nuwan Thushara (Sri Lanka)",
+    "Price": "₹1.6 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "16",
+    "Player": "Manoj Bhandage",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "17",
+    "Player": "Jacob Bethell (England)",
+    "Price": "₹2.60 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "18",
+    "Player": "Devdutt Padikkal",
+    "Price": "₹2 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "19",
+    "Player": "Swastik Chikara",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "20",
+    "Player": "Mohit Rathee",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "21",
+    "Player": "Abhinandan Singh",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "22",
+    "Player": "Lungi Ngidi",
+    "Price": "₹1 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  }
+]

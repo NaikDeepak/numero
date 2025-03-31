@@ -1,0 +1,202 @@
+[
+  {
+    "No.": "1",
+    "Player": "Rashid Khan (Afghanistan)",
+    "Price": "₹18 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "2",
+    "Player": "Shubman Gill",
+    "Price": "₹16.50 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "3",
+    "Player": "Sai Sudharsan",
+    "Price": "₹8.50 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "4",
+    "Player": "Rahul Tewatia",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "5",
+    "Player": "Shahrukh Khan",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "6",
+    "Player": "Kagiso Rabada (South Africa)",
+    "Price": "₹10.75 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "7",
+    "Player": "Jos Buttler (England)",
+    "Price": "₹15.75 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "8",
+    "Player": "Mohammad Siraj",
+    "Price": "₹12.25 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "9",
+    "Player": "Prasidh Krishna",
+    "Price": "₹9.50 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "10",
+    "Player": "Nishant Sindhu",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "11",
+    "Player": "Mahipal Lomror",
+    "Price": "₹1.70 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "12",
+    "Player": "Kumar Kushagra",
+    "Price": "₹65 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "13",
+    "Player": "Anuj Rawat",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Wicketkeeper/Batter"
+  },
+  {
+    "No.": "14",
+    "Player": "Manav Suthar",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "15",
+    "Player": "Washington Sundar",
+    "Price": "₹3.20 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "16",
+    "Player": "Gerald Coetzee (South Africa)",
+    "Price": "₹2.40 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "17",
+    "Player": "Arshad Khan",
+    "Price": "₹1.30 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "18",
+    "Player": "Gurnoor Brar",
+    "Price": "₹1.30 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "19",
+    "Player": "Sherfane Rutherford (West Indies) ",
+    "Price": "₹2.6 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "20",
+    "Player": "R Sai Kishore",
+    "Price": "₹2 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "RTM",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "21",
+    "Player": "Ishant Sharma",
+    "Price": "₹75 lakh",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "22",
+    "Player": "Jayant Yadav",
+    "Price": "₹75 lakh",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "23",
+    "Player": "Glenn Phillips (New Zealand)",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "24",
+    "Player": "Karim Janat (Afghanistan)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "25",
+    "Player": "Kulwant Khejroliya ",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  }
+]

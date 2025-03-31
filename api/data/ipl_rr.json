@@ -1,0 +1,162 @@
+[
+  {
+    "No.": "1",
+    "Player": "Sanju Samson",
+    "Price": "₹18 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter/Wicketkeeper"
+  },
+  {
+    "No.": "2",
+    "Player": "Yashasvi Jaiswal",
+    "Price": "₹18 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "3",
+    "Player": "Riyan Parag",
+    "Price": "₹14 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "4",
+    "Player": "Dhruv Jurel",
+    "Price": "₹14 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter/Wicketkeeper"
+  },
+  {
+    "No.": "5",
+    "Player": "Shimron Hetmyer (West Indies)",
+    "Price": "₹11 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Retained",
+    "Role": "Batter"
+  },
+  {
+    "No.": "6",
+    "Player": "Sandeep Sharma",
+    "Price": "₹4 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Retained",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "7",
+    "Player": "Jofra Archer (England)",
+    "Price": "₹12.50 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "8",
+    "Player": "Mahesh Theekshana (Sri Lanka)",
+    "Price": "₹4.40 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "9",
+    "Player": "Wanindu Hasaranga (Sri Lanka)",
+    "Price": "₹5.25 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "10",
+    "Player": "Akash Madhwal",
+    "Price": "₹1.20 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "11",
+    "Player": "Kumar Kartikeya Singh",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "12",
+    "Player": "Nitish Rana",
+    "Price": "₹4.20 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "13",
+    "Player": "Tushar Deshpande",
+    "Price": "₹6.50 crore",
+    "Type": "Indian (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "14",
+    "Player": "Shubham Dubey",
+    "Price": "₹80 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "15",
+    "Player": "Yudhvir Charak",
+    "Price": "₹35 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "All-rounder"
+  },
+  {
+    "No.": "16",
+    "Player": "Fazalhaq Farooqi",
+    "Price": "₹2 crore",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "17",
+    "Player": "Vaibhav Suryavanshi",
+    "Price": "₹1.1 crore",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  },
+  {
+    "No.": "18",
+    "Player": "Kwena Maphaka (South Africa)",
+    "Price": "₹75 lakh",
+    "Type": "Overseas (capped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "19",
+    "Player": "Ashok Sharma",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Bowler"
+  },
+  {
+    "No.": "20",
+    "Player": "Kunal Singh Rathore",
+    "Price": "₹30 lakh",
+    "Type": "Indian (uncapped)",
+    "Acquisition": "Auction",
+    "Role": "Batter"
+  }
+]
