@@ -99,33 +99,51 @@ function CompatibilityChecker() {
         const m2 = data2.moolank;
         const b2 = data2.bhagyank;
 
-        // Calculate individual scores for all 4 standard comparisons
+        // Calculate individual scores for all 8 comparisons (bidirectional)
+        // P1 -> P2
         const scoreM1M2 = getScore(m1, m2);
         const scoreB1B2 = getScore(b1, b2);
-        const scoreM1B2 = getScore(m1, b2); // Reinstate M1-B2 score
+        const scoreM1B2 = getScore(m1, b2);
         const scoreB1M2 = getScore(b1, m2);
+        // P2 -> P1
+        const scoreM2M1 = getScore(m2, m1);
+        const scoreB2B1 = getScore(b2, b1);
+        const scoreM2B1 = getScore(m2, b1);
+        const scoreB2M1 = getScore(b2, m1);
 
-        // Calculate total score and percentage based on 4 comparisons
-        const totalScore = scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2;
-        const maxScore = 12; // 4 comparisons * 3 points max
+
+        // Calculate total score and percentage based on 8 comparisons
+        const totalScore = scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 +
+                           scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
+        const maxScore = 24; // 8 comparisons * 3 points max
         const percentage = Math.round((totalScore / maxScore) * 100);
 
-        // Get relationship types for all 4 standard comparisons
+        // Get relationship types for all 8 comparisons (bidirectional)
+        // P1 -> P2
         const relationM1M2 = getRelationship(m1, m2);
         const relationB1B2 = getRelationship(b1, b2);
-        const relationM1B2 = getRelationship(m1, b2); // Reinstate M1-B2 relationship
+        const relationM1B2 = getRelationship(m1, b2);
         const relationB1M2 = getRelationship(b1, m2);
+        // P2 -> P1
+        const relationM2M1 = getRelationship(m2, m1);
+        const relationB2B1 = getRelationship(b2, b1);
+        const relationM2B1 = getRelationship(m2, b1);
+        const relationB2M1 = getRelationship(b2, m1);
 
         // Get individual Moolank-Bhagyank relations
         const person1MBRelation = moolankBhagyankRelations[m1]?.[b1] || { rating: 'N/A', indication: 'No specific data' };
         const person2MBRelation = moolankBhagyankRelations[m2]?.[b2] || { rating: 'N/A', indication: 'No specific data' };
 
-        // Determine final verdict: Override if any relationship is "Enemy"
+        // Determine final verdict: Override if any of the 8 relationships is "Enemy"
         let finalVerdict = "";
-        if ([relationM1M2, relationB1B2, relationM1B2, relationB1M2].includes("Enemy")) {
+        const allRelations = [
+            relationM1M2, relationB1B2, relationM1B2, relationB1M2,
+            relationM2M1, relationB2B1, relationM2B1, relationB2M1
+        ];
+        if (allRelations.includes("Enemy")) {
             finalVerdict = "Not Compatible (Due to Enemy Relationship)";
         } else {
-            // Otherwise, use percentage-based interpretation
+            // Otherwise, use percentage-based interpretation (based on new maxScore)
             if (percentage >= 75) finalVerdict = "High Compatibility";
             else if (percentage <= 35) finalVerdict = "Low Compatibility";
             else finalVerdict = "Average Compatibility";
@@ -137,12 +155,18 @@ function CompatibilityChecker() {
             maxScore: maxScore,
             percentage: percentage,
             interpretation: finalVerdict, // Use the final verdict here
-            // Restore all 4 breakdown items
+            // Include all 8 breakdown items
             breakdown: [
+                // P1 -> P2
                 { p1: `Moolank (${m1})`, p2: `Moolank (${m2})`, relation: relationM1M2, score: scoreM1M2 },
                 { p1: `Bhagyank (${b1})`, p2: `Bhagyank (${b2})`, relation: relationB1B2, score: scoreB1B2 },
-                { p1: `Moolank (${m1})`, p2: `Bhagyank (${b2})`, relation: relationM1B2, score: scoreM1B2 }, // Reinstate M1-B2 row
+                { p1: `Moolank (${m1})`, p2: `Bhagyank (${b2})`, relation: relationM1B2, score: scoreM1B2 },
                 { p1: `Bhagyank (${b1})`, p2: `Moolank (${m2})`, relation: relationB1M2, score: scoreB1M2 },
+                 // P2 -> P1
+                { p1: `Moolank (${m2})`, p2: `Moolank (${m1})`, relation: relationM2M1, score: scoreM2M1 },
+                { p1: `Bhagyank (${b2})`, p2: `Bhagyank (${b1})`, relation: relationB2B1, score: scoreB2B1 },
+                { p1: `Moolank (${m2})`, p2: `Bhagyank (${b1})`, relation: relationM2B1, score: scoreM2B1 },
+                { p1: `Bhagyank (${b2})`, p2: `Moolank (${m1})`, relation: relationB2M1, score: scoreB2M1 },
             ],
             person1: {
                 name: person1Name,
@@ -318,8 +342,8 @@ function CompatibilityChecker() {
               <table className="compatibility-table">
                 <thead>
                   <tr>
-                    <th>{person1Name}'s Number</th>
-                    <th>{person2Name}'s Number</th>
+                    <th>Number 1</th>
+                    <th>Number 2</th>
                     <th>Relationship</th>
                     <th>Score (0-3)</th>
                   </tr>
