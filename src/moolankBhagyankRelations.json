@@ -1,0 +1,101 @@
+{
+  "1": {
+    "1": { "rating": "4", "indication": "Fortune’s favorite" },
+    "2": { "rating": "4", "indication": "Best for Navy or Water related professions" },
+    "3": { "rating": "3.5", "indication": "Best for occult, Teaching, Healing" },
+    "4": { "rating": "3", "indication": "Best for politics" },
+    "5": { "rating": "4", "indication": "Good for Banking, Finance, IT" },
+    "6": { "rating": "3.5", "indication": "Luxury, Glamor, Tours & travels" },
+    "7": { "rating": "3", "indication": "Best for Occult, Education, Research" },
+    "8": { "rating": "?", "indication": "Struggle, Marriage ?, Ok for police, politics" },
+    "9": { "rating": "5", "indication": "Super successful. Best combination in Numerology" }
+  },
+  "2": {
+    "1": { "rating": "3.5", "indication": "Successful" },
+    "2": { "rating": "2", "indication": "Best for water related work. Navy, Sweets, Coldrinks etc." },
+    "3": { "rating": "2.5", "indication": "Occult, Education, Healer, Teacher" },
+    "4": { "rating": "1.5", "indication": "Struggle, Depression" },
+    "5": { "rating": "3", "indication": "Best for Property, Real estate, Finance, Banking" },
+    "6": { "rating": "2.5", "indication": "Best for Sweets. (Milk + Water + Celebration / Luxury)" },
+    "7": { "rating": "2.5", "indication": "Teaching, Occult" },
+    "8": { "rating": "?", "indication": "Struggle, Health issues" },
+    "9": { "rating": "1", "indication": "Marriage problems" }
+  },
+  "3": {
+    "1": { "rating": "3.5", "indication": "Education, Healer, Doctor, Administrative jobs" },
+    "2": { "rating": "2.5", "indication": "Water related work" },
+    "3": { "rating": "3", "indication": "Best for education" },
+    "4": { "rating": "2", "indication": "Good for sales and marketing" },
+    "5": { "rating": "3", "indication": "Excellent communication, Anchoring, News anchoring, Acting, Teaching, Banking" },
+    "6": { "rating": "?", "indication": "Health and marriage issues. 3-6 are anti to each other" },
+    "7": { "rating": "4", "indication": "Best for education, occult, healing and teaching" },
+    "8": { "rating": "2", "indication": "Lawer, Printing press, Sales" },
+    "9": { "rating": "4", "indication": "Education, Army, Administrative jobs, Doctor" }
+  },
+  "4": {
+    "1": { "rating": "3.5", "indication": "Politics" },
+    "2": { "rating": "2", "indication": "Depression, struggle" },
+    "3": { "rating": "2.5", "indication": "Sales and marketing" },
+    "4": { "rating": "1", "indication": "Struggle. Can go for law" },
+    "5": { "rating": "3", "indication": "Banking, Finance, Event management" },
+    "6": { "rating": "3", "indication": "Media, Luxury, Glamour" },
+    "7": { "rating": "4", "indication": "Successful, best in occult" },
+    "8": { "rating": "1", "indication": "Struggle, Excellent for law" },
+    "9": { "rating": "1", "indication": "Health problems, surgeries, accidents" }
+  },
+  "5": {
+    "1": { "rating": "4", "indication": "Successful, Finance, Loan, Property (Balanced life)" },
+    "2": { "rating": "3.5", "indication": "Property" },
+    "3": { "rating": "3", "indication": "Communication, Counseller" },
+    "4": { "rating": "3", "indication": "Overall successful, sales and marketing" },
+    "5": { "rating": "4", "indication": "Very successful, Romantic, May be lazy" },
+    "6": { "rating": "4.5", "indication": "Life is successful. Second most combination" },
+    "7": { "rating": "3", "indication": "Occult, Banking" },
+    "8": { "rating": "3", "indication": "Property" },
+    "9": { "rating": "3", "indication": "Successful" }
+  },
+  "6": {
+    "1": { "rating": "3.5", "indication": "Media, Luxury, Glamor" },
+    "2": { "rating": "2", "indication": "Sweet shop" },
+    "3": { "rating": "?", "indication": "Health & marriage issues" },
+    "4": { "rating": "3", "indication": "Successful. Suitable for media" },
+    "5": { "rating": "4.5", "indication": "Super successful" },
+    "6": { "rating": "4", "indication": "Super successful in Media, Film industry, Tours and travels" },
+    "7": { "rating": "3.5", "indication": "Successful in sports, Romantic" },
+    "8": { "rating": "3", "indication": "Best for law" },
+    "9": { "rating": "3", "indication": "Successful but Marriage issues. Scandals, Controversies" }
+  },
+  "7": {
+    "1": { "rating": "3", "indication": "Best in occult" },
+    "2": { "rating": "2", "indication": "Intuitive, good in occult" },
+    "3": { "rating": "3", "indication": "Teaching, Healing, Occult" },
+    "4": { "rating": "3", "indication": "Successful in life" },
+    "5": { "rating": "3", "indication": "Good in occult" },
+    "6": { "rating": "4", "indication": "Good in sports" },
+    "7": { "rating": "1", "indication": "Disappointments in life, Marriage life in danger" },
+    "8": { "rating": "1", "indication": "Good in occult, spiritualism" },
+    "9": { "rating": "1", "indication": "Teaching, Occult" }
+  },
+  "8": {
+    "1": { "rating": "?", "indication": "Marriage problems" },
+    "2": { "rating": "?", "indication": "Health issues" },
+    "3": { "rating": "2", "indication": "Law, Printing press" },
+    "4": { "rating": "1", "indication": "Law, Sales & marketing, Struggle in life" },
+    "5": { "rating": "3", "indication": "Real estate, Property business" },
+    "6": { "rating": "3", "indication": "Best for law" },
+    "7": { "rating": "2", "indication": "Occult" },
+    "8": { "rating": "1", "indication": "Struggle but success in sports" },
+    "9": { "rating": "1", "indication": "Army (8 represents physical efforts)" }
+  },
+  "9": {
+    "1": { "rating": "4", "indication": "Successful, Army is best" },
+    "2": { "rating": "1", "indication": "Struggle, Marriage problems" },
+    "3": { "rating": "2.5", "indication": "Occult, Healing, Surgeon" },
+    "4": { "rating": "1.5", "indication": "Struggle, Surgeries, Health issues" },
+    "5": { "rating": "3", "indication": "Successful" },
+    "6": { "rating": "2", "indication": "Scandals, Controversies" },
+    "7": { "rating": "1", "indication": "Occult, Teaching" },
+    "8": { "rating": "2", "indication": "Army, Police" },
+    "9": { "rating": "1", "indication": "Marriage problems" }
+  }
+}
