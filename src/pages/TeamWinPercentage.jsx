@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react"
 import iplTeamsData from "../data/iplTeams.js" // Import from within src
 
 // Read API URL from environment variable, fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || "/api" // Base API URL
-console.log("API_URL:", API_URL) // Debugging line to check the API URL
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api" // Base API URL
 
 function TeamWinPercentage() {
   const [selectedTeamKey1, setSelectedTeamKey1] = useState("") // Renamed state
@@ -31,7 +30,7 @@ function TeamWinPercentage() {
 
   // Helper function to call the API for a single team
   const fetchWinPercentage = async (teamKey, matchDate) => {
-    const response = await fetch(`${API_URL}/th`, {
+    const response = await fetch(`${API_URL}/win-percentage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

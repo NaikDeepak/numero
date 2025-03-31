@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 // Removed import { calculateNumerologyData } from '../numerologyUtils';
 import NumerologyGrid from '../NumerologyGrid'; // Adjust path
 
-// Read API URL from environment variable, fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/calculate';
+// Read BASE API URL from environment variable, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 // Helper function to fetch data from the API
 async function fetchNumerologyData(dob, gender) {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_BASE_URL}/calculate`, { // Append endpoint path
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
