@@ -1,102 +1,293 @@
-import express from 'express';
-import cors from 'cors';
+import express from "express"
+import cors from "cors"
+import PDFDocument from "pdfkit"
+import { createRequire } from 'module'; // Import createRequire
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { calculateNumerologyData } from './utils/numerologyUtils.js';
-import { generateNumerologyReport } from './utils/reportGenerator.js'; // Import the report generator
+
+// --- Load JSON Data using createRequire ---
+const require = createRequire(import.meta.url); // Create a require function relative to this module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Function to resolve path and require JSON safely
+function loadJsonData(relativePath) {
+  try {
+    const absolutePath = path.resolve(__dirname, relativePath);
+    return require(absolutePath);
+  } catch (error) {
+    console.error(`Error loading JSON data from ${relativePath}:`, error);
+    return {}; // Return empty object on error
+  }
+}
+
+const houseMeanings = loadJsonData('./data/houseMeanings.json');
+const moolankBhagyankRelations = loadJsonData('./data/moolankBhagyankRelations.json');
+const missingNumberRemedies = loadJsonData('./data/missingNumberRemedies.json');
+const repeatingNumberImpact = loadJsonData('./data/repeatingNumberImpact.json');
+// --- End JSON Data Loading ---
+
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors()); // Enable CORS for all origins (adjust for production)
-app.use(express.json()); // Parse JSON request bodies
+app.use(cors()) // Enable CORS for all origins (adjust for production)
+app.use(express.json()) // Parse JSON request bodies
 
 // API Endpoint for Numerology Calculation
-app.post('/api/calculate', (req, res) => {
-  const { dob, gender } = req.body;
+app.post("/api/calculate", (req, res) => {
+  const { dob, gender } = req.body
 
   // Basic validation for presence of dob and gender
   if (!dob || !gender) {
-    return res.status(400).json({ error: 'Missing required fields: dob and gender' });
+    return res.status(400).json({ error: "Missing required fields: dob and gender" })
   }
 
   try {
-    const numerologyData = calculateNumerologyData(dob, gender);
+    const numerologyData = calculateNumerologyData(dob, gender)
 
     if (numerologyData) {
       // Return only the calculation data, report generation moved to separate endpoint
-      res.json(numerologyData);
+      res.json(numerologyData)
     } else {
       // calculateNumerologyData returns null for invalid input format/values
-      res.status(400).json({ error: 'Invalid input data provided (e.g., date format, values).' });
+      res.status(400).json({ error: "Invalid input data provided (e.g., date format, values)." })
     }
   } catch (error) {
-    console.error('Calculation error:', error);
-    res.status(500).json({ error: 'An internal server error occurred during calculation.' });
+    console.error("Calculation error:", error)
+    res.status(500).json({ error: "An internal server error occurred during calculation." })
   }
-});
+})
 
 // --- NEW: API Endpoint for PDF Report Generation ---
-import PDFDocument from 'pdfkit';
+// PDFDocument import moved to top
 
-app.get('/api/report/pdf', (req, res) => {
-  const { dob, gender } = req.query; // Get data from query parameters
+app.get("/api/report/pdf", (req, res) => {
+  const { dob, gender } = req.query // Get data from query parameters
 
   // Basic validation
   if (!dob || !gender) {
-    return res.status(400).json({ error: 'Missing required query parameters: dob and gender' });
+    return res.status(400).json({ error: "Missing required query parameters: dob and gender" })
   }
 
   try {
-    const numerologyData = calculateNumerologyData(dob, gender);
+    const numerologyData = calculateNumerologyData(dob, gender)
 
     if (!numerologyData) {
-      return res.status(400).json({ error: 'Invalid input data provided (e.g., date format, values).' });
+      return res.status(400).json({ error: "Invalid input data provided (e.g., date format, values)." })
     }
 
-    // Generate the report string
-    const reportString = generateNumerologyReport(numerologyData);
+    // JSON data is now loaded globally, no need to load it here.
+
+    // --- PDF Styling Constants ---
+    const colors = {
+      primary: "#ff8c00", // Dark Orange (from CSS)
+      secondary: "#a0522d", // Sienna/Brown (from CSS light mode)
+      text: "#333333",
+      muted: "#666666",
+      gridLine: "#cccccc",
+      gridText: "#111111",
+      gridBg: "#f9f9f9", // Light background for grid cells
+      heading: "#111111", // Near black for main headings
+    }
+    const fonts = {
+      heading: "Helvetica-Bold",
+      subheading: "Helvetica-Bold",
+      body: "Helvetica",
+      bodyBold: "Helvetica-Bold",
+    }
+    const margin = 50
 
     // Create a new PDF document
-    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const doc = new PDFDocument({ size: "A4", margin: margin })
 
     // Set headers for PDF download
-    const filename = `Numerology_Report_${dob.replace(/-/g, '')}.pdf`;
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    const filename = `Numerology_Report_${dob.replace(/-/g, "")}.pdf`
+    res.setHeader("Content-Type", "application/pdf")
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`)
 
     // Pipe the PDF document directly to the response stream
-    doc.pipe(res);
+    doc.pipe(res)
 
-    // Add content to the PDF
-    doc.fontSize(18).text('Numerology Insights Report', { align: 'center', underline: true });
-    doc.moveDown();
-    doc.fontSize(12).text(`Date of Birth: ${dob}`);
-    doc.text(`Gender: ${gender}`); // Assuming gender is relevant for the report context
-    doc.moveDown(2);
+    // --- PDF Content Generation ---
 
-    // Add the generated report string
-    doc.font('Helvetica').fontSize(10).text(reportString, {
-      align: 'left',
-      lineGap: 4,
-    });
+    // Header
+    doc
+      .font(fonts.heading)
+      .fontSize(20)
+      .fillColor(colors.heading)
+      .text("Numerology Insights Report", { align: "center" })
+    doc.moveDown(0.5)
+    doc
+      .font(fonts.body)
+      .fontSize(12)
+      .fillColor(colors.muted)
+      .text(`For Date of Birth: ${dob} (${gender})`, { align: "center" })
+    doc.moveDown(2)
 
-    // Finalize the PDF and end the stream
-    doc.end();
+    // --- Section Helper ---
+    const addSection = (title, contentFn) => {
+      doc.font(fonts.subheading).fontSize(14).fillColor(colors.secondary).text(title, { underline: true })
+      doc.moveDown(0.7)
+      doc.font(fonts.body).fontSize(10).fillColor(colors.text) // Reset font for content
+      contentFn()
+      doc.moveDown(1.5)
+    }
 
+    // --- Draw Lo Shu Grid Function ---
+    const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => {
+      const positionMap = { 4: 0, 9: 1, 2: 2, 3: 3, 5: 4, 7: 5, 8: 6, 1: 7, 6: 8 }
+      let cells = Array(9).fill("")
+      const counts = {}
+
+      if (gridNumbers && Array.isArray(gridNumbers)) {
+        gridNumbers.forEach((num) => {
+          counts[num] = (counts[num] || 0) + 1
+          if (num !== 0 && positionMap.hasOwnProperty(num)) {
+            let cellIndex = positionMap[num]
+            // Append number, potentially multiple times if repeated
+            cells[cellIndex] += (cells[cellIndex] ? " " : "") + num
+          }
+        })
+      }
+
+      doc.save() // Save current style state
+      doc.lineWidth(0.5).strokeColor(colors.gridLine)
+
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+          const cellIndex = row * 3 + col
+          const x = startX + col * (cellSize + gap)
+          const y = startY + row * (cellSize + gap)
+
+          // Draw cell background and border
+          doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine)
+
+          // Draw cell content (numbers)
+          if (cells[cellIndex]) {
+            doc
+              .font(fonts.bodyBold)
+              .fontSize(10)
+              .fillColor(colors.gridText)
+              .text(cells[cellIndex], x, y + cellSize / 2 - 5, {
+                // Adjust vertical position
+                width: cellSize,
+                align: "center",
+              })
+          }
+        }
+      }
+      doc.restore() // Restore previous style state
+      return startY + 3 * cellSize + 2 * gap // Return Y position after the grid
+    }
+
+    // --- Report Sections ---
+    const { moolank, bhagyank, kua, gridNumbers } = numerologyData
+
+    // 1. Basic Numbers & Grid
+    addSection("Core Numbers & Lo Shu Grid", () => {
+      const gridStartY = doc.y
+      const gridStartX = doc.page.width / 2 - (3 * 30 + 2 * 3) / 2 // Center the grid
+      const gridEndY = drawLoShuGrid(gridNumbers, gridStartX, gridStartY)
+
+      // Place text next to or below grid
+      const textStartY = gridStartY // Start text at the same Y as grid
+      const textStartX = margin
+      const textWidth = gridStartX - margin - 20 // Width for text column
+
+      doc.font(fonts.bodyBold).text("Moolank:", textStartX, textStartY, { width: textWidth })
+      doc.font(fonts.body).text(`${moolank} (${houseMeanings[moolank] || "N/A"})`, { width: textWidth })
+      doc.moveDown(0.5)
+
+      doc.font(fonts.bodyBold).text("Bhagyank:", textStartX, doc.y, { width: textWidth })
+      doc.font(fonts.body).text(`${bhagyank} (${houseMeanings[bhagyank] || "N/A"})`, { width: textWidth })
+      doc.moveDown(0.5)
+
+      doc.font(fonts.bodyBold).text("Kua Number:", textStartX, doc.y, { width: textWidth })
+      doc.font(fonts.body).text(`${kua}`, { width: textWidth })
+
+      // Ensure content after this section starts below the grid
+      doc.y = Math.max(doc.y, gridEndY) + 10 // Add some padding below grid/text
+    })
+
+    // 2. Moolank-Bhagyank Relationship
+    addSection(`Moolank-Bhagyank (${moolank}-${bhagyank}) Relationship`, () => {
+      if (moolankBhagyankRelations[moolank] && moolankBhagyankRelations[moolank][bhagyank]) {
+        const relation = moolankBhagyankRelations[moolank][bhagyank]
+        doc.font(fonts.bodyBold).text("Rating: ", { continued: true })
+        doc.font(fonts.body).text(relation.rating || "N/A")
+        doc.font(fonts.bodyBold).text("Indication: ", { continued: true })
+        doc.font(fonts.body).text(relation.indication || "N/A")
+      } else {
+        doc.text("No specific data found for this combination.")
+      }
+    })
+
+    // 3. Repeating Numbers Impact
+    addSection("Impact of Repeating Numbers", () => {
+      const counts = {}
+      if (gridNumbers && Array.isArray(gridNumbers)) {
+        gridNumbers.forEach((num) => {
+          counts[num] = (counts[num] || 0) + 1
+        })
+      }
+      let repeatingFound = false
+      for (const num in counts) {
+        if (counts[num] > 1) {
+          const repeatSequence = num.toString().repeat(counts[num])
+          if (repeatingNumberImpact[repeatSequence]) {
+            doc.font(fonts.bodyBold).text(`- ${repeatSequence}: `, { continued: true })
+            doc.font(fonts.body).text(repeatingNumberImpact[repeatSequence])
+            repeatingFound = true
+          }
+        }
+      }
+      if (!repeatingFound) {
+        doc.text("No significant repeating number patterns found with specific impacts in the data.")
+      }
+    })
+
+    // 4. Missing Numbers Analysis
+    addSection("Missing Numbers Analysis", () => {
+      const presentNumbers = new Set(gridNumbers)
+      let missingFound = false
+      for (let i = 1; i <= 9; i++) {
+        if (!presentNumbers.has(i)) {
+          missingFound = true
+          const numStr = i.toString()
+          doc.font(fonts.bodyBold).text(`Missing Number ${numStr}:`)
+          if (missingNumberRemedies[numStr]) {
+            doc.font(fonts.body).text(`  Impact: ${missingNumberRemedies[numStr].impact.join(" ")}`)
+            doc.font(fonts.bodyBold).text(`  Remedies: `, { continued: true })
+            doc.font(fonts.body).text(missingNumberRemedies[numStr].remedies.join("; "))
+          } else {
+            doc.font(fonts.body).text("  No specific impact/remedy data found.")
+          }
+          doc.moveDown(0.5)
+        }
+      }
+      if (!missingFound) {
+        doc.text("No missing numbers (1-9) found in the chart.")
+      }
+    })
+
+    // --- Finalize PDF ---
+    doc.end()
   } catch (error) {
-    console.error('PDF Generation error:', error);
+    console.error("PDF Generation error:", error)
     // Avoid sending partial PDF if error occurs mid-stream
     if (!res.headersSent) {
-      res.status(500).json({ error: 'An internal server error occurred during PDF generation.' });
+      res.status(500).json({ error: "An internal server error occurred during PDF generation." })
     } else {
       // If headers already sent, we might just have to end the response abruptly
-      res.end();
+      res.end()
     }
   }
-});
-
+})
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Numerology API server listening on port ${port}`);
-});
+  console.log(`Numerology API server listening on port ${port}`)
+})
