@@ -1,7 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect
 import * as XLSX from 'xlsx';
-import { calculateNumerologyData } from '../numerologyUtils'; // Adjust path
+// Removed import { calculateNumerologyData } from '../numerologyUtils';
 import NumerologyGrid from '../NumerologyGrid'; // Adjust path
+
+// Define API URL (adjust if your backend runs elsewhere)
+const API_URL = 'http://localhost:3001/api/calculate';
+
+// Helper function to fetch data from the API
+async function fetchNumerologyData(dob, gender) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ dob, gender }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error(`API Error (${response.status}):`, errorData.error || 'Unknown error');
+      return null; // Indicate failure
+    }
+    return await response.json(); // Return calculated data
+  } catch (error) {
+    console.error('Network or fetch error:', error);
+    alert('Failed to connect to the calculation API. Please ensure the backend server is running.');
+    return null; // Indicate failure
+  }
+}
+
 
 function GridCalculator() {
   // State for input fields
@@ -9,10 +36,12 @@ function GridCalculator() {
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('Male'); // Default gender
 
-  // State for the list of users
+  // State for the list of users (stores only basic info now)
   const [usersData, setUsersData] = useState([]);
+  // State to hold calculated data for display in the table
+  const [calculatedUsersData, setCalculatedUsersData] = useState({}); // { userId: { moolank: ..., bhagyank: ... }, ... }
 
-  // Function to add a new user
+  // Function to add a new user (only adds basic info)
   const addUser = () => {
     // Basic validation
     if (!name.trim() || !dob) {
@@ -27,16 +56,37 @@ function GridCalculator() {
       gender: gender,
     };
 
-    setUsersData([...usersData, newUser]); // Add new user to the list
+    setUsersData(prevUsers => [...prevUsers, newUser]); // Add new user to the list
 
     // Clear input fields
     setName('');
     setDob('');
     setGender('Male'); // Reset gender to default
+    // No immediate calculation needed here
   };
 
-  // Function to export data to Excel
-  const exportToExcel = () => {
+  // Function to fetch and update calculated data for a specific user
+  // Using useCallback to memoize the function for stability in UserTableRow useEffect dependency
+  const getOrFetchUserData = React.useCallback(async (user) => {
+    if (calculatedUsersData[user.id]) {
+      return calculatedUsersData[user.id]; // Return cached data
+    }
+
+    const data = await fetchNumerologyData(user.dob, user.gender);
+    if (data) {
+      setCalculatedUsersData(prevData => ({
+        ...prevData,
+        [user.id]: data, // Cache the fetched data
+      }));
+      return data;
+    }
+    // Return an object indicating error for consistent handling in UserTableRow
+    return { moolank: 'Error', bhagyank: 'Error', kua: 'Error', gridNumbers: null };
+  }, [calculatedUsersData]); // Dependency: re-create if cache changes (though unlikely needed here)
+
+
+  // Function to export data to Excel (fetches all data first)
+  const exportToExcel = async () => { // Made async
     if (usersData.length === 0) {
       alert("Please add at least one user before exporting.");
       return;
@@ -61,12 +111,20 @@ function GridCalculator() {
     const headerToIndexMap = {};
     headers.forEach((h, i) => { headerToIndexMap[h] = i; });
 
+    // Fetch calculated data for all users concurrently
+    alert("Calculating data for export... Please wait."); // Inform user
+    const calculatedDataPromises = usersData.map(user =>
+        // Use the same fetch function as the table rows
+        fetchNumerologyData(user.dob, user.gender).then(data => ({ user, data }))
+    );
 
-    // Calculate data for all users before exporting
-    const dataToExport = usersData.map(user => {
-      const calculatedData = calculateNumerologyData(user.dob, user.gender);
+    const results = await Promise.all(calculatedDataPromises);
+    alert("Calculation complete. Preparing Excel file."); // Inform user
 
-      // Initialize row data with empty strings matching headers length
+
+    // Process results to create export data
+    const dataToExport = results.map(({ user, data: calculatedData }) => {
+       // Initialize row data with empty strings matching headers length
       const rowData = new Array(headers.length).fill('');
 
       if (calculatedData) {
@@ -102,9 +160,9 @@ function GridCalculator() {
                // Join numbers with a space, ensure result is always a string
                rowData[index] = gridCellContents[headerName] ? gridCellContents[headerName].join(' ') : '';
            }
-       }
+        }
       } else {
-        // Handle cases where calculation failed for a user (optional: fill basic info)
+        // Handle cases where API call failed for a user
         rowData[headerToIndexMap["Name"]] = user.name || '';
         rowData[headerToIndexMap["Date of Birth"]] = user.dob || '';
         rowData[headerToIndexMap["Gender"]] = user.gender || '';
@@ -190,31 +248,10 @@ function GridCalculator() {
                 <td colSpan="7" style={{ textAlign: 'center' }}>No users added yet.</td>
               </tr>
             ) : (
-              usersData.map((user) => {
-                const calculatedData = calculateNumerologyData(user.dob, user.gender);
-                const bhagyank = calculatedData ? calculatedData.bhagyank : '-';
-                const moolank = calculatedData ? calculatedData.moolank : '-';
-                const kua = calculatedData ? calculatedData.kua : '-';
-                const gridNumbersArray = calculatedData ? calculatedData.gridNumbers : null;
-
-                return (
-                  <tr key={user.id}>
-                    <td>{user.name}</td>
-                    <td>{user.dob}</td>
-                    <td>{user.gender}</td>
-                    <td>{bhagyank}</td>
-                    <td>{moolank}</td>
-                    <td>{kua}</td>
-                    <td>
-                      {gridNumbersArray ? (
-                        <NumerologyGrid gridNumbers={gridNumbersArray} />
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
+              usersData.map((user) => (
+                // Use a separate component for the row to manage its state
+                <UserTableRow key={user.id} user={user} getOrFetchUserData={getOrFetchUserData} />
+              ))
             )}
           </tbody>
         </table>
@@ -228,5 +265,49 @@ function GridCalculator() {
     </>
   );
 }
+
+// New component for table row to handle individual data fetching
+function UserTableRow({ user, getOrFetchUserData }) {
+  const [userData, setUserData] = useState(null); // State for calculated data
+  const [isLoading, setIsLoading] = useState(true); // Start in loading state
+
+  useEffect(() => {
+    let isMounted = true; // Flag to prevent state update on unmounted component
+    setIsLoading(true);
+    getOrFetchUserData(user).then(data => {
+      if (isMounted) {
+        setUserData(data);
+        setIsLoading(false);
+      }
+    });
+    return () => { isMounted = false; }; // Cleanup function
+  }, [user, getOrFetchUserData]); // Re-fetch if user or fetch function changes
+
+  const bhagyank = isLoading ? '...' : (userData ? userData.bhagyank : '-');
+  const moolank = isLoading ? '...' : (userData ? userData.moolank : '-');
+  const kua = isLoading ? '...' : (userData ? userData.kua : '-');
+  const gridNumbersArray = isLoading ? null : (userData ? userData.gridNumbers : null);
+
+  return (
+    <tr>
+      <td>{user.name}</td>
+      <td>{user.dob}</td>
+      <td>{user.gender}</td>
+      <td>{bhagyank}</td>
+      <td>{moolank}</td>
+      <td>{kua}</td>
+      <td>
+        {isLoading ? (
+          '...' // Simple loading indicator
+        ) : gridNumbersArray ? (
+          <NumerologyGrid gridNumbers={gridNumbersArray} />
+        ) : (
+          '-' // Show dash if no grid or error
+        )}
+      </td>
+    </tr>
+  );
+}
+
 
 export default GridCalculator;

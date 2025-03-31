@@ -1,6 +1,33 @@
 import React, { useState } from 'react';
-import { calculateNumerologyData } from '../numerologyUtils'; // Adjust path
+// Removed import { calculateNumerologyData } from '../numerologyUtils';
 import NumerologyGrid from '../NumerologyGrid'; // Adjust path
+
+// Define API URL (adjust if your backend runs elsewhere)
+const API_URL = 'http://localhost:3001/api/calculate';
+
+// Helper function to fetch data from the API
+async function fetchNumerologyData(dob, gender) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ dob, gender }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error(`API Error (${response.status}):`, errorData.error || 'Unknown error');
+      return null; // Indicate failure
+    }
+    return await response.json(); // Return calculated data
+  } catch (error) {
+    console.error('Network or fetch error:', error);
+    alert('Failed to connect to the calculation API. Please ensure the backend server is running.');
+    return null; // Indicate failure
+  }
+}
+
 
 function CompatibilityChecker() {
   // State for Person 1
@@ -17,18 +44,27 @@ function CompatibilityChecker() {
 
   // State for compatibility report
   const [compatibilityReport, setCompatibilityReport] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
-  const handleCalculateCompatibility = () => {
+  const handleCalculateCompatibility = async () => { // Made async
     // Basic validation
     if (!person1Name || !person1Dob || !person2Name || !person2Dob) {
       alert("Please enter details for both individuals.");
       return;
     }
 
-    const data1 = calculateNumerologyData(person1Dob, person1Gender);
-    const data2 = calculateNumerologyData(person2Dob, person2Gender);
+    setIsLoading(true); // Start loading
+    setPerson1Data(null); // Clear previous data
+    setPerson2Data(null);
+    setCompatibilityReport(''); // Clear previous report
 
-    setPerson1Data(data1);
+    // Fetch data for both persons concurrently
+    const [data1, data2] = await Promise.all([
+      fetchNumerologyData(person1Dob, person1Gender),
+      fetchNumerologyData(person2Dob, person2Gender)
+    ]);
+
+    setPerson1Data(data1); // Set fetched data (could be null on error)
     setPerson2Data(data2);
 
     // --- Placeholder for Compatibility Logic ---
@@ -42,9 +78,11 @@ function CompatibilityChecker() {
         report += `(Detailed compatibility report based on specific rules will be generated here.)`;
         setCompatibilityReport(report);
     } else {
-        setCompatibilityReport("Could not calculate compatibility due to invalid input for one or both individuals.");
+        setCompatibilityReport("Could not calculate compatibility due to invalid input or API error for one or both individuals.");
     }
     // --- End Placeholder ---
+
+    setIsLoading(false); // End loading
   };
 
   return (
@@ -67,13 +105,16 @@ function CompatibilityChecker() {
               <option value="Female">Female</option>
             </select>
           </label>
-          {person1Data && (
+          {/* Display Person 1 Grid and Data */}
+          {isLoading && <p>Loading Person 1 data...</p>}
+          {!isLoading && person1Data && (
             <div className="grid-display">
               <h4>{person1Name}'s Grid</h4>
               <NumerologyGrid gridNumbers={person1Data.gridNumbers} />
               <p>Bhagyank: {person1Data.bhagyank}, Moolank: {person1Data.moolank}, Kua: {person1Data.kua}</p>
             </div>
           )}
+           {!isLoading && !person1Data && person1Dob && <p className="error-message">Could not load data for Person 1.</p>}
         </div>
 
         {/* Person 2 Input */}
@@ -91,23 +132,29 @@ function CompatibilityChecker() {
               <option value="Female">Female</option>
             </select>
           </label>
-           {person2Data && (
+          {/* Display Person 2 Grid and Data */}
+          {isLoading && <p>Loading Person 2 data...</p>}
+          {!isLoading && person2Data && (
             <div className="grid-display">
               <h4>{person2Name}'s Grid</h4>
               <NumerologyGrid gridNumbers={person2Data.gridNumbers} />
                <p>Bhagyank: {person2Data.bhagyank}, Moolank: {person2Data.moolank}, Kua: {person2Data.kua}</p>
             </div>
           )}
+          {!isLoading && !person2Data && person2Dob && <p className="error-message">Could not load data for Person 2.</p>}
         </div>
       </div>
 
       {/* Calculate Button */}
       <div style={{ textAlign: 'center', margin: '30px 0' }}>
-        <button onClick={handleCalculateCompatibility}>Calculate Compatibility</button>
+        <button onClick={handleCalculateCompatibility} disabled={isLoading}>
+          {isLoading ? 'Calculating...' : 'Calculate Compatibility'}
+        </button>
       </div>
 
       {/* Compatibility Report Area */}
-      {compatibilityReport && (
+      {/* Show report only when not loading and report exists */}
+      {!isLoading && compatibilityReport && (
         <div id="compatibilityReport" className="report-section">
           <h3>Compatibility Report</h3>
           <pre>{compatibilityReport}</pre> {/* Use pre for basic formatting */}
