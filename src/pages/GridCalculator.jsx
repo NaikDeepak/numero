@@ -81,7 +81,8 @@ function GridCalculator() {
       return data;
     }
     // Return an object indicating error for consistent handling in UserTableRow
-    return { moolank: 'Error', bhagyank: 'Error', kua: 'Error', gridNumbers: null, report: 'Error generating report.' };
+    // Remove report from here as it's fetched separately
+    return { moolank: 'Error', bhagyank: 'Error', kua: 'Error', gridNumbers: null };
   }, [calculatedUsersData]); // Dependency: re-create if cache changes (though unlikely needed here)
 
 
@@ -98,8 +99,8 @@ function GridCalculator() {
       "Bhagyank", "Moolank", "Kua",
       "Grid 4", "Grid 9", "Grid 2", // Top row
       "Grid 3", "Grid 5", "Grid 7", // Middle row
-      "Grid 8", "Grid 1", "Grid 6", // Bottom row
-      "Report" // Add Report header
+      "Grid 8", "Grid 1", "Grid 6"  // Bottom row
+      // Removed "Report" header
     ];
 
     // Map Lo Shu grid numbers to their corresponding header names
@@ -137,7 +138,7 @@ function GridCalculator() {
         rowData[headerToIndexMap["Bhagyank"]] = (typeof calculatedData.bhagyank === 'number' && !isNaN(calculatedData.bhagyank)) ? calculatedData.bhagyank : '';
         rowData[headerToIndexMap["Moolank"]] = (typeof calculatedData.moolank === 'number' && !isNaN(calculatedData.moolank)) ? calculatedData.moolank : '';
         rowData[headerToIndexMap["Kua"]] = (typeof calculatedData.kua === 'number' && !isNaN(calculatedData.kua)) ? calculatedData.kua : '';
-        rowData[headerToIndexMap["Report"]] = calculatedData.report || 'N/A'; // Add report to export
+        // Removed report from export
 
         // Populate grid data
         const gridCellContents = {}; // Temporary store: { "Grid 4": [4, 4], "Grid 9": [9], ... }
@@ -242,13 +243,13 @@ function GridCalculator() {
               <th>Moolank</th>
               <th>Kua</th>
               <th>Numerology Grid</th>
-              <th>Report</th> {/* Add Report column header */}
+              <th>Actions</th> {/* Changed header to Actions */}
             </tr>
           </thead>
           <tbody>
             {usersData.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: 'center' }}>No users added yet.</td> {/* Updated colspan */}
+                <td colSpan="8" style={{ textAlign: 'center' }}>No users added yet.</td> {/* Keep colspan 8 */}
               </tr>
             ) : (
               usersData.map((user) => (
@@ -290,7 +291,38 @@ function UserTableRow({ user, getOrFetchUserData }) {
   const moolank = isLoading ? '...' : (userData ? userData.moolank : '-');
   const kua = isLoading ? '...' : (userData ? userData.kua : '-');
   const gridNumbersArray = isLoading ? null : (userData ? userData.gridNumbers : null);
-  const report = isLoading ? 'Loading report...' : (userData ? userData.report : 'N/A');
+  // Removed report state
+
+  // Handler for downloading the PDF
+  const handleDownloadPdf = async () => {
+    // Construct the URL for the PDF endpoint
+    const pdfUrl = `${API_URL.replace('/calculate', '/report/pdf')}?dob=${encodeURIComponent(user.dob)}&gender=${encodeURIComponent(user.gender)}`;
+
+    try {
+      const response = await fetch(pdfUrl);
+      if (!response.ok) {
+        throw new Error(`PDF download failed: ${response.statusText}`);
+      }
+      const blob = await response.blob();
+
+      // Create a link element to trigger the download
+      const link = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = `Numerology_Report_${user.dob.replace(/-/g, '')}_${user.name.replace(/\s+/g, '_')}.pdf`; // Suggest a filename
+      document.body.appendChild(link); // Required for Firefox
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      alert("Failed to download the report PDF. Please try again.");
+    }
+  };
+
 
   return (
     <tr>
@@ -309,9 +341,11 @@ function UserTableRow({ user, getOrFetchUserData }) {
           '-' // Show dash if no grid or error
         )}
       </td>
-      {/* Report Cell */}
-      <td style={{ whiteSpace: 'pre-wrap', textAlign: 'left', fontSize: '0.85em' }}> {/* Style report cell */}
-        {report}
+      {/* Actions Cell */}
+      <td>
+        <button onClick={handleDownloadPdf} disabled={isLoading || !userData || userData.moolank === 'Error'}>
+          {isLoading ? 'Loading...' : 'Download PDF'}
+        </button>
       </td>
     </tr>
   );
