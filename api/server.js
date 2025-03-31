@@ -319,10 +319,59 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
             return res.status(400).json({ error: "Invalid input data provided for one or both individuals." });
         }
 
-        // Calculate compatibility score
-        const compatibilityScore = calculateCompatibilityScore(person1Data, person2Data, compatibilityData);
-        const maxScore = 12; // Based on calculateCompatibilityScore logic (4 comparisons * 3 points max)
-        const compatibilityPercentage = Math.round((compatibilityScore / maxScore) * 100);
+        // --- Compatibility Calculation (Bidirectional) ---
+        // Helper functions (assuming compatibilityData is loaded globally)
+        const getScore = (num1, num2) => {
+            const rules1 = compatibilityData[num1];
+            if (!rules1) return 1; // Default to neutral
+            if (rules1.friendly?.includes(num2)) return 3;
+            if (rules1.enemy?.includes(num2)) return 0;
+            return 1; // Neutral
+        };
+        const getRelationship = (num1, num2) => {
+            const rules1 = compatibilityData[num1];
+            if (!rules1) return "Neutral (No data)";
+            if (rules1.friendly?.includes(num2)) return "Friendly";
+            if (rules1.enemy?.includes(num2)) return "Enemy";
+            return "Neutral";
+        };
+
+        const m1 = person1Data.moolank;
+        const b1 = person1Data.bhagyank;
+        const m2 = person2Data.moolank;
+        const b2 = person2Data.bhagyank;
+
+        // Calculate scores for all 8 comparisons
+        const scoreM1M2 = getScore(m1, m2); const relationM1M2 = getRelationship(m1, m2);
+        const scoreB1B2 = getScore(b1, b2); const relationB1B2 = getRelationship(b1, b2);
+        const scoreM1B2 = getScore(m1, b2); const relationM1B2 = getRelationship(m1, b2);
+        const scoreB1M2 = getScore(b1, m2); const relationB1M2 = getRelationship(b1, m2);
+        const scoreM2M1 = getScore(m2, m1); const relationM2M1 = getRelationship(m2, m1);
+        const scoreB2B1 = getScore(b2, b1); const relationB2B1 = getRelationship(b2, b1);
+        const scoreM2B1 = getScore(m2, b1); const relationM2B1 = getRelationship(m2, b1);
+        const scoreB2M1 = getScore(b2, m1); const relationB2M1 = getRelationship(b2, m1);
+
+        // Calculate total score and percentage
+        const totalScore = scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 +
+                           scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
+        const maxScore = 24; // 8 comparisons * 3 points max
+        const compatibilityPercentage = Math.round((totalScore / maxScore) * 100);
+
+        // Determine final verdict
+        let finalVerdict = "";
+        const allRelations = [
+            relationM1M2, relationB1B2, relationM1B2, relationB1M2,
+            relationM2M1, relationB2B1, relationM2B1, relationB2M1
+        ];
+        if (allRelations.includes("Enemy")) {
+            finalVerdict = "Not Compatible (Due to Enemy Relationship)";
+        } else {
+            if (compatibilityPercentage >= 75) finalVerdict = "High Compatibility";
+            else if (compatibilityPercentage <= 35) finalVerdict = "Low Compatibility";
+            else finalVerdict = "Average Compatibility";
+        }
+        // --- End Compatibility Calculation ---
+
 
         // --- PDF Setup (reusing styles and helpers) ---
         const colors = { /* ... same colors as in /api/report/pdf ... */
@@ -414,6 +463,16 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
 
                 doc.font(fonts.bodyBold).text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
                 doc.font(fonts.body).text(` ${data.kua}`);
+                doc.moveDown(0.5);
+
+                // Add Moolank-Bhagyank Relation
+                const mbRelation = moolankBhagyankRelations[data.moolank]?.[data.bhagyank];
+                doc.font(fonts.bodyBold).text(`Moolank-Bhagyank (${data.moolank}-${data.bhagyank}):`, textStartX, doc.y, { width: textWidth });
+                if (mbRelation) {
+                    doc.font(fonts.body).text(`  ${mbRelation.indication || 'N/A'} (Rating: ${mbRelation.rating || 'N/A'})`, { width: textWidth });
+                } else {
+                    doc.font(fonts.body).text("  No specific data", { width: textWidth });
+                }
 
                 // Ensure content starts below the grid/text block
                 doc.y = Math.max(doc.y, gridEndY) + 10;
@@ -425,38 +484,34 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
 
         // --- Compatibility Analysis Section ---
         addSection("Compatibility Analysis", () => {
+            // Display Overall Score and Verdict
             doc.font(fonts.bodyBold).text("Overall Compatibility Score: ", { continued: true });
-            doc.font(fonts.body).text(`${compatibilityScore} / ${maxScore} (${compatibilityPercentage}%)`);
+            doc.font(fonts.body).text(`${totalScore} / ${maxScore} (${compatibilityPercentage}%)`);
             doc.moveDown(0.5);
-
-            // Helper to get relationship description
-            const getRelationship = (num1, num2) => {
-                const rules1 = compatibilityData[num1];
-                if (!rules1) return "Neutral (No data)";
-                if (rules1.friendly?.includes(num2)) return "Friendly";
-                if (rules1.enemy?.includes(num2)) return "Enemy";
-                return "Neutral";
-            };
-
-            // Detailed breakdown
-            const m1 = person1Data.moolank;
-            const b1 = person1Data.bhagyank;
-            const m2 = person2Data.moolank;
-            const b2 = person2Data.bhagyank;
-
-            doc.font(fonts.bodyBold).text("Relationship Breakdown:");
-            doc.font(fonts.body).text(`  - Moolank (${m1}) vs Moolank (${m2}): ${getRelationship(m1, m2)}`);
-            doc.font(fonts.body).text(`  - Bhagyank (${b1}) vs Bhagyank (${b2}): ${getRelationship(b1, b2)}`);
-            doc.font(fonts.body).text(`  - Moolank (${m1}) vs Bhagyank (${b2}): ${getRelationship(m1, b2)}`);
-            doc.font(fonts.body).text(`  - Bhagyank (${b1}) vs Moolank (${m2}): ${getRelationship(b1, m2)}`);
-
-            // Add a simple interpretation based on percentage (optional)
-            doc.moveDown(0.5);
-            let interpretation = "Average Compatibility";
-            if (compatibilityPercentage >= 75) interpretation = "High Compatibility";
-            else if (compatibilityPercentage <= 35) interpretation = "Low Compatibility";
             doc.font(fonts.bodyBold).text("General Indication: ", { continued: true });
-            doc.font(fonts.body).text(interpretation);
+            doc.font(fonts.body).text(finalVerdict); // Use the calculated final verdict
+            doc.moveDown(1);
+
+            // Display Bidirectional Relationship Breakdown
+            doc.font(fonts.bodyBold).text("Relationship Breakdown (Bidirectional):");
+            doc.moveDown(0.5);
+            const breakdown = [
+                { n1: `Moolank (${m1})`, n2: `Moolank (${m2})`, rel: relationM1M2, score: scoreM1M2 },
+                { n1: `Bhagyank (${b1})`, n2: `Bhagyank (${b2})`, rel: relationB1B2, score: scoreB1B2 },
+                { n1: `Moolank (${m1})`, n2: `Bhagyank (${b2})`, rel: relationM1B2, score: scoreM1B2 },
+                { n1: `Bhagyank (${b1})`, n2: `Moolank (${m2})`, rel: relationB1M2, score: scoreB1M2 },
+                { n1: `Moolank (${m2})`, n2: `Moolank (${m1})`, rel: relationM2M1, score: scoreM2M1 },
+                { n1: `Bhagyank (${b2})`, n2: `Bhagyank (${b1})`, rel: relationB2B1, score: scoreB2B1 },
+                { n1: `Moolank (${m2})`, n2: `Bhagyank (${b1})`, rel: relationM2B1, score: scoreM2B1 },
+                { n1: `Bhagyank (${b2})`, n2: `Moolank (${m1})`, rel: relationB2M1, score: scoreB2M1 },
+            ];
+
+            // Use list format for better readability in PDF
+            breakdown.forEach(item => {
+                doc.font(fonts.body).text(`  - ${item.n1} vs ${item.n2}: ${item.rel} (Score: ${item.score})`);
+                doc.moveDown(0.3);
+            });
+
         });
 
 

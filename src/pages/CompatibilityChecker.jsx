@@ -51,6 +51,7 @@ function CompatibilityChecker() {
   // State for detailed compatibility results
   const [compatibilityDetails, setCompatibilityDetails] = useState(null); // Store score, breakdown, etc.
   const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [calculationAttempted, setCalculationAttempted] = useState(false); // Track if calculation was run
 
   // Helper function to get relationship type
   const getRelationship = (num1, num2) => {
@@ -78,6 +79,7 @@ function CompatibilityChecker() {
       return;
     }
 
+    setCalculationAttempted(false); // Reset attempt flag
     setIsLoading(true); // Start loading
     setPerson1Data(null); // Clear previous data
     setPerson2Data(null);
@@ -192,6 +194,7 @@ function CompatibilityChecker() {
     }
     // --- End Calculation ---
 
+    setCalculationAttempted(true); // Mark that calculation was attempted
     setIsLoading(false); // End loading
   };
 
@@ -275,7 +278,8 @@ function CompatibilityChecker() {
               <p>Bhagyank: {person1Data.bhagyank}, Moolank: {person1Data.moolank}, Kua: {person1Data.kua}</p>
             </div>
           )}
-           {!isLoading && !person1Data && person1Dob && <p className="error-message">Could not load data for Person 1.</p>}
+           {/* Show error only after calculation attempt and if data is missing */}
+           {calculationAttempted && !isLoading && !person1Data && <p className="error-message">Could not load data for Person 1.</p>}
         </div>
 
         {/* Person 2 Input */}
@@ -302,24 +306,13 @@ function CompatibilityChecker() {
                <p>Bhagyank: {person2Data.bhagyank}, Moolank: {person2Data.moolank}, Kua: {person2Data.kua}</p>
             </div>
           )}
-          {!isLoading && !person2Data && person2Dob && <p className="error-message">Could not load data for Person 2.</p>}
+           {/* Show error only after calculation attempt and if data is missing */}
+          {calculationAttempted && !isLoading && !person2Data && <p className="error-message">Could not load data for Person 2.</p>}
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div style={{ textAlign: 'center', margin: '30px 0', display: 'flex', justifyContent: 'center', gap: '20px' }}>
-        <button onClick={handleCalculateCompatibility} disabled={isLoading}>
-          {isLoading ? 'Calculating...' : 'Calculate Compatibility'}
-        </button>
-        {/* Add Download PDF Button - Enabled only when data is loaded */}
-        <button
-          onClick={handleDownloadCompatibilityPdf}
-          disabled={isLoading || !person1Data || !person2Data}
-          title={!person1Data || !person2Data ? "Calculate compatibility first" : "Download PDF Report"}
-         >
-          Download PDF Report
-        </button>
-      </div>
+      {/* Action Buttons - Moved from here */}
+
 
       {/* Compatibility Report Area */}
       {!isLoading && compatibilityDetails && (
@@ -381,6 +374,21 @@ function CompatibilityChecker() {
           )}
         </div>
       )}
+
+      {/* Action Buttons - Moved here */}
+      <div style={{ textAlign: 'center', margin: '30px 0', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <button onClick={handleCalculateCompatibility} disabled={isLoading}>
+          {isLoading ? 'Calculating...' : 'Calculate Compatibility'}
+        </button>
+        {/* Download PDF Button - Enabled only when data is loaded and calculation succeeded */}
+        <button
+          onClick={handleDownloadCompatibilityPdf}
+          disabled={isLoading || !person1Data || !person2Data || (compatibilityDetails && compatibilityDetails.error)}
+          title={!person1Data || !person2Data ? "Calculate compatibility first" : (compatibilityDetails && compatibilityDetails.error ? "Cannot download report due to calculation error" : "Download PDF Report")}
+         >
+          Download PDF Report
+        </button>
+      </div>
     </>
   );
 }
