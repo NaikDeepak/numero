@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import Footer from './components/Footer'; // Import new Footer
 import GridCalculator from './pages/GridCalculator';
 import CompatibilityChecker from './pages/CompatibilityChecker';
+import TeamWinPercentage from './pages/TeamWinPercentage'; // Import the new page
 
 function App() {
   // State for theme (initialize from localStorage or default to 'dark')
@@ -38,6 +39,7 @@ function App() {
         <Routes>
           <Route path="/" element={<GridCalculator />} />
           <Route path="/compatibility" element={<CompatibilityChecker />} />
+          <Route path="/win-percentage" element={<TeamWinPercentage />} /> {/* Add route */}
           {/* Add other routes here if needed */}
         </Routes>
       </main>

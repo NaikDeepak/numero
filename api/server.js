@@ -4,10 +4,17 @@ import PDFDocument from "pdfkit"
 import { createRequire } from 'module'; // Import createRequire
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { calculateNumerologyData } from './utils/numerologyUtils.js';
+import {
+    calculateNumerologyData,
+    calculatePersonalYear,
+    calculatePersonalMonth,
+    calculatePersonalDay,
+    calculateCompatibilityScore,
+    calculateTimeFactorScore
+} from './utils/numerologyUtils.js';
 
 // --- Load JSON Data using createRequire ---
-const require = createRequire(import.meta.url); // Create a require function relative to this module
+const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -26,6 +33,8 @@ const houseMeanings = loadJsonData('./data/houseMeanings.json');
 const moolankBhagyankRelations = loadJsonData('./data/moolankBhagyankRelations.json');
 const missingNumberRemedies = loadJsonData('./data/missingNumberRemedies.json');
 const repeatingNumberImpact = loadJsonData('./data/repeatingNumberImpact.json');
+const compatibilityData = loadJsonData('./data/compatibilityData.json'); // Load compatibility data
+const iplTeamsData = loadJsonData('./data/iplTeams.json'); // Load IPL team data
 // --- End JSON Data Loading ---
 
 
@@ -291,3 +300,79 @@ app.get("/api/report/pdf", (req, res) => {
 app.listen(port, () => {
   console.log(`Numerology API server listening on port ${port}`)
 })
+
+// --- NEW: API Endpoint for Team Win Percentage ---
+app.post('/api/win-percentage', (req, res) => {
+    const { teamKey, matchDate } // Expect team key (e.g., "CSK") and match date "YYYY-MM-DD"
+        = req.body;
+
+    // --- Input Validation ---
+    if (!teamKey || !matchDate) {
+        return res.status(400).json({ error: 'Missing required fields: teamKey and matchDate' });
+    }
+
+    const teamInfo = iplTeamsData[teamKey];
+    if (!teamInfo) {
+        return res.status(404).json({ error: `Team data not found for key: ${teamKey}` });
+    }
+
+    const matchDateParts = matchDate.split('-');
+    if (matchDateParts.length !== 3) {
+        return res.status(400).json({ error: 'Invalid matchDate format. Expected YYYY-MM-DD.' });
+    }
+    const [matchYear, matchMonth, matchDay] = matchDateParts.map(p => parseInt(p, 10));
+     if (isNaN(matchYear) || isNaN(matchMonth) || isNaN(matchDay)) {
+         return res.status(400).json({ error: 'Invalid date components in matchDate.' });
+     }
+     const matchDateParsed = { day: matchDay, month: matchMonth, year: matchYear };
+
+
+    try {
+        // --- Calculate Base Numbers ---
+        const teamNumbers = calculateNumerologyData(teamInfo.dob, 'Neutral'); // Gender might not apply to team DOB
+        const captainNumbers = calculateNumerologyData(teamInfo.captainDob, 'Neutral'); // Assume neutral or fetch actual gender if needed
+        const matchNumbers = calculateNumerologyData(matchDate, 'Neutral');
+
+        if (!teamNumbers || !captainNumbers || !matchNumbers) {
+            console.error("Failed to calculate base numbers for team, captain, or match date.");
+            return res.status(500).json({ error: 'Internal error during number calculation.' });
+        }
+
+        // --- Calculate Compatibility Scores (CCS & TCS) ---
+        const ccs = calculateCompatibilityScore(captainNumbers, matchNumbers, compatibilityData);
+        const tcs = calculateCompatibilityScore(teamNumbers, matchNumbers, compatibilityData);
+
+        // --- Calculate Time Factor Scores ---
+        // Helper to parse DOB string into parts
+        const parseDob = (dobString) => {
+            const parts = dobString.split('-');
+            return { day: parseInt(parts[2], 10), month: parseInt(parts[1], 10), year: parseInt(parts[0], 10) };
+        };
+        const teamDobParts = parseDob(teamInfo.dob);
+        const captainDobParts = parseDob(teamInfo.captainDob);
+
+        const captainTimeScore = calculateTimeFactorScore(captainDobParts, matchDateParsed, matchNumbers, compatibilityData);
+        const teamTimeScore = calculateTimeFactorScore(teamDobParts, matchDateParsed, matchNumbers, compatibilityData);
+
+        // Average the time scores for the final Time Factor Score
+        const finalTimeFactorScore = Math.round((captainTimeScore + teamTimeScore) / 2);
+
+        // --- Apply Weighted Formula ---
+        const winPercentage = (0.4 * ccs) + (0.4 * tcs) + (0.2 * finalTimeFactorScore);
+
+        // --- Return Result ---
+        res.json({
+            team: teamInfo.fullName,
+            captain: teamInfo.captain,
+            matchDate: matchDate,
+            captainCompatibilityScore: ccs,
+            teamCompatibilityScore: tcs,
+            timeFactorScore: finalTimeFactorScore,
+            calculatedWinPercentage: Math.round(winPercentage) // Round to nearest whole number
+        });
+
+    } catch (error) {
+        console.error('Win Percentage Calculation error:', error);
+        res.status(500).json({ error: 'An internal server error occurred during win percentage calculation.' });
+    }
+});

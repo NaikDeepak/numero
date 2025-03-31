@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaTable, FaUsers } from 'react-icons/fa'; // Example icons
+import { FaTable, FaUsers, FaTrophy } from 'react-icons/fa'; // Added FaTrophy
 
 function Navbar() {
   return (
@@ -23,6 +23,15 @@ function Navbar() {
           >
             <FaUsers className="nav-icon" aria-hidden="true" />
             <span>Compatibility</span>
+          </NavLink>
+        </li>
+         <li className="app-nav-item">
+          <NavLink
+            to="/win-percentage"
+            className={({ isActive }) => (isActive ? 'app-nav-link active' : 'app-nav-link')}
+          >
+            <FaTrophy className="nav-icon" aria-hidden="true" />
+            <span>Team Win %</span>
           </NavLink>
         </li>
         {/* Add more navigation links here if needed */}

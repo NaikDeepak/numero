@@ -108,5 +108,127 @@ function calculateNumerologyData(dob, gender) {
     };
 }
 
-// Export the main calculation function using ES Module syntax
-export { calculateNumerologyData };
+/**
+ * Calculates Personal Year number.
+ * @param {number} birthDay - Day of birth (1-31).
+ * @param {number} birthMonth - Month of birth (1-12).
+ * @param {number} targetYear - The year for which to calculate the Personal Year.
+ * @returns {number} The Personal Year number.
+ */
+function calculatePersonalYear(birthDay, birthMonth, targetYear) {
+    const sum = reduceToSingleDigit(birthDay) + reduceToSingleDigit(birthMonth) + reduceToSingleDigit(targetYear);
+    return reduceToSingleDigit(sum);
+}
+
+/**
+ * Calculates Personal Month number.
+ * @param {number} personalYear - The calculated Personal Year number.
+ * @param {number} targetMonth - The month (1-12) for which to calculate the Personal Month.
+ * @returns {number} The Personal Month number.
+ */
+function calculatePersonalMonth(personalYear, targetMonth) {
+    const sum = personalYear + reduceToSingleDigit(targetMonth);
+    return reduceToSingleDigit(sum);
+}
+
+/**
+ * Calculates Personal Day number.
+ * @param {number} personalMonth - The calculated Personal Month number.
+ * @param {number} targetDay - The day (1-31) for which to calculate the Personal Day.
+ * @returns {number} The Personal Day number.
+ */
+function calculatePersonalDay(personalMonth, targetDay) {
+    const sum = personalMonth + reduceToSingleDigit(targetDay);
+    return reduceToSingleDigit(sum);
+}
+
+/**
+ * Calculates a compatibility score between two entities based on their Moolank/Bhagyank
+ * and a reference compatibility data object.
+ * @param {object} entity1 - { moolank, bhagyank }
+ * @param {object} entity2 - { moolank, bhagyank }
+ * @param {object} compatibilityRules - The loaded compatibilityData.json content.
+ * @returns {number} A compatibility score normalized to 0-100.
+ */
+function calculateCompatibilityScore(entity1, entity2, compatibilityRules) {
+    if (!entity1 || !entity2 || !compatibilityRules) return 0;
+
+    const m1 = entity1.moolank;
+    const b1 = entity1.bhagyank;
+    const m2 = entity2.moolank;
+    const b2 = entity2.bhagyank;
+
+    let score = 0;
+    const maxScore = 12; // 4 comparisons * 3 points max each
+
+    const getScore = (num1, num2) => {
+        const rules1 = compatibilityRules[num1];
+        if (!rules1) return 1; // Default to neutral if rules missing for num1
+        if (rules1.friendly?.includes(num2)) return 3;
+        if (rules1.enemy?.includes(num2)) return 0;
+        return 1; // Neutral
+    };
+
+    // Compare M1 vs M2, B1 vs B2, M1 vs B2, B1 vs M2
+    score += getScore(m1, m2);
+    score += getScore(b1, b2);
+    score += getScore(m1, b2);
+    score += getScore(b1, m2);
+
+    return Math.round((score / maxScore) * 100); // Normalize to 0-100
+}
+
+/**
+ * Calculates a time factor score based on Personal Year/Month/Day compatibility
+ * with a target date's Moolank/Bhagyank.
+ * @param {object} entityDobParts - { day, month, year } of the entity (team/captain).
+ * @param {object} targetDateParts - { day, month, year } of the target date (match date).
+ * @param {object} targetDateNumbers - { moolank, bhagyank } of the target date.
+ * @param {object} compatibilityRules - The loaded compatibilityData.json content.
+ * @returns {number} A time factor score normalized to 0-100.
+ */
+function calculateTimeFactorScore(entityDobParts, targetDateParts, targetDateNumbers, compatibilityRules) {
+    if (!entityDobParts || !targetDateParts || !targetDateNumbers || !compatibilityRules) return 0;
+
+    const personalYear = calculatePersonalYear(entityDobParts.day, entityDobParts.month, targetDateParts.year);
+    const personalMonth = calculatePersonalMonth(personalYear, targetDateParts.month);
+    const personalDay = calculatePersonalDay(personalMonth, targetDateParts.day);
+
+    const matchMoolank = targetDateNumbers.moolank;
+    const matchBhagyank = targetDateNumbers.bhagyank;
+
+    let score = 0;
+    const maxScore = 18; // 6 comparisons * 3 points max each
+
+    const getScore = (num1, num2) => {
+        const rules1 = compatibilityRules[num1];
+        if (!rules1) return 1; // Default to neutral
+        if (rules1.friendly?.includes(num2)) return 3;
+        if (rules1.enemy?.includes(num2)) return 0;
+        return 1; // Neutral
+    };
+
+    // Compare PY, PM, PD against Match Moolank and Bhagyank
+    score += getScore(personalYear, matchMoolank);
+    score += getScore(personalYear, matchBhagyank);
+    score += getScore(personalMonth, matchMoolank);
+    score += getScore(personalMonth, matchBhagyank);
+    score += getScore(personalDay, matchMoolank);
+    score += getScore(personalDay, matchBhagyank);
+
+    return Math.round((score / maxScore) * 100); // Normalize to 0-100
+}
+
+
+// Export the main calculation function and helpers
+export {
+    calculateNumerologyData,
+    calculatePersonalYear,
+    calculatePersonalMonth,
+    calculatePersonalDay,
+    calculateCompatibilityScore,
+    calculateTimeFactorScore,
+    // Keep internal helpers if needed elsewhere, otherwise they can remain unexported
+    // sumDigits,
+    // reduceToSingleDigit
+};
