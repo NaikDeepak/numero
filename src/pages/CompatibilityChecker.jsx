@@ -85,6 +85,57 @@ function CompatibilityChecker() {
     setIsLoading(false); // End loading
   };
 
+  // --- Function to handle PDF Download ---
+  const handleDownloadCompatibilityPdf = async () => {
+    // Ensure data is available
+    if (!person1Data || !person2Data || !person1Name || !person2Name || !person1Dob || !person2Dob) {
+      alert("Cannot download report. Please calculate compatibility first and ensure all details are filled.");
+      return;
+    }
+
+    // Construct the URL for the PDF endpoint
+    const params = new URLSearchParams({
+        dob1: person1Dob,
+        gender1: person1Gender,
+        name1: person1Name,
+        dob2: person2Dob,
+        gender2: person2Gender,
+        name2: person2Name,
+    });
+    const pdfUrl = `${API_BASE_URL}/report/compatibility/pdf?${params.toString()}`;
+
+    try {
+        const response = await fetch(pdfUrl);
+        if (!response.ok) {
+            // Try to get error message from backend response
+            let errorMsg = `PDF download failed: ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                errorMsg = errorData.error || errorMsg;
+            } catch (e) { /* Ignore if response is not JSON */ }
+            throw new Error(errorMsg);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        // Create a filename (e.g., Compatibility_Report_Alice_Bob.pdf)
+        const filename = `Compatibility_Report_${person1Name.replace(/ /g, '_')}_${person2Name.replace(/ /g, '_')}.pdf`;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
+    } catch (error) {
+        console.error('PDF Download error:', error);
+        alert(`Failed to download PDF report: ${error.message}`);
+    }
+  };
+
+
   return (
     <>
       <h2>Numerology Compatibility Checker</h2>
@@ -145,10 +196,18 @@ function CompatibilityChecker() {
         </div>
       </div>
 
-      {/* Calculate Button */}
-      <div style={{ textAlign: 'center', margin: '30px 0' }}>
+      {/* Action Buttons */}
+      <div style={{ textAlign: 'center', margin: '30px 0', display: 'flex', justifyContent: 'center', gap: '20px' }}>
         <button onClick={handleCalculateCompatibility} disabled={isLoading}>
           {isLoading ? 'Calculating...' : 'Calculate Compatibility'}
+        </button>
+        {/* Add Download PDF Button - Enabled only when data is loaded */}
+        <button
+          onClick={handleDownloadCompatibilityPdf}
+          disabled={isLoading || !person1Data || !person2Data}
+          title={!person1Data || !person2Data ? "Calculate compatibility first" : "Download PDF Report"}
+         >
+          Download PDF Report
         </button>
       </div>
 

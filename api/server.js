@@ -300,6 +300,180 @@ app.get("/api/report/pdf", (req, res) => {
   }
 })
 
+
+// --- NEW: API Endpoint for Compatibility PDF Report Generation ---
+app.get("/api/report/compatibility/pdf", async (req, res) => {
+    const { dob1, gender1, name1, dob2, gender2, name2 } = req.query;
+
+    // Basic validation
+    if (!dob1 || !gender1 || !name1 || !dob2 || !gender2 || !name2) {
+        return res.status(400).json({ error: "Missing required query parameters for compatibility report." });
+    }
+
+    try {
+        // Calculate data for both individuals
+        const person1Data = calculateNumerologyData(dob1, gender1);
+        const person2Data = calculateNumerologyData(dob2, gender2);
+
+        if (!person1Data || !person2Data) {
+            return res.status(400).json({ error: "Invalid input data provided for one or both individuals." });
+        }
+
+        // Calculate compatibility score
+        const compatibilityScore = calculateCompatibilityScore(person1Data, person2Data, compatibilityData);
+        const maxScore = 12; // Based on calculateCompatibilityScore logic (4 comparisons * 3 points max)
+        const compatibilityPercentage = Math.round((compatibilityScore / maxScore) * 100);
+
+        // --- PDF Setup (reusing styles and helpers) ---
+        const colors = { /* ... same colors as in /api/report/pdf ... */
+            primary: "#ff8c00", secondary: "#a0522d", text: "#333333", muted: "#666666",
+            gridLine: "#cccccc", gridText: "#111111", gridBg: "#f9f9f9", heading: "#111111",
+        };
+        const fonts = { /* ... same fonts as in /api/report/pdf ... */
+            heading: "Helvetica-Bold", subheading: "Helvetica-Bold", body: "Helvetica", bodyBold: "Helvetica-Bold",
+        };
+        const margin = 50;
+        const doc = new PDFDocument({ size: "A4", margin: margin });
+
+        const filename = `Compatibility_Report_${name1}_${name2}.pdf`;
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+        doc.pipe(res);
+
+        // --- PDF Content ---
+        // Header
+        doc.font(fonts.heading).fontSize(20).fillColor(colors.heading)
+           .text("Numerology Compatibility Report", { align: "center" });
+        doc.moveDown(0.5);
+        doc.font(fonts.body).fontSize(12).fillColor(colors.muted)
+           .text(`${name1} & ${name2}`, { align: "center" });
+        doc.moveDown(2);
+
+        // Section Helper (assuming it's defined globally or copy it here if needed)
+        const addSection = (title, contentFn) => {
+            doc.font(fonts.subheading).fontSize(14).fillColor(colors.secondary).text(title, { underline: true });
+            doc.moveDown(0.7);
+            doc.font(fonts.body).fontSize(10).fillColor(colors.text); // Reset font
+            contentFn();
+            doc.moveDown(1.5);
+        };
+
+        // Grid Drawing Helper (assuming it's defined globally or copy it here if needed)
+        const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => {
+            const positionMap = { 4: 0, 9: 1, 2: 2, 3: 3, 5: 4, 7: 5, 8: 6, 1: 7, 6: 8 };
+            let cells = Array(9).fill("");
+            if (gridNumbers && Array.isArray(gridNumbers)) {
+                gridNumbers.forEach((num) => {
+                    if (num !== 0 && positionMap.hasOwnProperty(num)) {
+                        let cellIndex = positionMap[num];
+                        cells[cellIndex] += (cells[cellIndex] ? " " : "") + num;
+                    }
+                });
+            }
+            doc.save();
+            doc.lineWidth(0.5).strokeColor(colors.gridLine);
+            for (let row = 0; row < 3; row++) {
+                for (let col = 0; col < 3; col++) {
+                    const cellIndex = row * 3 + col;
+                    const x = startX + col * (cellSize + gap);
+                    const y = startY + row * (cellSize + gap);
+                    doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine);
+                    if (cells[cellIndex]) {
+                        doc.font(fonts.bodyBold).fontSize(10).fillColor(colors.gridText)
+                           .text(cells[cellIndex], x, y + cellSize / 2 - 5, { width: cellSize, align: "center" });
+                    }
+                }
+            }
+            doc.restore();
+            return startY + 3 * cellSize + 2 * gap; // Return Y position after the grid
+        };
+
+        // --- Individual Details Sections ---
+        const addPersonSection = (name, dob, gender, data) => {
+            addSection(`${name}'s Details`, () => {
+                const gridStartY = doc.y;
+                const gridWidth = 3 * 30 + 2 * 3;
+                const gridStartX = doc.page.width - margin - gridWidth; // Align grid to the right
+                const gridEndY = drawLoShuGrid(data.gridNumbers, gridStartX, gridStartY);
+
+                const textStartY = gridStartY;
+                const textStartX = margin;
+                const textWidth = gridStartX - margin - 20; // Width for text column
+
+                doc.font(fonts.bodyBold).text("DOB:", textStartX, textStartY, { width: textWidth, continued: true });
+                doc.font(fonts.body).text(` ${dob} (${gender})`);
+                doc.moveDown(0.5);
+
+                doc.font(fonts.bodyBold).text("Moolank:", textStartX, doc.y, { width: textWidth, continued: true });
+                doc.font(fonts.body).text(` ${data.moolank} (${houseMeanings[data.moolank] || "N/A"})`);
+                doc.moveDown(0.5);
+
+                doc.font(fonts.bodyBold).text("Bhagyank:", textStartX, doc.y, { width: textWidth, continued: true });
+                doc.font(fonts.body).text(` ${data.bhagyank} (${houseMeanings[data.bhagyank] || "N/A"})`);
+                doc.moveDown(0.5);
+
+                doc.font(fonts.bodyBold).text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
+                doc.font(fonts.body).text(` ${data.kua}`);
+
+                // Ensure content starts below the grid/text block
+                doc.y = Math.max(doc.y, gridEndY) + 10;
+            });
+        };
+
+        addPersonSection(name1, dob1, gender1, person1Data);
+        addPersonSection(name2, dob2, gender2, person2Data);
+
+        // --- Compatibility Analysis Section ---
+        addSection("Compatibility Analysis", () => {
+            doc.font(fonts.bodyBold).text("Overall Compatibility Score: ", { continued: true });
+            doc.font(fonts.body).text(`${compatibilityScore} / ${maxScore} (${compatibilityPercentage}%)`);
+            doc.moveDown(0.5);
+
+            // Helper to get relationship description
+            const getRelationship = (num1, num2) => {
+                const rules1 = compatibilityData[num1];
+                if (!rules1) return "Neutral (No data)";
+                if (rules1.friendly?.includes(num2)) return "Friendly";
+                if (rules1.enemy?.includes(num2)) return "Enemy";
+                return "Neutral";
+            };
+
+            // Detailed breakdown
+            const m1 = person1Data.moolank;
+            const b1 = person1Data.bhagyank;
+            const m2 = person2Data.moolank;
+            const b2 = person2Data.bhagyank;
+
+            doc.font(fonts.bodyBold).text("Relationship Breakdown:");
+            doc.font(fonts.body).text(`  - Moolank (${m1}) vs Moolank (${m2}): ${getRelationship(m1, m2)}`);
+            doc.font(fonts.body).text(`  - Bhagyank (${b1}) vs Bhagyank (${b2}): ${getRelationship(b1, b2)}`);
+            doc.font(fonts.body).text(`  - Moolank (${m1}) vs Bhagyank (${b2}): ${getRelationship(m1, b2)}`);
+            doc.font(fonts.body).text(`  - Bhagyank (${b1}) vs Moolank (${m2}): ${getRelationship(b1, m2)}`);
+
+            // Add a simple interpretation based on percentage (optional)
+            doc.moveDown(0.5);
+            let interpretation = "Average Compatibility";
+            if (compatibilityPercentage >= 75) interpretation = "High Compatibility";
+            else if (compatibilityPercentage <= 35) interpretation = "Low Compatibility";
+            doc.font(fonts.bodyBold).text("General Indication: ", { continued: true });
+            doc.font(fonts.body).text(interpretation);
+        });
+
+
+        // --- Finalize PDF ---
+        doc.end();
+
+    } catch (error) {
+        console.error("Compatibility PDF Generation error:", error);
+        if (!res.headersSent) {
+            res.status(500).json({ error: "An internal server error occurred during PDF generation." });
+        } else {
+            res.end();
+        }
+    }
+});
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Numerology API server listening on port ${port}`)
