@@ -4,10 +4,19 @@ import iplTeamsData from "../data/iplTeams.js" // Import from within src
 // Read API URL from environment variable, fallback to localhost for development
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api" // Base API URL
 
+// Helper function to get today's date in YYYY-MM-DD format
+const getTodayDateString = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 function TeamWinPercentage() {
   const [selectedTeamKey1, setSelectedTeamKey1] = useState("") // Renamed state
   const [selectedTeamKey2, setSelectedTeamKey2] = useState("") // Added state for second team
-  const [matchDate, setMatchDate] = useState("")
+  const [matchDate, setMatchDate] = useState(getTodayDateString()) // Initialize with today's date
   const [result, setResult] = useState(null) // Will store { team1: {...}, team2: {...} }
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
