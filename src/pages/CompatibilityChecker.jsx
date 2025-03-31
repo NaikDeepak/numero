@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-// Removed import { calculateNumerologyData } from '../numerologyUtils';
 import NumerologyGrid from '../NumerologyGrid'; // Adjust path
+
+// Import the necessary JSON data files directly
+// Adjust paths if your project structure is different
+import compatibilityRules from '../../api/data/compatibilityData.json';
+import houseMeanings from '../../api/data/houseMeanings.json';
+import moolankBhagyankRelations from '../../api/data/moolankBhagyankRelations.json';
+
 
 // Read BASE API URL from environment variable, fallback to localhost for development
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
@@ -42,9 +48,28 @@ function CompatibilityChecker() {
   const [person2Gender, setPerson2Gender] = useState('Female');
   const [person2Data, setPerson2Data] = useState(null);
 
-  // State for compatibility report
-  const [compatibilityReport, setCompatibilityReport] = useState('');
+  // State for detailed compatibility results
+  const [compatibilityDetails, setCompatibilityDetails] = useState(null); // Store score, breakdown, etc.
   const [isLoading, setIsLoading] = useState(false); // Loading state
+
+  // Helper function to get relationship type
+  const getRelationship = (num1, num2) => {
+    const rules1 = compatibilityRules[num1];
+    if (!rules1) return "Neutral (No data)";
+    if (rules1.friendly?.includes(num2)) return "Friendly";
+    if (rules1.enemy?.includes(num2)) return "Enemy";
+    return "Neutral";
+  };
+
+  // Helper function to calculate score between two numbers
+  const getScore = (num1, num2) => {
+      const rules1 = compatibilityRules[num1];
+      if (!rules1) return 1; // Default to neutral if rules missing for num1
+      if (rules1.friendly?.includes(num2)) return 3;
+      if (rules1.enemy?.includes(num2)) return 0;
+      return 1; // Neutral
+  };
+
 
   const handleCalculateCompatibility = async () => { // Made async
     // Basic validation
@@ -56,7 +81,7 @@ function CompatibilityChecker() {
     setIsLoading(true); // Start loading
     setPerson1Data(null); // Clear previous data
     setPerson2Data(null);
-    setCompatibilityReport(''); // Clear previous report
+    setCompatibilityDetails(null); // Clear previous details
 
     // Fetch data for both persons concurrently
     const [data1, data2] = await Promise.all([
@@ -67,20 +92,81 @@ function CompatibilityChecker() {
     setPerson1Data(data1); // Set fetched data (could be null on error)
     setPerson2Data(data2);
 
-    // --- Placeholder for Compatibility Logic ---
-    // TODO: Implement actual compatibility rules based on user requirements
+    // --- Calculate Compatibility Details ---
     if (data1 && data2) {
-        // Example: Simple comparison (replace with actual logic)
-        let report = `Compatibility Analysis for ${person1Name} and ${person2Name}:\n\n`;
-        report += `Person 1 Bhagyank: ${data1.bhagyank}, Person 2 Bhagyank: ${data2.bhagyank}\n`;
-        report += `Person 1 Moolank: ${data1.moolank}, Person 2 Moolank: ${data2.moolank}\n`;
-        report += `Person 1 Kua: ${data1.kua}, Person 2 Kua: ${data2.kua}\n\n`;
-        report += `(Detailed compatibility report based on specific rules will be generated here.)`;
-        setCompatibilityReport(report);
+        const m1 = data1.moolank;
+        const b1 = data1.bhagyank;
+        const m2 = data2.moolank;
+        const b2 = data2.bhagyank;
+
+        // Calculate individual scores for all 4 standard comparisons
+        const scoreM1M2 = getScore(m1, m2);
+        const scoreB1B2 = getScore(b1, b2);
+        const scoreM1B2 = getScore(m1, b2); // Reinstate M1-B2 score
+        const scoreB1M2 = getScore(b1, m2);
+
+        // Calculate total score and percentage based on 4 comparisons
+        const totalScore = scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2;
+        const maxScore = 12; // 4 comparisons * 3 points max
+        const percentage = Math.round((totalScore / maxScore) * 100);
+
+        // Get relationship types for all 4 standard comparisons
+        const relationM1M2 = getRelationship(m1, m2);
+        const relationB1B2 = getRelationship(b1, b2);
+        const relationM1B2 = getRelationship(m1, b2); // Reinstate M1-B2 relationship
+        const relationB1M2 = getRelationship(b1, m2);
+
+        // Get individual Moolank-Bhagyank relations
+        const person1MBRelation = moolankBhagyankRelations[m1]?.[b1] || { rating: 'N/A', indication: 'No specific data' };
+        const person2MBRelation = moolankBhagyankRelations[m2]?.[b2] || { rating: 'N/A', indication: 'No specific data' };
+
+        // Determine final verdict: Override if any relationship is "Enemy"
+        let finalVerdict = "";
+        if ([relationM1M2, relationB1B2, relationM1B2, relationB1M2].includes("Enemy")) {
+            finalVerdict = "Not Compatible (Due to Enemy Relationship)";
+        } else {
+            // Otherwise, use percentage-based interpretation
+            if (percentage >= 75) finalVerdict = "High Compatibility";
+            else if (percentage <= 35) finalVerdict = "Low Compatibility";
+            else finalVerdict = "Average Compatibility";
+        }
+
+
+        setCompatibilityDetails({
+            score: totalScore,
+            maxScore: maxScore,
+            percentage: percentage,
+            interpretation: finalVerdict, // Use the final verdict here
+            // Restore all 4 breakdown items
+            breakdown: [
+                { p1: `Moolank (${m1})`, p2: `Moolank (${m2})`, relation: relationM1M2, score: scoreM1M2 },
+                { p1: `Bhagyank (${b1})`, p2: `Bhagyank (${b2})`, relation: relationB1B2, score: scoreB1B2 },
+                { p1: `Moolank (${m1})`, p2: `Bhagyank (${b2})`, relation: relationM1B2, score: scoreM1B2 }, // Reinstate M1-B2 row
+                { p1: `Bhagyank (${b1})`, p2: `Moolank (${m2})`, relation: relationB1M2, score: scoreB1M2 },
+            ],
+            person1: {
+                name: person1Name,
+                moolank: m1,
+                moolankMeaning: houseMeanings[m1] || 'N/A',
+                bhagyank: b1,
+                bhagyankMeaning: houseMeanings[b1] || 'N/A',
+                mbRelation: person1MBRelation,
+            },
+            person2: {
+                name: person2Name,
+                moolank: m2,
+                moolankMeaning: houseMeanings[m2] || 'N/A',
+                bhagyank: b2,
+                bhagyankMeaning: houseMeanings[b2] || 'N/A',
+                mbRelation: person2MBRelation,
+            }
+        });
+
     } else {
-        setCompatibilityReport("Could not calculate compatibility due to invalid input or API error for one or both individuals.");
+        // Handle case where data fetching failed for one or both
+        setCompatibilityDetails({ error: "Could not calculate compatibility due to invalid input or API error for one or both individuals." });
     }
-    // --- End Placeholder ---
+    // --- End Calculation ---
 
     setIsLoading(false); // End loading
   };
@@ -212,11 +298,63 @@ function CompatibilityChecker() {
       </div>
 
       {/* Compatibility Report Area */}
-      {/* Show report only when not loading and report exists */}
-      {!isLoading && compatibilityReport && (
-        <div id="compatibilityReport" className="report-section">
-          <h3>Compatibility Report</h3>
-          <pre>{compatibilityReport}</pre> {/* Use pre for basic formatting */}
+      {!isLoading && compatibilityDetails && (
+        <div id="compatibilityReport" className="report-section compatibility-details">
+          <h3>Compatibility Analysis</h3>
+          {compatibilityDetails.error ? (
+            <p className="error-message">{compatibilityDetails.error}</p>
+          ) : (
+            <>
+              {/* Overall Score */}
+              <div className="overall-score">
+                <strong>Overall Compatibility Score: </strong>
+                {compatibilityDetails.score} / {compatibilityDetails.maxScore} ({compatibilityDetails.percentage}%)
+                <br />
+                <strong>General Indication: </strong> {compatibilityDetails.interpretation}
+              </div>
+
+              {/* Relationship Breakdown Table */}
+              <h4>Relationship Breakdown:</h4>
+              <table className="compatibility-table">
+                <thead>
+                  <tr>
+                    <th>{person1Name}'s Number</th>
+                    <th>{person2Name}'s Number</th>
+                    <th>Relationship</th>
+                    <th>Score (0-3)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {compatibilityDetails.breakdown.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.p1}</td>
+                      <td>{item.p2}</td>
+                      <td>{item.relation}</td>
+                      <td>{item.score}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Individual Details */}
+              <div className="individual-details-container">
+                 {/* Person 1 Details */}
+                <div className="individual-details">
+                    <h4>{person1Name}'s Numerology Profile</h4>
+                    <p><strong>Moolank:</strong> {compatibilityDetails.person1.moolank} ({compatibilityDetails.person1.moolankMeaning})</p>
+                    <p><strong>Bhagyank:</strong> {compatibilityDetails.person1.bhagyank} ({compatibilityDetails.person1.bhagyankMeaning})</p>
+                    <p><strong>Moolank-Bhagyank Relation ({compatibilityDetails.person1.moolank}-{compatibilityDetails.person1.bhagyank}):</strong> {compatibilityDetails.person1.mbRelation.indication} (Rating: {compatibilityDetails.person1.mbRelation.rating})</p>
+                </div>
+                 {/* Person 2 Details */}
+                 <div className="individual-details">
+                    <h4>{person2Name}'s Numerology Profile</h4>
+                    <p><strong>Moolank:</strong> {compatibilityDetails.person2.moolank} ({compatibilityDetails.person2.moolankMeaning})</p>
+                    <p><strong>Bhagyank:</strong> {compatibilityDetails.person2.bhagyank} ({compatibilityDetails.person2.bhagyankMeaning})</p>
+                    <p><strong>Moolank-Bhagyank Relation ({compatibilityDetails.person2.moolank}-{compatibilityDetails.person2.bhagyank}):</strong> {compatibilityDetails.person2.mbRelation.indication} (Rating: {compatibilityDetails.person2.mbRelation.rating})</p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </>
