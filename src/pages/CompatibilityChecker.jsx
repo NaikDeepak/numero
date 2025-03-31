@@ -339,12 +339,6 @@ function CompatibilityChecker() {
       </div>
 
       {/* Action Buttons - Moved from here */}
-      <div style={{ textAlign: "center", margin: "30px 0", display: "flex", justifyContent: "center", gap: "20px" }}>
-        <button onClick={handleCalculateCompatibility} disabled={isLoading}>
-          {isLoading ? "Calculating..." : "Calculate Compatibility"}
-        </button>
-        {/* Download PDF Button - Enabled only when data is loaded and calculation succeeded */}
-      </div>
 
       {/* Compatibility Report Area */}
       {!isLoading && compatibilityDetails && (
@@ -458,9 +452,9 @@ function CompatibilityChecker() {
       </div>
     </>
   )
-// Note: The previous SEARCH/REPLACE block already moved the Calculate button and wrapped the Download button.
-// This block is just cleaning up the leftover button from the previous state.
-// Ensure the Calculate button is outside the conditional rendering.
+  // Note: The previous SEARCH/REPLACE block already moved the Calculate button and wrapped the Download button.
+  // This block is just cleaning up the leftover button from the previous state.
+  // Ensure the Calculate button is outside the conditional rendering.
 }
 
 export default CompatibilityChecker
