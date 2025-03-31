@@ -4,97 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numerology Insights Calculator</title> <!-- Updated Title -->
-    <!-- Include SheetJS library -->
+    <title>Numerology Insights Calculator</title>
+    <!-- Include SheetJS library (still needed for export) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- Link external CSS file -->
-    <link rel="stylesheet" href="style.css">
+    <!-- We assume the React build process handles CSS injection -->
+    <!-- <link rel="stylesheet" href="style.css"> --> <!-- Removed -->
+    <!-- Add any other head elements like favicons here -->
 </head>
 
 <body>
-
-    <header>
-        <h1>Numerology Insights</h1>
-        <div class="theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round"></div>
-            </label>
-            <span>Toggle Light/Dark Mode</span>
-        </div>
-        <!-- Potential navigation links can go here later -->
-    </header>
-
-    <main>
-        <h2>Numerology Grid Calculator</h2>
-
-        <div id="inputArea">
-            <h3>Add User Details</h3>
-        <label>Full Name: <input type="text" id="name" placeholder="Enter Full Name"></label>
-        <label>Date of Birth: <input type="date" id="dob"></label>
-        <label>Gender:
-            <select id="gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-        </label>
-        <button onclick="addUser()">Add User</button>
-    </div>
-
-    <div id="userList">
-        <h3>User List</h3>
-        <table id="userDataTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Date of Birth</th>
-                    <th>Gender</th>
-                    <th>Bhagyank</th>
-                    <th>Moolank</th>
-                    <th>Kua</th>
-                    <th>Numerology Grid</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- User data will be added here -->
-            </tbody>
-        </table>
-    </div>
-
-    <div id="exportSection">
-        <h3>Export Data</h3>
-        <button onclick="exportToExcel()">Calculate All & Export to Excel</button>
-    </div>
-
-    <!-- Removed single result display and Lo Shu Grid -->
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
     <!--
-    <h3>Results</h3>
-    <p><b>Bhagyank:</b> <span id="bhagyank"></span></p>
-    <p><b>Moolank:</b> <span id="moolank"></span></p>
-    <p><b>Kua Number:</b> <span id="kua"></span></p>
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-    <h3>Lo Shu Grid</h3>
-    <div class="grid" id="loShuGrid">
-        <div class="cell" id="c1"></div>
-        <div class="cell" id="c2"></div>
-        <div class="cell" id="c3"></div>
-        <div class="cell" id="c4"></div>
-        <div class="cell" id="c5"></div>
-        <div class="cell" id="c6"></div>
-        <div class="cell" id="c7"></div>
-        <div class="cell" id="c8"></div>
-        <div class="cell" id="c9"></div>
-    </div>
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Numerology Insights. All rights reserved.</p>
-        <!-- Other footer links or info can go here -->
-    </footer>
-
-    <!-- Link the external JavaScript file -->
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> --> <!-- Removed -->
+    <!-- The React bundle script will be injected here by the build process -->
 </body>
 
 </html>
