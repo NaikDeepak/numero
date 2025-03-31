@@ -37,6 +37,10 @@ const compatibilityData = loadJsonData('./data/compatibilityData.json'); // Load
 const iplTeamsData = loadJsonData('./data/iplTeams.json'); // Load IPL team data
 // --- End JSON Data Loading ---
 
+// Add logging to check loaded data
+console.log("IPL Teams Data Loaded:", Object.keys(iplTeamsData).length > 0 ? `${Object.keys(iplTeamsData).length} teams loaded.` : "FAILED TO LOAD OR EMPTY");
+console.log("Compatibility Data Loaded:", Object.keys(compatibilityData).length > 0 ? "OK" : "FAILED TO LOAD OR EMPTY");
+
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -303,16 +307,21 @@ app.listen(port, () => {
 
 // --- NEW: API Endpoint for Team Win Percentage ---
 app.post('/api/win-percentage', (req, res) => {
+    console.log("Received request for /api/win-percentage"); // Log endpoint hit
     const { teamKey, matchDate } // Expect team key (e.g., "CSK") and match date "YYYY-MM-DD"
         = req.body;
+    console.log(`Team Key: ${teamKey}, Match Date: ${matchDate}`); // Log input
 
     // --- Input Validation ---
     if (!teamKey || !matchDate) {
         return res.status(400).json({ error: 'Missing required fields: teamKey and matchDate' });
     }
 
+    // Log the state of iplTeamsData just before access
+    console.log(`Attempting to access teamKey "${teamKey}" in iplTeamsData. Available keys: ${Object.keys(iplTeamsData).join(', ')}`);
     const teamInfo = iplTeamsData[teamKey];
     if (!teamInfo) {
+        console.error(`Team data not found for key: ${teamKey}. iplTeamsData is potentially empty or missing keys.`);
         return res.status(404).json({ error: `Team data not found for key: ${teamKey}` });
     }
 
