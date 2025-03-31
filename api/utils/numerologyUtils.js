@@ -51,13 +51,14 @@ function calculateNumerologyData(dob, gender) {
     // Moolank (Root Number): Sum of the day digits, reduced to single digit
     const moolank = reduceToSingleDigit(day);
 
-    // Bhagyank (Destiny Number): Sum of all digits in DOB (DDMMYYYY), reduced to single digit
-    // Ensure day and month are two digits for consistent summing
-    const dobDigits = `${day.toString().padStart(2, '0')}${month.toString().padStart(2, '0')}${year}`;
-    const bhagyank = reduceToSingleDigit(sumDigits(dobDigits));
+    // Bhagyank (Destiny Number): Sum the full day, month, and year numbers, then reduce the total sum.
+    const bhagyankSum = day + month + year;
+    const bhagyank = reduceToSingleDigit(bhagyankSum);
 
     // Kua Number Calculation (Simplified version)
     // Note: Different schools of Feng Shui/Numerology might have variations (e.g., handling Kua 5)
+    // Ensure day and month are two digits for grid number collection later
+    const dobDigits = `${day.toString().padStart(2, '0')}${month.toString().padStart(2, '0')}${year}`;
     const yearSumReduced = reduceToSingleDigit(sumDigits(year.toString()));
     let kua;
     const lowerCaseGender = gender.toLowerCase();
