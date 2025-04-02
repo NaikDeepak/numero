@@ -591,6 +591,14 @@ button:active {
     margin: -2px 0 5px 0 !important; /* Adjust spacing */
     font-style: italic;
 }
+/* NEW: Style for Moolank analysis paragraph */
+.moolank-analysis-text {
+    font-size: 0.88em;
+    color: var(--text-color);
+    margin: 8px 0 5px 0 !important;
+    line-height: 1.6;
+    text-align: justify; /* Justify text for paragraph look */
+}
 
 
 /* --- End User Card Layout Styles --- */

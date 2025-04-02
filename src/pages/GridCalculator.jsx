@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react" // Added useEffect
+import React, { useState, useEffect, useCallback } from "react" // Added useCallback
 import * as XLSX from "xlsx"
-// Removed import { calculateNumerologyData } from '../numerologyUtils';
 import NumerologyGrid from "../NumerologyGrid" // Adjust path
+// Import icons for Moolank details
+import { FaStar, FaThumbsUp, FaThumbsDown, FaLightbulb } from "react-icons/fa"
 
 // Read BASE API URL from environment variable, fallback to localhost for development
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api"
@@ -45,17 +46,16 @@ function GridCalculator() {
   // Function to add a new user (includes name validation)
   const addUser = () => {
     // Basic validation - ensure name is also entered
-    const trimmedName = name.trim();
+    const trimmedName = name.trim()
     if (!trimmedName || !dob) {
       alert("Please enter Full Name and Date of Birth.")
-      return;
+      return
     }
     // Optional: Add more specific name validation if needed (e.g., check for letters)
     if (!/^[a-zA-Z\s]+$/.test(trimmedName)) {
-        alert("Please enter a valid name containing only letters and spaces.");
-        return;
+      alert("Please enter a valid name containing only letters and spaces.")
+      return
     }
-
 
     const newUser = {
       id: Date.now(), // Simple unique ID using timestamp
@@ -122,8 +122,8 @@ function GridCalculator() {
       "Grid 8",
       "Grid 1",
       "Grid 6", // Bottom row
-      "Destiny No.",      // New header
-      "Soul Urge No.",    // New header
+      "Destiny No.", // New header
+      "Soul Urge No.", // New header
       "Personality No.", // New header
       // Removed "Report" header
     ]
@@ -176,13 +176,13 @@ function GridCalculator() {
 
         // Populate Name Numerology data if available
         if (calculatedData.nameNumerology) {
-            rowData[headerToIndexMap["Destiny No."]] = calculatedData.nameNumerology.destinyNumber ?? "";
-            rowData[headerToIndexMap["Soul Urge No."]] = calculatedData.nameNumerology.soulUrgeNumber ?? "";
-            rowData[headerToIndexMap["Personality No."]] = calculatedData.nameNumerology.personalityNumber ?? "";
+          rowData[headerToIndexMap["Destiny No."]] = calculatedData.nameNumerology.destinyNumber ?? ""
+          rowData[headerToIndexMap["Soul Urge No."]] = calculatedData.nameNumerology.soulUrgeNumber ?? ""
+          rowData[headerToIndexMap["Personality No."]] = calculatedData.nameNumerology.personalityNumber ?? ""
         } else {
-             rowData[headerToIndexMap["Destiny No."]] = "";
-             rowData[headerToIndexMap["Soul Urge No."]] = "";
-             rowData[headerToIndexMap["Personality No."]] = "";
+          rowData[headerToIndexMap["Destiny No."]] = ""
+          rowData[headerToIndexMap["Soul Urge No."]] = ""
+          rowData[headerToIndexMap["Personality No."]] = ""
         }
         // Removed report from export
 
@@ -278,9 +278,7 @@ function GridCalculator() {
         {/* Replace table with a div container for cards */}
         <div className='user-card-list'>
           {usersData.length === 0 ? (
-            <p style={{ textAlign: "center", width: '100%', color: 'var(--text-muted-color)' }}>
-              No users added yet.
-            </p>
+            <p style={{ textAlign: "center", width: "100%", color: "var(--text-muted-color)" }}>No users added yet.</p>
           ) : (
             usersData.map((user) => (
               // Render UserCard instead of UserTableRow
@@ -300,7 +298,8 @@ function GridCalculator() {
 }
 
 // --- REVISED: Renamed UserTableRow to UserCard and updated structure ---
-function UserCard({ user, getOrFetchUserData }) { // Renamed component
+function UserCard({ user, getOrFetchUserData }) {
+  // Renamed component
   const [userData, setUserData] = useState(null) // State for calculated data
   const [isLoading, setIsLoading] = useState(true) // Start in loading state
 
@@ -309,7 +308,7 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
     setIsLoading(true)
     getOrFetchUserData(user).then((data) => {
       if (isMounted) {
-        console.log(`User ${user.id} (${user.name}) Data Received:`, data); // <-- Add console log here
+        console.log(`User ${user.id} (${user.name}) Data Received:`, data) // <-- Add console log here
         setUserData(data)
         setIsLoading(false)
       }
@@ -362,54 +361,108 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
 
   // Helper to format number display in the table cell (moved inside UserCard)
   const formatCellDisplay = (numberResult) => {
-      if (isLoading) return "...";
-      if (!numberResult) return "-";
+    if (isLoading) return "..."
+    if (!numberResult) return "-"
 
-      // Handle both direct numbers (like Moolank, Kua) and result objects
-      const value = numberResult.value ?? numberResult; // Get final value
-      const karmic = numberResult.karmic ?? null;
+    // Handle both direct numbers (like Moolank, Kua) and result objects
+    const value = numberResult.value ?? numberResult // Get final value
+    const karmic = numberResult.karmic ?? null
 
-      if (isNaN(value)) return "-"; // Handle potential NaN
+    if (isNaN(value)) return "-" // Handle potential NaN
 
-      let display = value.toString();
-      if (karmic) {
-          // Add a small indicator for Karmic Debt, tooltip could be added with CSS/JS
-          display += ` (KD ${karmic})`;
-      }
-      return display;
-  };
+    let display = value.toString()
+    if (karmic) {
+      // Add a small indicator for Karmic Debt, tooltip could be added with CSS/JS
+      display += ` (KD ${karmic})`
+    }
+    return display
+  }
 
   // Extract display values using the helper
-  const bhagyankDisplay = formatCellDisplay(userData?.bhagyank);
-  const moolankDisplay = formatCellDisplay(userData?.moolank); // Moolank is simple value
-  const kuaDisplay = formatCellDisplay(userData?.kua);     // Kua is simple value
-  const destinyDisplay = formatCellDisplay(userData?.nameNumerology?.destinyNumber);
-  const soulUrgeDisplay = formatCellDisplay(userData?.nameNumerology?.soulUrgeNumber);
-  const personalityDisplay = formatCellDisplay(userData?.nameNumerology?.personalityNumber);
-
+  const bhagyankDisplay = formatCellDisplay(userData?.bhagyank)
+  const moolankDisplay = formatCellDisplay(userData?.moolank) // Moolank is simple value
+  const kuaDisplay = formatCellDisplay(userData?.kua) // Kua is simple value
+  const destinyDisplay = formatCellDisplay(userData?.nameNumerology?.destinyNumber)
+  const soulUrgeDisplay = formatCellDisplay(userData?.nameNumerology?.soulUrgeNumber)
+  const personalityDisplay = formatCellDisplay(userData?.nameNumerology?.personalityNumber)
 
   // Render as a card div instead of table row
   return (
-    <div className="user-card">
-      <div className="user-card-header">
+    <div className='user-card'>
+      <div className='user-card-header'>
         <h3>{user.name}</h3>
-        <span>{user.dob} ({user.gender})</span>
+        <span>
+          {user.dob} ({user.gender})
+        </span>
       </div>
-      <div className="user-card-body">
-        <div className="user-card-details">
-          <p><strong title={userData?.bhagyank?.karmic ? `Karmic Debt: ${userData.bhagyank.karmic}` : ''}>Bhagyank:</strong> {bhagyankDisplay}</p>
-          <p><strong>Moolank:</strong> {moolankDisplay}</p>
-          {/* NEW: Display Moolank Keywords if available */}
-          {!isLoading && userData?.moolankMeaning?.keywords && (
-            <p className="moolank-keywords"><em>({userData.moolankMeaning.keywords.join(', ')})</em></p>
-          )}
-          <p><strong>Kua:</strong> {kuaDisplay}</p>
+      <div className='user-card-body'>
+        <div className='user-card-details'>
+          <p>
+            <strong title={userData?.bhagyank?.karmic ? `Karmic Debt: ${userData.bhagyank.karmic}` : ""}>
+              Bhagyank:
+            </strong>{" "}
+            {bhagyankDisplay}
+          </p>
+          {/* Moolank Details - Expanded */}
+          <div className='moolank-details-section'>
+            <p>
+              <strong>Moolank:</strong> {moolankDisplay}
+            </p>
+            {!isLoading && userData?.moolankMeaning && (
+              <>
+                <p className='moolank-meta'>
+                  <FaStar className='moolank-icon' /> Grah: {userData.moolankMeaning.grah || "N/A"} | Rashi:{" "}
+                  {userData.moolankMeaning.rashi || "N/A"}
+                </p>
+                <p className='moolank-keywords'>
+                  <em>Keywords: {userData.moolankMeaning.keywords?.join(", ") || "N/A"}</em>
+                </p>
+                {/* Optionally add collapsible sections for more details */}
+              </>
+            )}
+          </div>
+          <p>
+            <strong>Kua:</strong> {kuaDisplay}
+          </p>
           <hr /> {/* Separator */}
-          <p><strong title={userData?.nameNumerology?.destinyNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.destinyNumber.karmic}` : ''}>Destiny:</strong> {destinyDisplay}</p>
-          <p><strong title={userData?.nameNumerology?.soulUrgeNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.soulUrgeNumber.karmic}` : ''}>Soul Urge:</strong> {soulUrgeDisplay}</p>
-          <p><strong title={userData?.nameNumerology?.personalityNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.personalityNumber.karmic}` : ''}>Personality:</strong> {personalityDisplay}</p>
+          <p>
+            <strong
+              title={
+                userData?.nameNumerology?.destinyNumber?.karmic
+                  ? `Karmic Debt: ${userData.nameNumerology.destinyNumber.karmic}`
+                  : ""
+              }
+            >
+              Destiny:
+            </strong>{" "}
+            {destinyDisplay}
+          </p>
+          <p>
+            <strong
+              title={
+                userData?.nameNumerology?.soulUrgeNumber?.karmic
+                  ? `Karmic Debt: ${userData.nameNumerology.soulUrgeNumber.karmic}`
+                  : ""
+              }
+            >
+              Soul Urge:
+            </strong>{" "}
+            {soulUrgeDisplay}
+          </p>
+          <p>
+            <strong
+              title={
+                userData?.nameNumerology?.personalityNumber?.karmic
+                  ? `Karmic Debt: ${userData.nameNumerology.personalityNumber.karmic}`
+                  : ""
+              }
+            >
+              Personality:
+            </strong>{" "}
+            {personalityDisplay}
+          </p>
         </div>
-        <div className="user-card-grid">
+        <div className='user-card-grid'>
           {isLoading ? (
             <p>Loading Grid...</p>
           ) : gridNumbersArray ? (
@@ -422,7 +475,7 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
       </div>
       {/* NEW: Display Grid Analysis */}
       {!isLoading && userData?.gridAnalysis && userData.gridAnalysis.length > 0 && (
-        <div className="user-card-analysis">
+        <div className='user-card-analysis'>
           <h4>Grid Analysis:</h4>
           <ul>
             {userData.gridAnalysis.map((item, index) => (
@@ -433,13 +486,56 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
           </ul>
         </div>
       )}
-      <div className="user-card-actions">
+      {/* NEW: Detailed Moolank Analysis Section */}
+      {!isLoading && userData?.moolankMeaning && (
+        <div className='moolank-full-analysis'>
+          <h4>Moolank {moolankDisplay} Analysis:</h4>
+          {userData.moolankMeaning.characteristics && (
+            <div className='moolank-sub-section'>
+              <h5>
+                <FaThumbsUp className='moolank-icon positive' /> Characteristics:
+              </h5>
+              <ul>
+                {userData.moolankMeaning.characteristics.map((c, i) => (
+                  <li key={`char-${i}`}>{c}</li>
+                ))}
+              </ul>
+              {/* Add a "show more" button if needed */}
+            </div>
+          )}
+          {userData.moolankMeaning.negativeTraits && (
+            <div className='moolank-sub-section'>
+              <h5>
+                <FaThumbsDown className='moolank-icon negative' /> Negative Traits:
+              </h5>
+              <ul>
+                {userData.moolankMeaning.negativeTraits.slice(0, 3).map((n, i) => (
+                  <li key={`neg-${i}`}>{n}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {userData.moolankMeaning.suggestions && (
+            <div className='moolank-sub-section'>
+              <h5>
+                <FaLightbulb className='moolank-icon suggestion' /> Suggestions:
+              </h5>
+              <ul>
+                {userData.moolankMeaning.suggestions.slice(0, 3).map((s, i) => (
+                  <li key={`sug-${i}`}>{s}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+      <div className='user-card-actions'>
         <button onClick={handleDownloadPdf} disabled={isLoading || !userData || userData.moolank === "Error"}>
           {isLoading ? "Loading..." : "Download PDF"}
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 export default GridCalculator

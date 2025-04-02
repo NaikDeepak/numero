@@ -42,6 +42,7 @@ const nameSoulUrgeMeanings = loadJsonData("./data/nameSoulUrgeMeanings.json")
 const namePersonalityMeanings = loadJsonData("./data/namePersonalityMeanings.json")
 // --- NEW: Load Grid Analysis Definitions ---
 const gridAnalysisDefinitions = loadJsonData("./data/gridAnalysisDefinitions.json")
+const moolankMeanings = loadJsonData("./data/moolankMeanings.json") // <-- Add missing moolankMeanings loading
 console.log(
   "Grid Analysis Definitions Loaded:",
   Array.isArray(gridAnalysisDefinitions)
@@ -103,10 +104,13 @@ app.post("/api/calculate", (req, res) => {
       responseData.gridAnalysis = gridAnalysis // Add grid analysis results
 
       // --- NEW: Add Moolank Meaning to API response ---
-      const moolankMeaningData = moolankMeanings[responseData.moolank.toString()];
+      const moolankMeaningData = moolankMeanings?.[responseData.moolank?.toString()] // <-- Add safe access
       responseData.moolankMeaning = moolankMeaningData ? {
+          grah: moolankMeaningData.grah,
+          rashi: moolankMeaningData.rashi,
           keywords: moolankMeaningData.keywords,
-          characteristics: moolankMeaningData.characteristics?.slice(0, 3) // Send first few characteristics
+          analysis: moolankMeaningData.analysis // Send the analysis paragraph
+          // characteristics: moolankMeaningData.characteristics // Remove characteristics
       } : null;
 
 
@@ -266,17 +270,28 @@ app.get("/api/report/pdf", (req, res) => {
       const textWidth = gridStartX - margin - 20 // Width for text column
 
       // Display Moolank (with detailed interpretation)
-      const moolankMeaningData = moolankMeanings[moolank.toString()]; // Get data for the moolank
-      doc.font(fonts.bodyBold).text("Moolank:", textStartX, textStartY, { width: textWidth, continued: true });
-      doc.font(fonts.body).text(` ${moolank}`); // Display number first
+      const moolankMeaningData = moolankMeanings[moolank.toString()] // Get data for the moolank
+      doc.font(fonts.bodyBold).text("Moolank:", textStartX, textStartY, { width: textWidth, continued: true })
+      doc.font(fonts.body).text(` ${moolank}`) // Display number first
       if (moolankMeaningData) {
-          doc.font(fonts.bodyBold).fontSize(9).text(`Grah: ${moolankMeaningData.grah || 'N/A'} | Rashi: ${moolankMeaningData.rashi || 'N/A'}`, textStartX, doc.y, { width: textWidth });
-          doc.font(fonts.body).fontSize(9).text(`Keywords: ${(moolankMeaningData.keywords || []).join(', ')}`, textStartX, doc.y, { width: textWidth });
-          // Optionally add more details like characteristics if space allows or in a separate section
+        doc
+          .font(fonts.bodyBold)
+          .fontSize(9)
+          .text(
+            `Grah: ${moolankMeaningData.grah || "N/A"} | Rashi: ${moolankMeaningData.rashi || "N/A"}`,
+            textStartX,
+            doc.y,
+            { width: textWidth }
+          )
+        doc
+          .font(fonts.body)
+          .fontSize(9)
+          .text(`Keywords: ${(moolankMeaningData.keywords || []).join(", ")}`, textStartX, doc.y, { width: textWidth })
+        // Optionally add more details like characteristics if space allows or in a separate section
       } else {
-          doc.font(fonts.body).fontSize(9).text(`(Meaning not found)`, textStartX, doc.y, { width: textWidth });
+        doc.font(fonts.body).fontSize(9).text(`(Meaning not found)`, textStartX, doc.y, { width: textWidth })
       }
-      doc.moveDown(0.7); // Adjust spacing
+      doc.moveDown(0.7) // Adjust spacing
 
       doc.font(fonts.bodyBold).text("Bhagyank:", textStartX, doc.y, { width: textWidth })
       doc.font(fonts.body).text(`${bhagyank} (${houseMeanings[bhagyank] || "N/A"})`, { width: textWidth })
@@ -692,10 +707,7 @@ app.listen(port, () => {
 // --- NEW: API Endpoint for Team Win Percentage ---
 app.post("/api/win-percentage", (req, res) => {
   console.log("Received request for /api/win-percentage") // Log endpoint hit
-  const {
-    teamKey,
-    matchDate,
-  } = req.body // Expect team key (e.g., "CSK") and match date "YYYY-MM-DD"
+  const { teamKey, matchDate } = req.body // Expect team key (e.g., "CSK") and match date "YYYY-MM-DD"
   console.log(`Team Key: ${teamKey}, Match Date: ${matchDate}`) // Log input
 
   // --- Input Validation ---
