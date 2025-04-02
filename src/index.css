@@ -550,7 +550,49 @@ button:active {
         align-items: center; /* Center grid vertically */
         padding-top: 10px; /* Add some space above grid */
     }
+     .user-card-grid .numerology-grid {
+        transform: scale(1.0); /* Normal size grid */
+    }
 }
+
+/* NEW: Styles for Grid Analysis in Card */
+.user-card-analysis {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+    text-align: left;
+}
+.user-card-analysis h4 {
+    margin: 0 0 8px 0;
+    font-size: 0.95em;
+    color: var(--accent-color);
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+}
+.user-card-analysis ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.user-card-analysis li {
+    font-size: 0.85em;
+    margin-bottom: 4px;
+    color: var(--text-muted-color);
+    cursor: default; /* Indicate title attribute is available */
+}
+.user-card-analysis li strong {
+    color: var(--text-color);
+    margin-right: 5px;
+}
+/* NEW: Style for Moolank keywords */
+.moolank-keywords {
+    font-size: 0.8em !important; /* Smaller font */
+    color: var(--text-muted-color);
+    margin: -2px 0 5px 0 !important; /* Adjust spacing */
+    font-style: italic;
+}
+
+
 /* --- End User Card Layout Styles --- */
 
 
@@ -875,6 +917,90 @@ input:checked + .slider:before {
     color: var(--grid-cell-empty-text);
     /* Optional: Add a placeholder like a dot */
     /* content: '·'; */
+}
+
+/* --- NEW: Styles for Grid Highlighting Overlay --- */
+.numerology-grid-container {
+    position: relative; /* Needed for absolute positioning of SVG overlay */
+    width: min-content; /* Fit the grid size */
+    margin: 5px auto; /* Center within parent */
+}
+
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through to grid cells if needed */
+    overflow: visible; /* Allow lines to potentially extend slightly */
+}
+
+.analysis-line {
+    stroke: var(--accent-color); /* Default line color */
+    stroke-width: 3; /* Line thickness */
+    stroke-linecap: round;
+    opacity: 0.8; /* Slightly more opaque */
+}
+
+/* Styles for Rectangles (Vertical Planes Only) */
+.analysis-rect {
+    fill: var(--accent-color); /* Default fill color */
+    opacity: 0.15; /* Make rectangles quite transparent */
+    stroke: var(--accent-color); /* Optional border */
+    stroke-width: 0.5; /* Thin border */
+    rx: 2; /* Slightly rounded corners */
+    ry: 2;
+}
+.analysis-rect.plane-vertical-rect { /* Specific style for vertical planes */
+    fill: rgba(176, 196, 222, 0.15); /* LightSteelBlue fill */
+    stroke: rgba(176, 196, 222, 0.4);
+}
+
+
+/* Specific styles for different line categories */
+
+/* Lines for Horizontal Planes */
+.analysis-line.plane-line {
+    stroke: rgba(218, 165, 32, 0.7); /* Goldenrod line */
+    stroke-width: 3;
+}
+/* Lines for Arrows (Diagonals) */
+.analysis-line.arrow-line {
+     stroke: rgba(255, 255, 255, 0.8); /* White lines */
+     stroke-width: 3;
+}
+/* Lines for Small Arrows */
+.analysis-line.small-arrow-line {
+    stroke: rgba(200, 200, 200, 0.7); /* Grey */
+    stroke-width: 2.5;
+    stroke-dasharray: 5 3; /* Dashed line */
+}
+
+
+/* Light Mode Adjustments */
+body.light-mode .analysis-line {
+    stroke: var(--accent-color);
+    opacity: 0.8;
+}
+body.light-mode .analysis-rect {
+    fill: var(--accent-color);
+    opacity: 0.15;
+    stroke: var(--accent-color);
+}
+body.light-mode .analysis-rect.plane-vertical-rect {
+    fill: rgba(70, 130, 180, 0.15); /* SteelBlue fill */
+    stroke: rgba(70, 130, 180, 0.4);
+}
+
+body.light-mode .analysis-line.plane-line {
+    stroke: rgba(139, 69, 19, 0.7); /* SaddleBrown */
+}
+body.light-mode .analysis-line.arrow-line {
+     stroke: rgba(50, 50, 50, 0.8); /* Dark grey */
+}
+body.light-mode .analysis-line.small-arrow-line {
+    stroke: rgba(100, 100, 100, 0.7); /* Darker grey */
 }
 
 

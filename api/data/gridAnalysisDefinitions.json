@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Mental Plane",
+    "category": "Plane",
+    "numbers": [4, 9, 2],
+    "type": "presence",
+    "interpretation": "People with this plane strongly present have a sharp memory and a high level of intelligence. They are logical thinkers, analytical, and have a structured approach to solving problems. They excel in fields that require deep thinking, calculations, and rational decision-making. Their ability to recall details makes them strong researchers and strategists. They may have a love for knowledge, academics, and intellectual debates."
+  },
+  {
+    "name": "Emotional Plane",
+    "category": "Plane",
+    "numbers": [3, 5, 7],
+    "type": "presence",
+    "interpretation": "Highly emotional individuals with a deep sense of empathy and kindness. They are rich at heart, meaning they prioritize emotions over materialistic gains. Strong inclination towards spirituality and religious practices. They may experience emotional ups and downs but maintain a kind-hearted approach to life. Their compassion makes them great friends, mentors, or healers. They find satisfaction in helping others and are often drawn to humanitarian work."
+  },
+  {
+    "name": "Practical Plane",
+    "category": "Plane",
+    "numbers": [8, 1, 6],
+    "type": "presence",
+    "interpretation": "People with this plane are highly practical and grounded. They prefer a logical and well-structured approach to life. They go into depth before making any decision, ensuring it is well thought out. Their strong understanding of material success often leads them to financial stability and prosperity. They are likely to be business-minded and good at managing resources. A balanced mix of ambition and execution makes them successful in practical endeavors."
+  },
+  {
+    "name": "Thought Plane",
+    "category": "Plane (Vertical)",
+    "numbers": [4, 3, 8],
+    "type": "presence",
+    "interpretation": "People with this plane are highly visual thinkers with a strong imagination. They can plan ahead, visualize outcomes, and foresee potential challenges. They are shrewd in business and negotiations, always weighing the pros and cons. Their prudent nature makes them cautious decision-makers. If unbalanced, their cunning nature may lead them toward manipulative tendencies."
+  },
+  {
+    "name": "Will Plane",
+    "category": "Plane (Vertical)",
+    "numbers": [9, 5, 1],
+    "type": "presence",
+    "interpretation": "These individuals have strong willpower and determination. They do not give up easily and can adjust to any situation. They are natural fighters, always pushing through obstacles to reach their goals. They take charge in critical situations, making them good leaders and decision-makers. Their resilience helps them succeed in challenging environments."
+  },
+  {
+    "name": "Action Plane",
+    "category": "Plane (Vertical)",
+    "numbers": [2, 7, 6],
+    "type": "presence",
+    "interpretation": "This plane represents the ability to act quickly and seize opportunities. Individuals with this plane are proactive and do not hesitate to take risks. Their athletic and competitive nature makes them strong in sports and other physical activities. They are action-oriented, meaning they prefer execution over excessive planning. If balanced, they can make quick decisions and capitalize on opportunities effectively."
+  },
+  {
+    "name": "Success Plane (Golden Rajyog)",
+    "category": "Arrow",
+    "numbers": [4, 5, 6],
+    "type": "presence",
+    "interpretation": "Individuals born with this combination are naturally successful. They have an aggressive and determined mindset, ensuring they achieve their goals. They are balanced in their decision-making, knowing when to act and when to wait. They are likely to be financially well-off and attract wealth through their efforts. Their leadership skills help them command respect and authority in their field."
+  },
+  {
+    "name": "Success Plane (Silver Rajyog)",
+    "category": "Arrow",
+    "numbers": [2, 5, 8],
+    "type": "presence",
+    "interpretation": "Strongly linked to real estate, property business, or investments. These individuals are highly patient and wait for the right moment to act. They have a stable life due to their calculated and well-planned decisions. They never lose sight of their goals, ensuring they eventually achieve success. They value long-term security and build wealth steadily."
+  },
+  {
+    "name": "Arrow of Balance",
+    "category": "Small Arrow",
+    "numbers": [7, 1],
+    "type": "presence",
+    "interpretation": "People with this combination are deep researchers. They enjoy uncovering hidden knowledge and diving deep into subjects. They have a methodical approach to learning and problem-solving. They can maintain balance in their thoughts and emotions, ensuring wise decisions."
+  },
+  {
+    "name": "Arrow of Spirituality",
+    "category": "Arrow",
+    "numbers": [3, 5, 7],
+    "type": "presence",
+    "interpretation": "Highly emotional and spiritually inclined. Deep connection with religion, higher consciousness, and faith-based beliefs. Generous, kind-hearted individuals who find fulfillment in helping others. They value inner peace and often seek spiritual wisdom."
+  },
+  {
+    "name": "Arrow of Intellect",
+    "category": "Arrow",
+    "numbers": [4, 9, 2],
+    "type": "presence",
+    "interpretation": "People with this combination have a sharp memory and strong intellectual capabilities. They excel in logical reasoning, structured thinking, and problem-solving. Their analytical nature makes them strong decision-makers. They are drawn to fields like science, mathematics, and philosophy."
+  },
+  {
+    "name": "Arrow of Practicality",
+    "category": "Arrow",
+    "numbers": [8, 1, 6],
+    "type": "presence",
+    "interpretation": "Practical thinkers with a strong understanding of the material world. They are grounded, realistic, and highly capable in business and financial matters. They ensure stability and prosperity in their personal and professional life. They focus on logical, well-structured decision-making."
+  },
+  {
+    "name": "Arrow of Litigation",
+    "category": "Small Arrow",
+    "numbers": [3, 9],
+    "type": "presence",
+    "interpretation": "People with this combination often find themselves in arguments or legal matters. They have a natural inclination towards debating and proving their point. Their strong-willed nature may make them confrontational. They must work on their diplomacy skills to avoid unnecessary conflicts."
+  }
+]

@@ -310,7 +310,65 @@ export {
     calculatePersonalDay,
     calculateCompatibilityScore,
     calculateTimeFactorScore,
+    analyzeGrid, // <-- Add the new function here
     // Keep internal helpers if needed elsewhere, otherwise they can remain unexported
     // sumDigits,
     // reduceToSingleDigit
 };
+
+
+// --- NEW: Grid Analysis Function ---
+/**
+ * Analyzes the Lo Shu grid numbers for predefined arrows and planes.
+ * @param {number[]} gridNumbers - Array of numbers present in the grid (can have duplicates).
+ * @param {object[]} definitions - Array of definitions for arrows/planes.
+ * @returns {object[]} Array of analysis results for found patterns.
+ */
+function analyzeGrid(gridNumbersInput, definitions) { // Renamed input param for clarity
+    // Ensure gridNumbersInput is always an array, even if null/undefined is passed
+    const gridNumbers = Array.isArray(gridNumbersInput) ? gridNumbersInput : [];
+    // Ensure definitions is always an array
+    const validDefinitions = Array.isArray(definitions) ? definitions : [];
+
+    if (gridNumbers.length === 0 || validDefinitions.length === 0) {
+        console.log("[analyzeGrid] Input gridNumbers or definitions are empty, returning [].");
+        return [];
+    }
+
+    // Create a Set of unique, valid numbers present in the grid
+    const presentNumbers = new Set(
+        gridNumbers
+            .map(n => parseInt(n, 10)) // Convert to integer
+            .filter(n => !isNaN(n) && n >= 1 && n <= 9) // Keep only valid digits 1-9
+    );
+    console.log("[analyzeGrid] Present Unique Numbers (1-9):", Array.from(presentNumbers)); // Log the set being checked
+
+    const analysisResults = [];
+
+    validDefinitions.forEach(def => {
+        if (!def.numbers || !Array.isArray(def.numbers) || !def.type) return;
+
+        let conditionMet = false;
+        if (def.type === 'presence') {
+            // Check if ALL required numbers are present in the grid set
+            conditionMet = def.numbers.every(num => presentNumbers.has(num));
+        } else if (def.type === 'absence') {
+            // Check if ALL specified numbers are ABSENT from the grid set
+            conditionMet = def.numbers.every(num => !presentNumbers.has(num));
+        }
+
+        // Log check result for each definition
+        // console.log(`[analyzeGrid] Checking '${def.name}' (${def.type}): Condition Met = ${conditionMet}`);
+
+        if (conditionMet) {
+            analysisResults.push({
+                name: def.name,
+                category: def.category || 'Analysis', // Default category
+                interpretation: def.interpretation || 'No interpretation available.',
+                numbers: def.numbers // Include numbers for potential highlighting later
+            });
+        }
+    });
+
+    return analysisResults;
+}

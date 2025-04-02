@@ -309,6 +309,7 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
     setIsLoading(true)
     getOrFetchUserData(user).then((data) => {
       if (isMounted) {
+        console.log(`User ${user.id} (${user.name}) Data Received:`, data); // <-- Add console log here
         setUserData(data)
         setIsLoading(false)
       }
@@ -398,6 +399,10 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
         <div className="user-card-details">
           <p><strong title={userData?.bhagyank?.karmic ? `Karmic Debt: ${userData.bhagyank.karmic}` : ''}>Bhagyank:</strong> {bhagyankDisplay}</p>
           <p><strong>Moolank:</strong> {moolankDisplay}</p>
+          {/* NEW: Display Moolank Keywords if available */}
+          {!isLoading && userData?.moolankMeaning?.keywords && (
+            <p className="moolank-keywords"><em>({userData.moolankMeaning.keywords.join(', ')})</em></p>
+          )}
           <p><strong>Kua:</strong> {kuaDisplay}</p>
           <hr /> {/* Separator */}
           <p><strong title={userData?.nameNumerology?.destinyNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.destinyNumber.karmic}` : ''}>Destiny:</strong> {destinyDisplay}</p>
@@ -408,12 +413,26 @@ function UserCard({ user, getOrFetchUserData }) { // Renamed component
           {isLoading ? (
             <p>Loading Grid...</p>
           ) : gridNumbersArray ? (
-            <NumerologyGrid gridNumbers={gridNumbersArray} />
+            // Pass gridAnalysis data to the NumerologyGrid component
+            <NumerologyGrid gridNumbers={gridNumbersArray} gridAnalysis={userData?.gridAnalysis} />
           ) : (
             <p>-</p> // Show dash if no grid or error
           )}
         </div>
       </div>
+      {/* NEW: Display Grid Analysis */}
+      {!isLoading && userData?.gridAnalysis && userData.gridAnalysis.length > 0 && (
+        <div className="user-card-analysis">
+          <h4>Grid Analysis:</h4>
+          <ul>
+            {userData.gridAnalysis.map((item, index) => (
+              <li key={index}>
+                <strong>{item.name}:</strong> {item.interpretation}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="user-card-actions">
         <button onClick={handleDownloadPdf} disabled={isLoading || !userData || userData.moolank === "Error"}>
           {isLoading ? "Loading..." : "Download PDF"}
