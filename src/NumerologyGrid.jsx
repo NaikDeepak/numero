@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 /**
  * Renders a 3x3 Lo Shu grid based on provided numbers.
  * @param {object} props - Component props.
- * @param {number[]} props.gridNumbers - Array of numbers to display in the grid.
+ * @param {number[]} [props.gridNumbers=[]] - Array of numbers to display in the grid. Defaults to an empty array.
  */
-function NumerologyGrid({ gridNumbers }) {
+function NumerologyGrid({ gridNumbers = [] }) { // Use default parameter here
   // Lo Shu Grid position mapping (Number -> Cell Index 0-8)
   // 4 9 2  -> 0 1 2
   // 3 5 7  -> 3 4 5
@@ -42,9 +42,6 @@ NumerologyGrid.propTypes = {
   gridNumbers: PropTypes.arrayOf(PropTypes.number),
 };
 
-// Default props for when gridNumbers might be undefined or null
-NumerologyGrid.defaultProps = {
-  gridNumbers: [],
-};
+// Remove the defaultProps block below
 
 export default NumerologyGrid;
