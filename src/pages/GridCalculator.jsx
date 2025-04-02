@@ -275,39 +275,19 @@ function GridCalculator() {
       {/* User List */}
       <div id='userList'>
         <h3>User List</h3>
-        <table id='userDataTable'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date of Birth</th>
-              <th>Gender</th>
-              <th>Bhagyank</th>
-              <th>Moolank</th>
-              <th>Kua</th>
-              {/* Add Name Numerology Headers */}
-              <th>Destiny</th>
-              <th>Soul Urge</th>
-              <th>Personality</th>
-              <th>Numerology Grid</th>
-              <th>Actions</th> {/* Changed header to Actions */}
-            </tr>
-          </thead>
-          <tbody>
-            {usersData.length === 0 ? (
-              <tr>
-                {/* Update colspan to 11 */}
-                <td colSpan='11' style={{ textAlign: "center" }}>
-                  No users added yet.
-                </td>{" "}
-              </tr>
-            ) : (
-              usersData.map((user) => (
-                // Use a separate component for the row to manage its state
-                <UserTableRow key={user.id} user={user} getOrFetchUserData={getOrFetchUserData} />
-              ))
-            )}
-          </tbody>
-        </table>
+        {/* Replace table with a div container for cards */}
+        <div className='user-card-list'>
+          {usersData.length === 0 ? (
+            <p style={{ textAlign: "center", width: '100%', color: 'var(--text-muted-color)' }}>
+              No users added yet.
+            </p>
+          ) : (
+            usersData.map((user) => (
+              // Render UserCard instead of UserTableRow
+              <UserCard key={user.id} user={user} getOrFetchUserData={getOrFetchUserData} />
+            ))
+          )}
+        </div>
       </div>
 
       {/* Export Section */}
@@ -319,8 +299,8 @@ function GridCalculator() {
   )
 }
 
-// New component for table row to handle individual data fetching
-function UserTableRow({ user, getOrFetchUserData }) {
+// --- REVISED: Renamed UserTableRow to UserCard and updated structure ---
+function UserCard({ user, getOrFetchUserData }) { // Renamed component
   const [userData, setUserData] = useState(null) // State for calculated data
   const [isLoading, setIsLoading] = useState(true) // Start in loading state
 
@@ -379,35 +359,68 @@ function UserTableRow({ user, getOrFetchUserData }) {
     }
   }
 
+  // Helper to format number display in the table cell (moved inside UserCard)
+  const formatCellDisplay = (numberResult) => {
+      if (isLoading) return "...";
+      if (!numberResult) return "-";
+
+      // Handle both direct numbers (like Moolank, Kua) and result objects
+      const value = numberResult.value ?? numberResult; // Get final value
+      const karmic = numberResult.karmic ?? null;
+
+      if (isNaN(value)) return "-"; // Handle potential NaN
+
+      let display = value.toString();
+      if (karmic) {
+          // Add a small indicator for Karmic Debt, tooltip could be added with CSS/JS
+          display += ` (KD ${karmic})`;
+      }
+      return display;
+  };
+
+  // Extract display values using the helper
+  const bhagyankDisplay = formatCellDisplay(userData?.bhagyank);
+  const moolankDisplay = formatCellDisplay(userData?.moolank); // Moolank is simple value
+  const kuaDisplay = formatCellDisplay(userData?.kua);     // Kua is simple value
+  const destinyDisplay = formatCellDisplay(userData?.nameNumerology?.destinyNumber);
+  const soulUrgeDisplay = formatCellDisplay(userData?.nameNumerology?.soulUrgeNumber);
+  const personalityDisplay = formatCellDisplay(userData?.nameNumerology?.personalityNumber);
+
+
+  // Render as a card div instead of table row
   return (
-    <tr>
-      <td data-label='Name'>{user.name}</td>
-      <td data-label='DOB'>{user.dob}</td>
-      <td data-label='Gender'>{user.gender}</td>
-      <td data-label='Bhagyank'>{bhagyank}</td>
-      <td data-label='Moolank'>{moolank}</td>
-      <td data-label='Kua'>{kua}</td>
-      {/* Add cells for Name Numerology */}
-      <td data-label='Destiny'>{destiny}</td>
-      <td data-label='Soul Urge'>{soulUrge}</td>
-      <td data-label='Personality'>{personality}</td>
-      <td data-label='Grid'>
-        {isLoading ? (
-          "..." // Simple loading indicator
-        ) : gridNumbersArray ? (
-          <NumerologyGrid gridNumbers={gridNumbersArray} />
-        ) : (
-          "-" // Show dash if no grid or error
-        )}
-      </td>
-      {/* Actions Cell */}
-      <td data-label='Actions'>
+    <div className="user-card">
+      <div className="user-card-header">
+        <h3>{user.name}</h3>
+        <span>{user.dob} ({user.gender})</span>
+      </div>
+      <div className="user-card-body">
+        <div className="user-card-details">
+          <p><strong title={userData?.bhagyank?.karmic ? `Karmic Debt: ${userData.bhagyank.karmic}` : ''}>Bhagyank:</strong> {bhagyankDisplay}</p>
+          <p><strong>Moolank:</strong> {moolankDisplay}</p>
+          <p><strong>Kua:</strong> {kuaDisplay}</p>
+          <hr /> {/* Separator */}
+          <p><strong title={userData?.nameNumerology?.destinyNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.destinyNumber.karmic}` : ''}>Destiny:</strong> {destinyDisplay}</p>
+          <p><strong title={userData?.nameNumerology?.soulUrgeNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.soulUrgeNumber.karmic}` : ''}>Soul Urge:</strong> {soulUrgeDisplay}</p>
+          <p><strong title={userData?.nameNumerology?.personalityNumber?.karmic ? `Karmic Debt: ${userData.nameNumerology.personalityNumber.karmic}` : ''}>Personality:</strong> {personalityDisplay}</p>
+        </div>
+        <div className="user-card-grid">
+          {isLoading ? (
+            <p>Loading Grid...</p>
+          ) : gridNumbersArray ? (
+            <NumerologyGrid gridNumbers={gridNumbersArray} />
+          ) : (
+            <p>-</p> // Show dash if no grid or error
+          )}
+        </div>
+      </div>
+      <div className="user-card-actions">
         <button onClick={handleDownloadPdf} disabled={isLoading || !userData || userData.moolank === "Error"}>
           {isLoading ? "Loading..." : "Download PDF"}
         </button>
-      </td>
-    </tr>
-  )
+      </div>
+    </div>
+  );
 }
 
 export default GridCalculator

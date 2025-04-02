@@ -87,6 +87,13 @@ body.light-mode {
 
 
 /* --- Base & Typography --- */
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 body {
     font-family: 'Merriweather', serif; /* Default body font */
     margin: 0;
@@ -95,16 +102,16 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: var(--bg-color);
-    /* Layered background: Pattern on top of Image */
+    /* Layered background: Pattern on top of Image - Using Placeholder */
     background-image:
         /* Pattern Layer (Top) */
         linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px),
-        /* Background Image Layer (Bottom) */
-        url('images/mystical-background.jpg');
+        /* Background Image Layer (Bottom) - Placeholder */
+        url('/images/placeholder-background-1920x1080.jpg'); /* Suggesting path in public folder */
     background-size:
-        25px 25px, /* Pattern size */
-        25px 25px, /* Pattern size */
+        30px 30px, /* Pattern size */
+        30px 30px, /* Pattern size */
         cover;     /* Image size */
     background-repeat:
         repeat,    /* Pattern repeat */
@@ -118,11 +125,13 @@ body {
         scroll,    /* Pattern attachment */
         scroll,    /* Pattern attachment */
         fixed;     /* Image attachment (parallax effect) */
-    background-blend-mode: overlay; /* Blend image with bg-color */
+    background-blend-mode: multiply; /* Blend image with bg-color - adjust blend mode */
     color: var(--text-color);
-    font-size: 16px;
-    line-height: 1.8;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 16px; /* Base font size */
+    line-height: 1.7; /* Improved line height */
+    transition: background-color 0.4s ease, color 0.4s ease; /* Slightly slower transition */
+    -webkit-font-smoothing: antialiased; /* Smoother fonts */
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* --- Header --- */

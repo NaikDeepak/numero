@@ -4,119 +4,111 @@
 
 /* --- CSS Variables --- */
 :root {
-    /* Dark Mode (Default) */
-    --bg-color: #1a1a1a; /* Very dark grey/off-black */
-    --bg-pattern-color: rgba(255, 165, 0, 0.05); /* Subtle orange pattern */
-    --text-color: #e0e0e0; /* Light grey text */
-    --text-muted-color: #a0a0a0; /* Muted grey text */
-    --header-bg: #111111; /* Near black */
+    /* Dark Mode (Default) - Refined */
+    --bg-color: #121212; /* Slightly darker off-black */
+    --bg-pattern-color: rgba(218, 165, 32, 0.04); /* Goldenrod pattern, more subtle */
+    --text-color: #dcdcdc; /* Lighter grey text */
+    --text-muted-color: #999999; /* Muted grey text */
+    --header-bg: linear-gradient(to bottom, #202020, #111111); /* Dark gradient */
     --header-text: #ffffff;
-    --accent-color: #ff8c00; /* Dark Orange */
-    --accent-hover: #ffa500; /* Lighter Orange */
-    --accent-text-color: #111111; /* Text on orange buttons */
-    --border-color: rgba(255, 140, 0, 0.3); /* Orange border, semi-transparent */
-    --border-strong-color: #ff8c00;
-    --section-bg: rgba(40, 40, 40, 0.85); /* Dark grey, semi-transparent */
-    --section-border: rgba(255, 140, 0, 0.4);
-    --table-bg: rgba(45, 45, 45, 0.7);
-    --table-header-bg: linear-gradient(to bottom, #333333, #222222);
-    --table-header-text: #ff8c00;
-    --table-row-even-bg: rgba(55, 55, 55, 0.3);
-    --table-row-hover-bg: rgba(80, 80, 80, 0.5);
-    --table-border-color: rgba(255, 140, 0, 0.2);
-    --grid-bg: rgba(20, 20, 20, 0.7);
-    --grid-border: #ff8c00;
-    --grid-cell-bg: #2a2a2a;
-    --grid-cell-text: #ff8c00;
-    --grid-cell-empty-bg: rgba(42, 42, 42, 0.5);
-    --grid-cell-empty-text: rgba(255, 140, 0, 0.3);
-    --input-bg: rgba(10, 10, 10, 0.8);
-    --input-text: #e0e0e0;
-    --input-border: rgba(255, 140, 0, 0.3);
-    --input-focus-border: #ff8c00;
-    --input-focus-shadow: rgba(255, 140, 0, 0.4);
-    --button-bg: linear-gradient(to bottom, #ff8c00, #e67e00);
+    --accent-color: #DAA520; /* Goldenrod */
+    --accent-hover: #F0E68C; /* Khaki (lighter gold) */
+    --accent-text-color: #111111; /* Text on accent buttons */
+    --border-color: rgba(218, 165, 32, 0.25); /* Goldenrod border, subtle */
+    --border-strong-color: #DAA520;
+    --section-bg: rgba(28, 28, 28, 0.9); /* Darker grey, slightly more opaque */
+    --section-border: rgba(218, 165, 32, 0.35);
+    --table-bg: rgba(35, 35, 35, 0.8);
+    --table-header-bg: linear-gradient(to bottom, #282828, #1e1e1e);
+    --table-header-text: #DAA520;
+    --table-row-even-bg: rgba(45, 45, 45, 0.4);
+    --table-row-hover-bg: rgba(60, 60, 60, 0.6);
+    --table-border-color: rgba(218, 165, 32, 0.15);
+    --grid-bg: rgba(15, 15, 15, 0.8);
+    --grid-border: #DAA520;
+    --grid-cell-bg: #222222;
+    --grid-cell-text: #DAA520;
+    --grid-cell-empty-bg: rgba(34, 34, 34, 0.6);
+    --grid-cell-empty-text: rgba(218, 165, 32, 0.3);
+    --input-bg: rgba(10, 10, 10, 0.9);
+    --input-text: #dcdcdc;
+    --input-border: rgba(218, 165, 32, 0.25);
+    --input-focus-border: #DAA520;
+    --input-focus-shadow: rgba(218, 165, 32, 0.3);
+    --button-bg: linear-gradient(to bottom, #DAA520, #b8860b); /* Goldenrod gradient */
     --button-text: #111111;
-    --button-hover-bg: linear-gradient(to bottom, #ffa500, #ff8c00);
-    --shadow-color: rgba(0, 0, 0, 0.3);
-    --shadow-strong-color: rgba(0, 0, 0, 0.5);
-    --switch-bg: #555;
-    --switch-slider-bg: #ccc;
-    --switch-checked-bg: #ff8c00;
+    --button-hover-bg: linear-gradient(to bottom, #F0E68C, #DAA520);
+    --shadow-color: rgba(0, 0, 0, 0.2); /* Softer shadow */
+    --shadow-strong-color: rgba(0, 0, 0, 0.4);
+    --switch-bg: #444;
+    --switch-slider-bg: #aaa;
+    --switch-checked-bg: #DAA520;
     --switch-checked-slider-bg: #fff;
 
-    /* New Theme Variables (Inspired by AoE - adjust as needed) */
-    --header-bg-dark: linear-gradient(to bottom, #2a2a2a, #111111);
-    --header-bg-light: linear-gradient(to bottom, #f0e6d2, #d8c8a8); /* Parchment/Stone */
-    --header-border-dark: #ff8c00; /* Keep orange accent */
-    --header-border-light: #a0522d; /* Sienna/Brown */
-    --header-text-dark: #e0e0e0;
-    --header-text-light: #4a2c0f; /* Dark Brown */
-    --header-icon-dark: #ff8c00;
-    --header-icon-light: #a0522d;
+    /* Navbar Variables - Refined */
+    --navbar-bg-dark: rgba(18, 18, 18, 0.85); /* Match bg, slightly transparent */
+    --navbar-bg-light: rgba(255, 255, 255, 0.8); /* Light, slightly transparent */
+    --navbar-border-dark: rgba(218, 165, 32, 0.2);
+    --navbar-border-light: rgba(184, 134, 11, 0.3); /* DarkGoldenrod border */
+    --nav-link-text-dark: #b0b0b0; /* Slightly brighter muted */
+    --nav-link-text-light: #5a4d3c; /* Brownish text */
+    --nav-link-hover-bg-dark: rgba(218, 165, 32, 0.1);
+    --nav-link-hover-bg-light: rgba(184, 134, 11, 0.08);
+    --nav-link-active-text-dark: #DAA520;
+    --nav-link-active-text-light: #8B4513; /* SaddleBrown */
+    --nav-link-active-border-dark: #DAA520;
+    --nav-link-active-border-light: #8B4513;
+    --nav-icon-color-dark: #b0b0b0;
+    --nav-icon-color-light: #5a4d3c;
+    --nav-icon-active-color-dark: #DAA520;
+    --nav-icon-active-color-light: #8B4513;
 
-    --navbar-bg-dark: rgba(10, 10, 10, 0.8); /* Dark, slightly transparent */
-    --navbar-bg-light: rgba(255, 255, 255, 0.7); /* Light, slightly transparent */
-    --navbar-border-dark: rgba(255, 140, 0, 0.3);
-    --navbar-border-light: rgba(160, 82, 45, 0.4); /* Sienna border */
-    --nav-link-text-dark: #a0a0a0;
-    --nav-link-text-light: #664228; /* Brownish text */
-    --nav-link-hover-bg-dark: rgba(255, 140, 0, 0.15);
-    --nav-link-hover-bg-light: rgba(160, 82, 45, 0.1);
-    --nav-link-active-text-dark: #ff8c00;
-    --nav-link-active-text-light: #a0522d;
-    --nav-link-active-border-dark: #ff8c00;
-    --nav-link-active-border-light: #a0522d;
-    --nav-icon-color-dark: #a0a0a0;
-    --nav-icon-color-light: #664228;
-    --nav-icon-active-color-dark: #ff8c00;
-    --nav-icon-active-color-light: #a0522d;
-
+    /* Footer Variables - Refined */
     --footer-bg-dark: #111111;
-    --footer-bg-light: #d8c8a8; /* Match header gradient bottom */
-    --footer-text-dark: #a0a0a0;
-    --footer-text-light: #4a2c0f;
-    --footer-border-dark: #ff8c00;
-    --footer-border-light: #a0522d;
+    --footer-bg-light: #f5f5dc; /* Beige */
+    --footer-text-dark: #999999;
+    --footer-text-light: #5a4d3c;
+    --footer-border-dark: #DAA520;
+    --footer-border-light: #8B4513;
 }
 
 
 body.light-mode {
-    /* Light Mode Overrides */
-    --bg-color: #fffaf0; /* Floral white / light cream */
-    --bg-pattern-color: rgba(0, 0, 0, 0.03); /* Subtle black pattern */
-    --text-color: #333333; /* Dark grey text */
-    --text-muted-color: #666666;
-    --header-bg: #ffffff;
-    --header-text: #111111;
-    /* Accent remains orange */
-    --border-color: rgba(255, 140, 0, 0.4);
-    --border-strong-color: #ff8c00;
-    --section-bg: rgba(255, 255, 255, 0.9); /* White, slightly transparent */
-    --section-border: rgba(221, 221, 221, 0.8); /* Lighter border */
-    --table-bg: rgba(255, 255, 255, 0.8);
-    --table-header-bg: linear-gradient(to bottom, #fff8e1, #ffecb3); /* Light yellow */
-    --table-header-text: #cc5200; /* Darker orange */
-    --table-row-even-bg: rgba(255, 248, 225, 0.5); /* Cornsilk */
-    --table-row-hover-bg: rgba(255, 235, 205, 0.6); /* BlanchedAlmond */
-    --table-border-color: #eee;
-    --grid-bg: rgba(255, 248, 225, 0.7); /* Cornsilk */
-    --grid-border: #ffcc66; /* Lighter orange */
+    /* Light Mode Overrides - Refined */
+    --bg-color: #fdfbf5; /* Lighter cream */
+    --bg-pattern-color: rgba(0, 0, 0, 0.02); /* Even more subtle black pattern */
+    --text-color: #2c2c2c; /* Darker grey text */
+    --text-muted-color: #555555;
+    --header-bg: linear-gradient(to bottom, #ffffff, #f0f0f0); /* White to light grey */
+    --header-text: #2c2c2c;
+    /* Accent remains Goldenrod */
+    --border-color: rgba(218, 165, 32, 0.3);
+    --border-strong-color: #DAA520;
+    --section-bg: rgba(255, 255, 255, 0.95); /* White, slightly more opaque */
+    --section-border: rgba(200, 200, 200, 0.7); /* Lighter border */
+    --table-bg: rgba(255, 255, 255, 0.9);
+    --table-header-bg: linear-gradient(to bottom, #fff8dc, #faf0e6); /* Cornsilk to Linen */
+    --table-header-text: #8B4513; /* SaddleBrown */
+    --table-row-even-bg: rgba(245, 245, 245, 0.6); /* Whitesmoke */
+    --table-row-hover-bg: rgba(230, 230, 230, 0.7);
+    --table-border-color: #e0e0e0;
+    --grid-bg: rgba(255, 250, 240, 0.8); /* FloralWhite */
+    --grid-border: #e6be8a; /* Lighter gold */
     --grid-cell-bg: #ffffff;
-    --grid-cell-text: #ff8c00;
-    --grid-cell-empty-bg: #f9f9f9;
-    --grid-cell-empty-text: #ccc;
+    --grid-cell-text: #DAA520;
+    --grid-cell-empty-bg: #f8f8f8;
+    --grid-cell-empty-text: #cccccc;
     --input-bg: #ffffff;
-    --input-text: #333333;
-    --input-border: #ccc;
-    --input-focus-border: #ff8c00;
-    --input-focus-shadow: rgba(255, 140, 0, 0.3);
-    /* Button remains orange */
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --shadow-strong-color: rgba(0, 0, 0, 0.2);
+    --input-text: #2c2c2c;
+    --input-border: #cccccc;
+    --input-focus-border: #DAA520;
+    --input-focus-shadow: rgba(218, 165, 32, 0.25);
+    /* Button remains Goldenrod */
+    --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
+    --shadow-strong-color: rgba(0, 0, 0, 0.15);
     --switch-bg: #ccc;
     --switch-slider-bg: #fff;
-    --switch-checked-bg: #ff8c00;
+    --switch-checked-bg: #DAA520;
     --switch-checked-slider-bg: #fff;
 }
 
@@ -168,67 +160,61 @@ body {
 }
 
 
-/* --- New Header Styles --- */
+/* --- Header Styles - Refined --- */
 .app-header {
-    background: var(--header-bg-dark); /* Use new variable */
-    color: var(--header-text-dark);
-    padding: 15px 30px; /* Adjust padding */
-    border-bottom: 4px solid var(--header-border-dark); /* Thicker border */
-    box-shadow: 0 5px 10px var(--shadow-strong-color);
-    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-    /* Optional: Add a subtle texture */
-    /* background-image: url('images/stone-texture.png'); */
-}
-body.light-mode .app-header {
-    background: var(--header-bg-light);
-    color: var(--header-text-light);
-    border-bottom-color: var(--header-border-light);
+    background: var(--header-bg); /* Use theme variable */
+    color: var(--header-text);
+    padding: 12px 25px; /* Slightly reduced padding */
+    border-bottom: 3px solid var(--border-strong-color); /* Use strong border color */
+    box-shadow: 0 4px 8px var(--shadow-color); /* Softer shadow */
+    transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+    position: sticky; /* Make header sticky */
+    top: 0;
+    z-index: 1000; /* Ensure header is above other content */
+    backdrop-filter: blur(5px); /* Blur for sticky header */
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1400px; /* Limit width */
-    margin: 0 auto; /* Center content */
+    max-width: 1300px; /* Slightly wider max-width */
+    margin: 0 auto;
 }
 
 .title-container {
     display: flex;
     align-items: center;
-    gap: 15px; /* Space between icon and title */
+    gap: 12px; /* Reduced gap */
 }
 
 .app-header h1 {
     font-family: 'Cinzel', serif;
     margin: 0;
-    font-size: 2.8em; /* Larger */
-    font-weight: 700;
-    color: inherit; /* Inherit from .app-header */
-    text-shadow: 1px 1px 2px var(--shadow-strong-color);
-    letter-spacing: 2.5px;
-    transition: color 0.3s ease;
+    font-size: 2.2em; /* Slightly smaller */
+    font-weight: 600; /* Less heavy */
+    color: inherit;
+    text-shadow: 1px 1px 2px var(--shadow-color); /* Softer text shadow */
+    letter-spacing: 2px;
+    transition: color 0.4s ease;
 }
 
 .header-icon {
-    font-size: 2.5em; /* Adjust icon size */
-    color: var(--header-icon-dark);
-    transition: color 0.3s ease;
-}
-body.light-mode .header-icon {
-    color: var(--header-icon-light);
+    font-size: 2.2em; /* Match h1 size */
+    color: var(--accent-color); /* Use accent color */
+    transition: color 0.4s ease;
 }
 
-/* Adjust Theme Toggle Wrapper */
+/* Theme Toggle Wrapper - No major changes needed */
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
-.theme-toggle-label { /* New class for the label text */
+.theme-toggle-label {
     color: var(--text-muted-color);
-    font-size: 0.8em;
-    transition: color 0.3s ease;
+    font-size: 0.75em;
+    transition: color 0.4s ease;
 }
 
 
@@ -262,16 +248,16 @@ body.light-mode .header-icon {
 }
 
 
-/* --- New Footer Styles --- */
+/* --- Footer Styles - Refined --- */
 .app-footer {
-    background-color: var(--footer-bg-dark);
+    background-color: var(--footer-bg-dark); /* Use theme variable */
     color: var(--footer-text-dark);
-    padding: 20px 30px;
-    margin-top: auto; /* Pushes footer to bottom */
-    font-size: 0.9em;
-    border-top: 3px solid var(--footer-border-dark);
-    box-shadow: 0 -4px 8px var(--shadow-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    padding: 18px 25px;
+    margin-top: auto;
+    font-size: 0.85em; /* Slightly smaller */
+    border-top: 2px solid var(--footer-border-dark); /* Use theme variable */
+    box-shadow: 0 -3px 6px var(--shadow-color);
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 body.light-mode .app-footer {
     background-color: var(--footer-bg-light);
@@ -283,8 +269,8 @@ body.light-mode .app-footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    max-width: 1200px;
+    gap: 6px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -470,44 +456,202 @@ button:active {
 }
 
 
-/* --- Responsive Styles --- */
+/* --- NEW: User Card Layout Styles --- */
+.user-card-list {
+    display: grid; /* Use grid for responsive columns */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 25px; /* Gap between cards */
+    margin-top: 20px;
+}
+
+.user-card {
+    background-color: var(--section-bg); /* Use section background */
+    border: 1px solid var(--section-border);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.user-card-header h3 {
+    margin: 0 0 5px 0;
+    color: var(--accent-color);
+    font-family: 'Cinzel', serif;
+    font-size: 1.4em;
+}
+
+.user-card-header span {
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+}
+
+.user-card-body {
+    display: flex;
+    flex-direction: column; /* Stack details and grid vertically by default */
+    gap: 15px;
+    flex-grow: 1; /* Allow body to take up space */
+    margin-bottom: 15px;
+}
+
+.user-card-details p {
+    margin: 5px 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+.user-card-details strong {
+    color: var(--text-muted-color);
+    margin-right: 5px;
+}
+.user-card-details hr {
+    border: none;
+    border-top: 1px dashed var(--border-color);
+    margin: 10px 0;
+}
+
+.user-card-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px; /* Ensure space for grid or loading text */
+}
+.user-card-grid .numerology-grid {
+    margin: 0; /* Remove auto margin from grid component */
+}
+
+.user-card-actions {
+    margin-top: auto; /* Push actions to the bottom */
+    text-align: center;
+}
+.user-card-actions button {
+    margin-top: 0; /* Remove top margin from button */
+}
+
+/* Optional: Side-by-side layout for details and grid on wider screens */
+@media (min-width: 500px) { /* Adjust breakpoint as needed */
+    .user-card-body {
+        flex-direction: row; /* Details and grid side-by-side */
+        align-items: flex-start; /* Align items to the top */
+    }
+    .user-card-details {
+        flex: 1; /* Allow details to take available space */
+    }
+    .user-card-grid {
+        flex-basis: 130px; /* Fixed width for grid area */
+        justify-content: center;
+        align-items: center; /* Center grid vertically */
+        padding-top: 10px; /* Add some space above grid */
+    }
+}
+/* --- End User Card Layout Styles --- */
+
+
+/* --- Responsive Styles - Refined --- */
 @media (max-width: 768px) {
     body {
-        font-size: 15px; /* Slightly smaller base font */
+        font-size: 15px;
     }
 
     /* Header adjustments */
     .app-header {
         padding: 10px 15px;
+        position: relative; /* Ensure toggle button is positioned relative to header */
     }
     .header-content {
-        flex-direction: column; /* Stack title and switch */
+        /* Keep flex-direction row, but allow wrapping if needed */
+        /* flex-direction: column; */ /* Remove this if you want title/switch side-by-side */
         gap: 10px;
+        justify-content: space-between; /* Keep space between */
+    }
+    .title-container {
+        /* Allow title container to shrink if needed */
+        flex-shrink: 1;
     }
     .app-header h1 {
-        font-size: 2em; /* Smaller title */
-        letter-spacing: 1.5px;
+        font-size: 1.8em; /* Further reduce size */
+        letter-spacing: 1px;
     }
     .header-icon {
-        font-size: 2em;
+        font-size: 1.8em;
     }
 
-    /* Navbar adjustments */
+    /* Navbar adjustments for Mobile */
+    .app-navbar {
+        position: relative; /* Needed for absolute positioning of menu */
+    }
+    .menu-toggle { /* Style for the hamburger button */
+        display: block; /* Show the button */
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--nav-icon-color-dark); /* Use nav icon color */
+        font-size: 1.8em;
+        cursor: pointer;
+        z-index: 1010; /* Above navbar content */
+    }
+    body.light-mode .menu-toggle {
+        color: var(--nav-icon-color-light);
+    }
+
     .app-navbar-nav {
-        gap: 10px; /* Reduce gap */
-        flex-wrap: wrap; /* Allow wrapping */
-        justify-content: center;
+        display: none; /* Hide nav links by default */
+        flex-direction: column; /* Stack links vertically */
+        position: absolute;
+        top: 100%; /* Position below the header/navbar */
+        left: 0;
+        right: 0;
+        background-color: var(--navbar-bg-dark); /* Use navbar background */
+        border-top: 1px solid var(--navbar-border-dark);
+        box-shadow: 0 4px 8px var(--shadow-color);
+        padding: 10px 0; /* Add some padding */
+        z-index: 1000;
     }
+    body.light-mode .app-navbar-nav {
+         background-color: var(--navbar-bg-light);
+         border-top: 1px solid var(--navbar-border-light);
+    }
+
+    .app-navbar-nav.active { /* Class added by JS to show menu */
+        display: flex;
+    }
+
+    .app-nav-item {
+        width: 100%;
+        text-align: center;
+    }
+
     .app-nav-link {
-        padding: 8px 12px; /* Smaller padding */
-        font-size: 1em;
+        padding: 12px 20px; /* Restore padding */
+        font-size: 1.1em; /* Restore font size */
+        justify-content: center; /* Center icon and text */
+        border-bottom: none; /* Remove bottom border */
+        border-radius: 0; /* Remove border-radius */
     }
+     .app-nav-link.active {
+        border-bottom: none; /* Remove bottom border for active */
+        background-color: var(--nav-link-hover-bg-dark); /* Use hover bg for active */
+    }
+     body.light-mode .app-nav-link.active {
+         background-color: var(--nav-link-hover-bg-light);
+     }
+
 
     /* Main content adjustments */
     .main-content {
         width: 95%;
         padding: 15px;
-        margin: 20px auto;
+        margin: 25px auto; /* Reduced margin */
         border-radius: 8px;
     }
     .main-content h2 {
@@ -520,6 +664,7 @@ button:active {
     #inputArea, #userList, #exportSection, .person-input-section, .report-section {
         padding: 15px;
         border-radius: 8px;
+        margin-bottom: 25px; /* Reduced margin */
     }
      #inputArea h3, #userList h3, #exportSection h3, .person-input-section h3, .report-section h3 {
         font-size: 1.5em;
@@ -528,63 +673,43 @@ button:active {
     }
 
     /* Form adjustments */
-    label {
-        margin: 8px 4px;
+     #inputArea {
+        text-align: left; /* Align labels left */
     }
-    input[type="text"], input[type="date"], select {
-        min-width: 150px; /* Allow smaller inputs */
+     #inputArea label {
+        margin: 8px 0 4px 0; /* Adjust label margin */
+        display: block; /* Stack labels */
+        width: 100%;
+    }
+    #inputArea input[type="text"],
+    #inputArea input[type="date"],
+    #inputArea select {
+        min-width: unset; /* Remove min-width */
+        width: 100%; /* Full width */
+        margin: 0 0 15px 0; /* Margin below */
         padding: 10px 12px;
-        width: 90%; /* Make inputs take more width */
-        margin-left: auto;
-        margin-right: auto;
     }
-    button {
+     #inputArea button {
+        display: block; /* Make button block */
+        width: 100%; /* Full width */
         padding: 12px 20px;
-        font-size: 1em;
+        font-size: 1.1em; /* Slightly larger */
+        margin-top: 10px;
     }
 
-    /* GridCalculator Table (#userDataTable) - Stacked View */
-    #userDataTable thead {
-        display: none; /* Hide table header */
+    /* User Card List - Ensure single column */
+    .user-card-list {
+        grid-template-columns: 1fr; /* Force single column */
     }
-    #userDataTable tr {
-        display: block; /* Make rows block elements */
-        margin-bottom: 15px; /* Space between stacked rows */
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        padding: 10px;
-        background-color: var(--section-bg); /* Give each row a background */
+    /* Ensure card body stacks */
+    .user-card-body {
+        flex-direction: column !important; /* Force column layout */
     }
-     #userDataTable tbody tr:nth-child(even) {
-        background-color: var(--section-bg); /* Remove alternating color */
-    }
-    #userDataTable td {
-        display: block; /* Make cells block elements */
-        text-align: right; /* Align cell content to the right */
-        padding-left: 50%; /* Create space for the label */
-        position: relative; /* Needed for pseudo-element positioning */
-        border-bottom: 1px dashed var(--table-border-color); /* Lighter border between cells */
-    }
-    #userDataTable td:last-child {
-        border-bottom: none; /* Remove border from last cell */
-        text-align: center; /* Re-center grid/button cell */
-        padding-left: 0; /* Remove padding for grid/button */
-    }
-    #userDataTable td[data-label="Grid"] {
-        padding-left: 0; /* Remove padding for grid cell */
+     .user-card-grid {
+        flex-basis: auto !important; /* Reset basis */
+        padding-top: 15px !important;
     }
 
-    #userDataTable td::before {
-        content: attr(data-label); /* Get label from data-label attribute */
-        position: absolute;
-        left: 10px; /* Position label on the left */
-        width: 45%; /* Width of the label area */
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left; /* Align label text to the left */
-        font-weight: bold;
-        color: var(--accent-color); /* Highlight label */
-    }
 
     /* Compatibility Checker Layout */
     .compatibility-container {
@@ -622,7 +747,7 @@ button:active {
       }
 
 
-    /* Numerology Grid adjustments */
+    /* Numerology Grid adjustments (Applies to both card and table if used) */
     .numerology-grid {
         grid-template-columns: repeat(3, 30px); /* Smaller cells */
         grid-template-rows: repeat(3, 30px);
@@ -756,11 +881,12 @@ input:checked + .slider:before {
 /* --- New Navbar Styles --- */
 .app-navbar {
     background-color: var(--navbar-bg-dark);
-    padding: 10px 0; /* Vertical padding */
+    padding: 10px 25px; /* Adjusted padding */
     border-bottom: 1px solid var(--navbar-border-dark);
-    box-shadow: 0 2px 5px var(--shadow-color);
-    backdrop-filter: blur(2px); /* Subtle blur for transparency */
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color); /* Softer shadow */
+    backdrop-filter: blur(4px); /* Slightly more blur */
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+    position: relative; /* Added for menu toggle positioning */
 }
 body.light-mode .app-navbar {
     background-color: var(--navbar-bg-light);
@@ -772,34 +898,35 @@ body.light-mode .app-navbar {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center; /* Center nav items */
-    gap: 30px; /* Space between nav items */
+    justify-content: center;
+    gap: 25px; /* Adjusted gap */
 }
 
 .app-nav-item {
-    /* No specific styles needed currently */
+    /* No specific styles needed */
 }
 
 .app-nav-link {
     color: var(--nav-link-text-dark);
     text-decoration: none;
-    padding: 12px 20px; /* More padding */
-    border-radius: 6px;
+    padding: 10px 18px; /* Adjusted padding */
+    border-radius: 4px; /* Smaller radius */
     transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
     font-weight: 500;
     font-family: 'Merriweather', serif;
-    font-size: 1.1em;
-    display: flex; /* Align icon and text */
+    font-size: 1.0em; /* Adjusted size */
+    display: flex;
     align-items: center;
-    gap: 8px; /* Space between icon and text */
-    border-bottom: 3px solid transparent; /* Placeholder for active border */
+    gap: 8px;
+    border-bottom: 3px solid transparent;
+    position: relative; /* For potential pseudo-elements */
 }
 body.light-mode .app-nav-link {
     color: var(--nav-link-text-light);
 }
 
 .app-nav-link .nav-icon {
-    font-size: 1.2em; /* Icon size */
+    font-size: 1.2em;
     color: var(--nav-icon-color-dark);
     transition: color 0.3s ease;
 }
@@ -808,27 +935,32 @@ body.light-mode .app-nav-link .nav-icon {
 }
 
 
-.app-nav-link:hover {
-    color: var(--nav-link-active-text-dark); /* Use active color on hover */
+.app-nav-link:hover,
+.app-nav-link:focus { /* Add focus state */
+    color: var(--nav-link-active-text-dark);
     background-color: var(--nav-link-hover-bg-dark);
+    outline: none; /* Remove default focus outline */
 }
-body.light-mode .app-nav-link:hover {
+body.light-mode .app-nav-link:hover,
+body.light-mode .app-nav-link:focus {
     color: var(--nav-link-active-text-light);
     background-color: var(--nav-link-hover-bg-light);
 }
-.app-nav-link:hover .nav-icon {
-    color: var(--nav-icon-active-color-dark); /* Use active color on hover */
+.app-nav-link:hover .nav-icon,
+.app-nav-link:focus .nav-icon {
+    color: var(--nav-icon-active-color-dark);
 }
-body.light-mode .app-nav-link:hover .nav-icon {
+body.light-mode .app-nav-link:hover .nav-icon,
+body.light-mode .app-nav-link:focus .nav-icon {
     color: var(--nav-icon-active-color-light);
 }
 
 
 .app-nav-link.active {
     color: var(--nav-link-active-text-dark);
-    font-weight: bold;
-    border-bottom-color: var(--nav-link-active-border-dark); /* Use border instead of background */
-    background-color: transparent; /* Remove background for active */
+    font-weight: 600; /* Slightly bolder */
+    border-bottom-color: var(--nav-link-active-border-dark);
+    background-color: transparent;
 }
 body.light-mode .app-nav-link.active {
     color: var(--nav-link-active-text-light);
@@ -840,6 +972,11 @@ body.light-mode .app-nav-link.active {
 }
 body.light-mode .app-nav-link.active .nav-icon {
     color: var(--nav-icon-active-color-light);
+}
+
+/* Hamburger Menu Toggle Button (Hidden on Desktop) */
+.menu-toggle {
+    display: none; /* Hidden by default */
 }
 
 
