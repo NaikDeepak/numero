@@ -1,1203 +1,1217 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 
 /* style.css - Styles for Numerology Calculator - Mystical Black/Orange Theme */
 
 /* --- CSS Variables --- */
 :root {
-    /* Dark Mode (Default) - Refined */
-    --bg-color: #121212; /* Slightly darker off-black */
-    --bg-pattern-color: rgba(218, 165, 32, 0.04); /* Goldenrod pattern, more subtle */
-    --text-color: #dcdcdc; /* Lighter grey text */
-    --text-muted-color: #999999; /* Muted grey text */
-    --header-bg: linear-gradient(to bottom, #202020, #111111); /* Dark gradient */
-    --header-text: #ffffff;
-    --accent-color: #DAA520; /* Goldenrod */
-    --accent-hover: #F0E68C; /* Khaki (lighter gold) */
-    --accent-text-color: #111111; /* Text on accent buttons */
-    --border-color: rgba(218, 165, 32, 0.25); /* Goldenrod border, subtle */
-    --border-strong-color: #DAA520;
-    --section-bg: rgba(28, 28, 28, 0.9); /* Darker grey, slightly more opaque */
-    --section-border: rgba(218, 165, 32, 0.35);
-    --table-bg: rgba(35, 35, 35, 0.8);
-    --table-header-bg: linear-gradient(to bottom, #282828, #1e1e1e);
-    --table-header-text: #DAA520;
-    --table-row-even-bg: rgba(45, 45, 45, 0.4);
-    --table-row-hover-bg: rgba(60, 60, 60, 0.6);
-    --table-border-color: rgba(218, 165, 32, 0.15);
-    --grid-bg: rgba(15, 15, 15, 0.8);
-    --grid-border: #DAA520;
-    --grid-cell-bg: #222222;
-    --grid-cell-text: #DAA520;
-    --grid-cell-empty-bg: rgba(34, 34, 34, 0.6);
-    --grid-cell-empty-text: rgba(218, 165, 32, 0.3);
-    --input-bg: rgba(10, 10, 10, 0.9);
-    --input-text: #dcdcdc;
-    --input-border: rgba(218, 165, 32, 0.25);
-    --input-focus-border: #DAA520;
-    --input-focus-shadow: rgba(218, 165, 32, 0.3);
-    --button-bg: linear-gradient(to bottom, #DAA520, #b8860b); /* Goldenrod gradient */
-    --button-text: #111111;
-    --button-hover-bg: linear-gradient(to bottom, #F0E68C, #DAA520);
-    --shadow-color: rgba(0, 0, 0, 0.2); /* Softer shadow */
-    --shadow-strong-color: rgba(0, 0, 0, 0.4);
-    --switch-bg: #444;
-    --switch-slider-bg: #aaa;
-    --switch-checked-bg: #DAA520;
-    --switch-checked-slider-bg: #fff;
+  /* Dark Mode (Default) - Refined */
+  --bg-color: #121212; /* Slightly darker off-black */
+  --bg-pattern-color: rgba(218, 165, 32, 0.04); /* Goldenrod pattern, more subtle */
+  --text-color: #dcdcdc; /* Lighter grey text */
+  --text-muted-color: #999999; /* Muted grey text */
+  --header-bg: linear-gradient(to bottom, #202020, #111111); /* Dark gradient */
+  --header-text: #ffffff;
+  --accent-color: #daa520; /* Goldenrod */
+  --accent-hover: #f0e68c; /* Khaki (lighter gold) */
+  --accent-text-color: #111111; /* Text on accent buttons */
+  --border-color: rgba(218, 165, 32, 0.25); /* Goldenrod border, subtle */
+  --border-strong-color: #daa520;
+  --section-bg: rgba(28, 28, 28, 0.9); /* Darker grey, slightly more opaque */
+  --section-border: rgba(218, 165, 32, 0.35);
+  --table-bg: rgba(35, 35, 35, 0.8);
+  --table-header-bg: linear-gradient(to bottom, #282828, #1e1e1e);
+  --table-header-text: #daa520;
+  --table-row-even-bg: rgba(45, 45, 45, 0.4);
+  --table-row-hover-bg: rgba(60, 60, 60, 0.6);
+  --table-border-color: rgba(218, 165, 32, 0.15);
+  --grid-bg: rgba(15, 15, 15, 0.8);
+  --grid-border: #daa520;
+  --grid-cell-bg: #222222;
+  --grid-cell-text: #daa520;
+  --grid-cell-empty-bg: rgba(34, 34, 34, 0.6);
+  --grid-cell-empty-text: rgba(218, 165, 32, 0.3);
+  --input-bg: rgba(10, 10, 10, 0.9);
+  --input-text: #dcdcdc;
+  --input-border: rgba(218, 165, 32, 0.25);
+  --input-focus-border: #daa520;
+  --input-focus-shadow: rgba(218, 165, 32, 0.3);
+  --button-bg: linear-gradient(to bottom, #daa520, #b8860b); /* Goldenrod gradient */
+  --button-text: #111111;
+  --button-hover-bg: linear-gradient(to bottom, #f0e68c, #daa520);
+  --shadow-color: rgba(0, 0, 0, 0.2); /* Softer shadow */
+  --shadow-strong-color: rgba(0, 0, 0, 0.4);
+  --switch-bg: #444;
+  --switch-slider-bg: #aaa;
+  --switch-checked-bg: #daa520;
+  --switch-checked-slider-bg: #fff;
 
-    /* Navbar Variables - Refined */
-    --navbar-bg-dark: rgba(18, 18, 18, 0.85); /* Match bg, slightly transparent */
-    --navbar-bg-light: rgba(255, 255, 255, 0.8); /* Light, slightly transparent */
-    --navbar-border-dark: rgba(218, 165, 32, 0.2);
-    --navbar-border-light: rgba(184, 134, 11, 0.3); /* DarkGoldenrod border */
-    --nav-link-text-dark: #b0b0b0; /* Slightly brighter muted */
-    --nav-link-text-light: #5a4d3c; /* Brownish text */
-    --nav-link-hover-bg-dark: rgba(218, 165, 32, 0.1);
-    --nav-link-hover-bg-light: rgba(184, 134, 11, 0.08);
-    --nav-link-active-text-dark: #DAA520;
-    --nav-link-active-text-light: #8B4513; /* SaddleBrown */
-    --nav-link-active-border-dark: #DAA520;
-    --nav-link-active-border-light: #8B4513;
-    --nav-icon-color-dark: #b0b0b0;
-    --nav-icon-color-light: #5a4d3c;
-    --nav-icon-active-color-dark: #DAA520;
-    --nav-icon-active-color-light: #8B4513;
+  /* Navbar Variables - Refined */
+  --navbar-bg-dark: rgba(18, 18, 18, 0.85); /* Match bg, slightly transparent */
+  --navbar-bg-light: rgba(255, 255, 255, 0.8); /* Light, slightly transparent */
+  --navbar-border-dark: rgba(218, 165, 32, 0.2);
+  --navbar-border-light: rgba(184, 134, 11, 0.3); /* DarkGoldenrod border */
+  --nav-link-text-dark: #b0b0b0; /* Slightly brighter muted */
+  --nav-link-text-light: #5a4d3c; /* Brownish text */
+  --nav-link-hover-bg-dark: rgba(218, 165, 32, 0.1);
+  --nav-link-hover-bg-light: rgba(184, 134, 11, 0.08);
+  --nav-link-active-text-dark: #daa520;
+  --nav-link-active-text-light: #8b4513; /* SaddleBrown */
+  --nav-link-active-border-dark: #daa520;
+  --nav-link-active-border-light: #8b4513;
+  --nav-icon-color-dark: #b0b0b0;
+  --nav-icon-color-light: #5a4d3c;
+  --nav-icon-active-color-dark: #daa520;
+  --nav-icon-active-color-light: #8b4513;
 
-    /* Footer Variables - Refined */
-    --footer-bg-dark: #111111;
-    --footer-bg-light: #f5f5dc; /* Beige */
-    --footer-text-dark: #999999;
-    --footer-text-light: #5a4d3c;
-    --footer-border-dark: #DAA520;
-    --footer-border-light: #8B4513;
+  /* Footer Variables - Refined */
+  --footer-bg-dark: #111111;
+  --footer-bg-light: #f5f5dc; /* Beige */
+  --footer-text-dark: #999999;
+  --footer-text-light: #5a4d3c;
+  --footer-border-dark: #daa520;
+  --footer-border-light: #8b4513;
 }
-
 
 body.light-mode {
-    /* Light Mode Overrides - Refined */
-    --bg-color: #fdfbf5; /* Lighter cream */
-    --bg-pattern-color: rgba(0, 0, 0, 0.02); /* Even more subtle black pattern */
-    --text-color: #2c2c2c; /* Darker grey text */
-    --text-muted-color: #555555;
-    --header-bg: linear-gradient(to bottom, #ffffff, #f0f0f0); /* White to light grey */
-    --header-text: #2c2c2c;
-    /* Accent remains Goldenrod */
-    --border-color: rgba(218, 165, 32, 0.3);
-    --border-strong-color: #DAA520;
-    --section-bg: rgba(255, 255, 255, 0.95); /* White, slightly more opaque */
-    --section-border: rgba(200, 200, 200, 0.7); /* Lighter border */
-    --table-bg: rgba(255, 255, 255, 0.9);
-    --table-header-bg: linear-gradient(to bottom, #fff8dc, #faf0e6); /* Cornsilk to Linen */
-    --table-header-text: #8B4513; /* SaddleBrown */
-    --table-row-even-bg: rgba(245, 245, 245, 0.6); /* Whitesmoke */
-    --table-row-hover-bg: rgba(230, 230, 230, 0.7);
-    --table-border-color: #e0e0e0;
-    --grid-bg: rgba(255, 250, 240, 0.8); /* FloralWhite */
-    --grid-border: #e6be8a; /* Lighter gold */
-    --grid-cell-bg: #ffffff;
-    --grid-cell-text: #DAA520;
-    --grid-cell-empty-bg: #f8f8f8;
-    --grid-cell-empty-text: #cccccc;
-    --input-bg: #ffffff;
-    --input-text: #2c2c2c;
-    --input-border: #cccccc;
-    --input-focus-border: #DAA520;
-    --input-focus-shadow: rgba(218, 165, 32, 0.25);
-    /* Button remains Goldenrod */
-    --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
-    --shadow-strong-color: rgba(0, 0, 0, 0.15);
-    --switch-bg: #ccc;
-    --switch-slider-bg: #fff;
-    --switch-checked-bg: #DAA520;
-    --switch-checked-slider-bg: #fff;
+  /* Light Mode Overrides - Refined */
+  --bg-color: #fdfbf5; /* Lighter cream */
+  --bg-pattern-color: rgba(0, 0, 0, 0.02); /* Even more subtle black pattern */
+  --text-color: #2c2c2c; /* Darker grey text */
+  --text-muted-color: #555555;
+  --header-bg: linear-gradient(to bottom, #ffffff, #f0f0f0); /* White to light grey */
+  --header-text: #2c2c2c;
+  /* Accent remains Goldenrod */
+  --border-color: rgba(218, 165, 32, 0.3);
+  --border-strong-color: #daa520;
+  --section-bg: rgba(255, 255, 255, 0.95); /* White, slightly more opaque */
+  --section-border: rgba(200, 200, 200, 0.7); /* Lighter border */
+  --table-bg: rgba(255, 255, 255, 0.9);
+  --table-header-bg: linear-gradient(to bottom, #fff8dc, #faf0e6); /* Cornsilk to Linen */
+  --table-header-text: #8b4513; /* SaddleBrown */
+  --table-row-even-bg: rgba(245, 245, 245, 0.6); /* Whitesmoke */
+  --table-row-hover-bg: rgba(230, 230, 230, 0.7);
+  --table-border-color: #e0e0e0;
+  --grid-bg: rgba(255, 250, 240, 0.8); /* FloralWhite */
+  --grid-border: #e6be8a; /* Lighter gold */
+  --grid-cell-bg: #ffffff;
+  --grid-cell-text: #daa520;
+  --grid-cell-empty-bg: #f8f8f8;
+  --grid-cell-empty-text: #cccccc;
+  --input-bg: #ffffff;
+  --input-text: #2c2c2c;
+  --input-border: #cccccc;
+  --input-focus-border: #daa520;
+  --input-focus-shadow: rgba(218, 165, 32, 0.25);
+  /* Button remains Goldenrod */
+  --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
+  --shadow-strong-color: rgba(0, 0, 0, 0.15);
+  --switch-bg: #ccc;
+  --switch-slider-bg: #fff;
+  --switch-checked-bg: #daa520;
+  --switch-checked-slider-bg: #fff;
 }
-
 
 /* --- Base & Typography --- */
 body {
-    font-family: 'Merriweather', serif; /* Default body font */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    /* Layered background: Pattern on top of Image */
-    background-image:
-        /* Pattern Layer (Top) */
-        linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
-        linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px),
-        /* Background Image Layer (Bottom) */
-        url('images/mystical-background.jpg'); /* TODO: Ensure image path is correct relative to public folder or handle differently */
-    background-size:
-        25px 25px, /* Pattern size */
-        25px 25px, /* Pattern size */
-        cover;     /* Image size */
-    background-repeat:
-        repeat,    /* Pattern repeat */
-        repeat,    /* Pattern repeat */
-        no-repeat; /* Image repeat */
-    background-position:
-        top left,  /* Pattern position */
-        top left,  /* Pattern position */
-        center center; /* Image position */
-    background-attachment:
-        scroll,    /* Pattern attachment */
-        scroll,    /* Pattern attachment */
-        fixed;     /* Image attachment (parallax effect) */
-    background-blend-mode: overlay; /* Blend image with bg-color */
-    color: var(--text-color);
-    font-size: 16px;
-    line-height: 1.8;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Merriweather", serif; /* Default body font */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  /* Layered background: Pattern on top of Image */
+  background-image:
+        /* Pattern Layer (Top) */ linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px),
+    /* Background Image Layer (Bottom) */ url("images/mystical-background.jpg"); /* TODO: Ensure image path is correct relative to public folder or handle differently */
+  background-size: 25px 25px, /* Pattern size */ 25px 25px, /* Pattern size */ cover; /* Image size */
+  background-repeat: repeat, /* Pattern repeat */ repeat, /* Pattern repeat */ no-repeat; /* Image repeat */
+  background-position: top left, /* Pattern position */ top left, /* Pattern position */ center center; /* Image position */
+  background-attachment: scroll, /* Pattern attachment */ scroll, /* Pattern attachment */ fixed; /* Image attachment (parallax effect) */
+  background-blend-mode: overlay; /* Blend image with bg-color */
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 1.8;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Optional: Main App Container */
 .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-
 
 /* --- Header Styles - Refined --- */
 .app-header {
-    background: var(--header-bg); /* Use theme variable */
-    color: var(--header-text);
-    padding: 12px 25px; /* Slightly reduced padding */
-    border-bottom: 3px solid var(--border-strong-color); /* Use strong border color */
-    box-shadow: 0 4px 8px var(--shadow-color); /* Softer shadow */
-    transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
-    position: sticky; /* Make header sticky */
-    top: 0;
-    z-index: 1000; /* Ensure header is above other content */
-    backdrop-filter: blur(5px); /* Blur for sticky header */
+  background: var(--header-bg); /* Use theme variable */
+  color: var(--header-text);
+  padding: 12px 25px; /* Slightly reduced padding */
+  border-bottom: 3px solid var(--border-strong-color); /* Use strong border color */
+  box-shadow: 0 4px 8px var(--shadow-color); /* Softer shadow */
+  transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+  position: sticky; /* Make header sticky */
+  top: 0;
+  z-index: 1000; /* Ensure header is above other content */
+  backdrop-filter: blur(5px); /* Blur for sticky header */
 }
 
 .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1300px; /* Slightly wider max-width */
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1300px; /* Slightly wider max-width */
+  margin: 0 auto;
 }
 
 .title-container {
-    display: flex;
-    align-items: center;
-    gap: 12px; /* Reduced gap */
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Reduced gap */
 }
 
 .app-header h1 {
-    font-family: 'Cinzel', serif;
-    margin: 0;
-    font-size: 2.2em; /* Slightly smaller */
-    font-weight: 600; /* Less heavy */
-    color: inherit;
-    text-shadow: 1px 1px 2px var(--shadow-color); /* Softer text shadow */
-    letter-spacing: 2px;
-    transition: color 0.4s ease;
+  font-family: "Cinzel", serif;
+  margin: 0;
+  font-size: 2.2em; /* Slightly smaller */
+  font-weight: 600; /* Less heavy */
+  color: inherit;
+  text-shadow: 1px 1px 2px var(--shadow-color); /* Softer text shadow */
+  letter-spacing: 2px;
+  transition: color 0.4s ease;
 }
 
 .header-icon {
-    font-size: 2.2em; /* Match h1 size */
-    color: var(--accent-color); /* Use accent color */
-    transition: color 0.4s ease;
+  font-size: 2.2em; /* Match h1 size */
+  color: var(--accent-color); /* Use accent color */
+  transition: color 0.4s ease;
 }
 
 /* Theme Toggle Wrapper - No major changes needed */
 .theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .theme-toggle-label {
-    color: var(--text-muted-color);
-    font-size: 0.75em;
-    transition: color 0.4s ease;
+  color: var(--text-muted-color);
+  font-size: 0.75em;
+  transition: color 0.4s ease;
 }
-
 
 /* --- Main Content Area --- */
-.main-content { /* Changed from main to class */
-    flex-grow: 1;
-    padding: 30px; /* Adjust padding */
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto;
-    background-color: var(--section-bg);
-    backdrop-filter: blur(3px); /* Subtle blur */
-    box-shadow: 0 6px 15px var(--shadow-strong-color);
-    border-radius: 12px;
-    border: 1px solid var(--section-border);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+.main-content {
+  /* Changed from main to class */
+  flex-grow: 1;
+  padding: 30px; /* Adjust padding */
+  width: 90%;
+  max-width: 1200px;
+  margin: 40px auto;
+  background-color: var(--section-bg);
+  backdrop-filter: blur(3px); /* Subtle blur */
+  box-shadow: 0 6px 15px var(--shadow-strong-color);
+  border-radius: 12px;
+  border: 1px solid var(--section-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.main-content h2 { /* Target h2 within main-content */
-    font-family: 'Cinzel', serif;
-    text-align: center;
-    color: var(--accent-color);
-    margin-bottom: 35px;
-    font-size: 2.3em; /* Adjust size */
-    font-weight: 600;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 15px;
-    display: inline-block;
-    letter-spacing: 1.5px; /* Adjusted spacing for Cinzel */
-    transition: color 0.3s ease, border-color 0.3s ease;
+.main-content h2 {
+  /* Target h2 within main-content */
+  font-family: "Cinzel", serif;
+  text-align: center;
+  color: var(--accent-color);
+  margin-bottom: 35px;
+  font-size: 2.3em; /* Adjust size */
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 15px;
+  display: inline-block;
+  letter-spacing: 1.5px; /* Adjusted spacing for Cinzel */
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
-
 
 /* --- Footer Styles - Refined --- */
 .app-footer {
-    background-color: var(--footer-bg-dark); /* Use theme variable */
-    color: var(--footer-text-dark);
-    padding: 18px 25px;
-    margin-top: auto;
-    font-size: 0.85em; /* Slightly smaller */
-    border-top: 2px solid var(--footer-border-dark); /* Use theme variable */
-    box-shadow: 0 -3px 6px var(--shadow-color);
-    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  background-color: var(--footer-bg-dark); /* Use theme variable */
+  color: var(--footer-text-dark);
+  padding: 18px 25px;
+  margin-top: auto;
+  font-size: 0.85em; /* Slightly smaller */
+  border-top: 2px solid var(--footer-border-dark); /* Use theme variable */
+  box-shadow: 0 -3px 6px var(--shadow-color);
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 body.light-mode .app-footer {
-    background-color: var(--footer-bg-light);
-    color: var(--footer-text-light);
-    border-top-color: var(--footer-border-light);
+  background-color: var(--footer-bg-light);
+  color: var(--footer-text-light);
+  border-top-color: var(--footer-border-light);
 }
 
 .footer-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    max-width: 1100px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
-
 
 /* --- Lo Shu Grid Styles --- */
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 50px);
-    gap: 5px;
-    justify-content: center;
-    margin: 15px auto;
-    padding: 8px;
-    background-color: var(--grid-bg);
-    border: 1px solid var(--grid-border);
-    border-radius: 8px;
-    box-shadow: inset 0 0 8px var(--shadow-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  gap: 5px;
+  justify-content: center;
+  margin: 15px auto;
+  padding: 8px;
+  background-color: var(--grid-bg);
+  border: 1px solid var(--grid-border);
+  border-radius: 8px;
+  box-shadow: inset 0 0 8px var(--shadow-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1em;
-    font-weight: bold;
-    background-color: var(--grid-cell-bg);
-    color: var(--grid-cell-text);
-    border-radius: 5px;
-    overflow: hidden;
-    text-align: center;
-    padding: 3px;
-    box-sizing: border-box;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  font-weight: bold;
+  background-color: var(--grid-cell-bg);
+  color: var(--grid-cell-text);
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+  padding: 3px;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .cell:empty {
-    background-color: var(--grid-cell-empty-bg);
-    color: var(--grid-cell-empty-text);
+  background-color: var(--grid-cell-empty-bg);
+  color: var(--grid-cell-empty-text);
 }
 
 /* --- Table Styles --- */
 table {
-    width: 100%;
-    margin: 35px 0;
-    border-collapse: separate;
-    border-spacing: 0;
-    background-color: var(--table-bg);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px var(--shadow-color);
-    transition: background-color 0.3s ease;
+  width: 100%;
+  margin: 35px 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--table-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: background-color 0.3s ease;
 }
 
-th, td {
-    border: none;
-    border-bottom: 1px solid var(--table-border-color);
-    padding: 14px 18px;
-    text-align: left;
-    vertical-align: middle;
-    color: var(--text-color); /* Use main text color */
-    font-family: 'Merriweather', serif;
-    transition: color 0.3s ease, border-color 0.3s ease;
+th,
+td {
+  border: none;
+  border-bottom: 1px solid var(--table-border-color);
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: middle;
+  color: var(--text-color); /* Use main text color */
+  font-family: "Merriweather", serif;
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 th {
-    background: var(--table-header-bg);
-    color: var(--table-header-text);
-    font-weight: 700; /* Bolder */
-    text-transform: uppercase;
-    font-size: 0.95em;
-    letter-spacing: 1px; /* More spacing */
-    border-bottom: 2px solid var(--border-strong-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  background: var(--table-header-bg);
+  color: var(--table-header-text);
+  font-weight: 700; /* Bolder */
+  text-transform: uppercase;
+  font-size: 0.95em;
+  letter-spacing: 1px; /* More spacing */
+  border-bottom: 2px solid var(--border-strong-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Alternating row colors */
 tbody tr:nth-child(even) {
-    background-color: var(--table-row-even-bg);
-    transition: background-color 0.3s ease;
+  background-color: var(--table-row-even-bg);
+  transition: background-color 0.3s ease;
 }
 tbody tr:hover {
-    background-color: var(--table-row-hover-bg);
+  background-color: var(--table-row-hover-bg);
 }
 
 /* Center grid within the table cell */
 td:last-child {
-   text-align: center;
+  text-align: center;
 }
 
 /* --- Section Styles (Input, List, Export) --- */
-#inputArea, #userList, #exportSection {
-    margin-bottom: 35px;
-    padding: 30px;
-    border: 1px solid var(--section-border);
-    border-radius: 12px;
-    background-color: var(--section-bg);
-    text-align: center;
-    box-shadow: 0 3px 8px var(--shadow-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+#inputArea,
+#userList,
+#exportSection {
+  margin-bottom: 35px;
+  padding: 30px;
+  border: 1px solid var(--section-border);
+  border-radius: 12px;
+  background-color: var(--section-bg);
+  text-align: center;
+  box-shadow: 0 3px 8px var(--shadow-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-#inputArea h3, #userList h3, #exportSection h3 {
-    font-family: 'Cinzel', serif; /* Apply Cinzel font */
-    margin-top: 0;
-    color: var(--accent-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 12px;
-    margin-bottom: 25px;
-    font-size: 1.9em; /* Adjust size */
-    font-weight: 600;
-    letter-spacing: 1.2px; /* Optional: Adjust spacing */
-    transition: color 0.3s ease, border-color 0.3s ease;
+#inputArea h3,
+#userList h3,
+#exportSection h3 {
+  font-family: "Cinzel", serif; /* Apply Cinzel font */
+  margin-top: 0;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+  font-size: 1.9em; /* Adjust size */
+  font-weight: 600;
+  letter-spacing: 1.2px; /* Optional: Adjust spacing */
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 /* --- Form Element Styles --- */
 label {
-    margin: 12px 8px;
-    font-weight: 500;
-    color: var(--text-muted-color); /* Muted text */
-    display: inline-block;
-    font-family: 'Merriweather', serif;
-    transition: color 0.3s ease;
+  margin: 12px 8px;
+  font-weight: 500;
+  color: var(--text-muted-color); /* Muted text */
+  display: inline-block;
+  font-family: "Merriweather", serif;
+  transition: color 0.3s ease;
 }
 
-input[type="text"], input[type="date"], select {
-    padding: 12px 15px;
-    border-radius: 6px;
-    border: 1px solid var(--input-border);
-    min-width: 200px;
-    background-color: var(--input-bg);
-    color: var(--input-text);
-    box-shadow: inset 0 2px 5px var(--shadow-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    font-size: 1em;
-    font-family: 'Merriweather', serif;
+input[type="text"],
+input[type="date"],
+select {
+  padding: 12px 15px;
+  border-radius: 6px;
+  border: 1px solid var(--input-border);
+  min-width: 200px;
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  box-shadow: inset 0 2px 5px var(--shadow-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1em;
+  font-family: "Merriweather", serif;
 }
 
-input[type="text"]:focus, input[type="date"]:focus, select:focus {
-    border-color: var(--input-focus-border);
-    box-shadow: 0 0 8px var(--input-focus-shadow);
-    outline: none;
-    background-color: var(--section-bg); /* Use section bg on focus */
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 8px var(--input-focus-shadow);
+  outline: none;
+  background-color: var(--section-bg); /* Use section bg on focus */
 }
 
 /* Style date input placeholder text */
 input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(75%) sepia(50%) saturate(500%) hue-rotate(330deg); /* Orange icon */
-    cursor: pointer;
+  filter: invert(75%) sepia(50%) saturate(500%) hue-rotate(330deg); /* Orange icon */
+  cursor: pointer;
 }
 body.light-mode input[type="date"]::-webkit-calendar-picker-indicator {
-     filter: invert(50%) sepia(90%) saturate(1500%) hue-rotate(350deg); /* Darker orange in light mode */
+  filter: invert(50%) sepia(90%) saturate(1500%) hue-rotate(350deg); /* Darker orange in light mode */
 }
 
-
 button {
-    background: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 14px 25px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    font-weight: bold;
-    text-shadow: 1px 1px 1px rgba(255,255,255,0.1);
-    box-shadow: 0 3px 6px var(--shadow-color);
-    margin-top: 10px;
-    font-family: 'Merriweather', serif;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 14px 25px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 3px 6px var(--shadow-color);
+  margin-top: 10px;
+  font-family: "Merriweather", serif;
 }
 
 button:hover {
-    background: var(--button-hover-bg);
-    box-shadow: 0 5px 10px var(--shadow-strong-color);
-    transform: translateY(-2px);
+  background: var(--button-hover-bg);
+  box-shadow: 0 5px 10px var(--shadow-strong-color);
+  transform: translateY(-2px);
 }
 
 button:active {
-    transform: translateY(0px);
-    box-shadow: 0 2px 4px var(--shadow-color);
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
-
 
 /* --- NEW: User Card Layout Styles --- */
 .user-card-list {
-    display: grid; /* Use grid for responsive columns */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
-    gap: 25px; /* Gap between cards */
-    margin-top: 20px;
+  display: grid; /* Use grid for responsive columns */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+  gap: 25px; /* Gap between cards */
+  margin-top: 20px;
 }
 
 .user-card {
-    background-color: var(--section-bg); /* Use section background */
-    border: 1px solid var(--section-border);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    display: flex;
-    flex-direction: column;
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--section-bg); /* Use section background */
+  border: 1px solid var(--section-border);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .user-card-header {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .user-card-header h3 {
-    margin: 0 0 5px 0;
-    color: var(--accent-color);
-    font-family: 'Cinzel', serif;
-    font-size: 1.4em;
+  margin: 0 0 5px 0;
+  color: var(--accent-color);
+  font-family: "Cinzel", serif;
+  font-size: 1.4em;
 }
 
 .user-card-header span {
-    font-size: 0.9em;
-    color: var(--text-muted-color);
+  font-size: 0.9em;
+  color: var(--text-muted-color);
 }
 
 .user-card-body {
-    display: flex;
-    flex-direction: column; /* Stack details and grid vertically by default */
-    gap: 15px;
-    flex-grow: 1; /* Allow body to take up space */
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column; /* Stack details and grid vertically by default */
+  gap: 15px;
+  flex-grow: 1; /* Allow body to take up space */
+  margin-bottom: 15px;
 }
 
 .user-card-details p {
-    margin: 5px 0;
-    font-size: 0.95em;
-    line-height: 1.5;
+  margin: 5px 0;
+  font-size: 0.95em;
+  line-height: 1.5;
 }
 .user-card-details strong {
-    color: var(--text-muted-color);
-    margin-right: 5px;
+  color: var(--text-muted-color);
+  margin-right: 5px;
 }
 .user-card-details hr {
-    border: none;
-    border-top: 1px dashed var(--border-color);
-    margin: 10px 0;
+  border: none;
+  border-top: 1px dashed var(--border-color);
+  margin: 10px 0;
 }
 
 .user-card-grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100px; /* Ensure space for grid or loading text */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px; /* Ensure space for grid or loading text */
 }
 .user-card-grid .numerology-grid {
-    margin: 0; /* Remove auto margin from grid component */
+  margin: 0; /* Remove auto margin from grid component */
 }
 
 .user-card-actions {
-    margin-top: auto; /* Push actions to the bottom */
-    text-align: center;
+  margin-top: auto; /* Push actions to the bottom */
+  text-align: center;
 }
 .user-card-actions button {
-    margin-top: 0; /* Remove top margin from button */
+  margin-top: 0; /* Remove top margin from button */
 }
 
 /* Optional: Side-by-side layout for details and grid on wider screens */
-@media (min-width: 500px) { /* Adjust breakpoint as needed */
-    .user-card-body {
-        flex-direction: row; /* Details and grid side-by-side */
-        align-items: flex-start; /* Align items to the top */
-    }
-    .user-card-details {
-        flex: 1; /* Allow details to take available space */
-    }
-    .user-card-grid {
-        flex-basis: 130px; /* Fixed width for grid area */
-        justify-content: center;
-        align-items: center; /* Center grid vertically */
-        padding-top: 10px; /* Add some space above grid */
-    }
-     .user-card-grid .numerology-grid {
-        transform: scale(1.0); /* Normal size grid */
-    }
+@media (min-width: 500px) {
+  /* Adjust breakpoint as needed */
+  .user-card-body {
+    flex-direction: row; /* Details and grid side-by-side */
+    align-items: flex-start; /* Align items to the top */
+  }
+  .user-card-details {
+    flex: 1; /* Allow details to take available space */
+  }
+  .user-card-grid {
+    flex-basis: 130px; /* Fixed width for grid area */
+    justify-content: center;
+    align-items: center; /* Center grid vertically */
+    padding-top: 10px; /* Add some space above grid */
+  }
+  .user-card-grid .numerology-grid {
+    transform: scale(1); /* Normal size grid */
+  }
 }
 
 /* NEW: Styles for Grid Analysis in Card */
 .user-card-analysis {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border-color);
-    text-align: left;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  text-align: left;
 }
 .user-card-analysis h4 {
-    margin: 0 0 8px 0;
-    font-size: 0.95em;
-    color: var(--accent-color);
-    font-family: 'Cinzel', serif;
-    font-weight: 600;
+  margin: 0 0 8px 0;
+  font-size: 0.95em;
+  color: var(--accent-color);
+  font-family: "Cinzel", serif;
+  font-weight: 600;
 }
 .user-card-analysis ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 .user-card-analysis li {
-    font-size: 0.85em;
-    margin-bottom: 4px;
-    color: var(--text-muted-color);
-    cursor: default; /* Indicate title attribute is available */
+  font-size: 0.85em;
+  margin-bottom: 4px;
+  color: var(--text-muted-color);
+  cursor: default; /* Indicate title attribute is available */
 }
 .user-card-analysis li strong {
-    color: var(--text-color);
-    margin-right: 5px;
+  color: var(--text-color);
+  margin-right: 5px;
 }
 /* NEW: Style for Moolank keywords */
 .moolank-keywords {
-    font-size: 0.8em !important; /* Smaller font */
-    color: var(--text-muted-color);
-    margin: -2px 0 5px 0 !important; /* Adjust spacing */
-    font-style: italic;
+  font-size: 0.8em !important; /* Smaller font */
+  color: var(--text-muted-color);
+  margin: -2px 0 5px 0 !important; /* Adjust spacing */
+  font-style: italic;
 }
 /* NEW: Style for Moolank analysis paragraph */
 .moolank-analysis-text {
-    font-size: 0.88em;
-    color: var(--text-color);
-    margin: 8px 0 5px 0 !important;
-    line-height: 1.6;
-    text-align: justify; /* Justify text for paragraph look */
+  font-size: 0.88em;
+  color: var(--text-color);
+  margin: 8px 0 5px 0 !important;
+  line-height: 1.6;
+  text-align: justify; /* Justify text for paragraph look */
 }
-
 
 /* --- End User Card Layout Styles --- */
 
-
 /* --- Responsive Styles - Refined --- */
 @media (max-width: 768px) {
-    body {
-        font-size: 15px;
-    }
+  body {
+    font-size: 15px;
+  }
 
-    /* Header adjustments */
-    .app-header {
-        padding: 10px 15px;
-        position: relative; /* Ensure toggle button is positioned relative to header */
-    }
-    .header-content {
-        /* Keep flex-direction row, but allow wrapping if needed */
-        /* flex-direction: column; */ /* Remove this if you want title/switch side-by-side */
-        gap: 10px;
-        justify-content: space-between; /* Keep space between */
-    }
-    .title-container {
-        /* Allow title container to shrink if needed */
-        flex-shrink: 1;
-    }
-    .app-header h1 {
-        font-size: 1.8em; /* Further reduce size */
-        letter-spacing: 1px;
-    }
-    .header-icon {
-        font-size: 1.8em;
-    }
+  /* Header adjustments */
+  .app-header {
+    padding: 10px 15px;
+    position: relative; /* Ensure toggle button is positioned relative to header */
+  }
+  .header-content {
+    /* Keep flex-direction row, but allow wrapping if needed */
+    /* flex-direction: column; */ /* Remove this if you want title/switch side-by-side */
+    gap: 10px;
+    justify-content: space-between; /* Keep space between */
+  }
+  .title-container {
+    /* Allow title container to shrink if needed */
+    flex-shrink: 1;
+  }
+  .app-header h1 {
+    font-size: 1.8em; /* Further reduce size */
+    letter-spacing: 1px;
+  }
+  .header-icon {
+    font-size: 1.8em;
+  }
 
-    /* Navbar adjustments for Mobile */
-    .app-navbar {
-        position: relative; /* Needed for absolute positioning of menu */
-    }
-    .menu-toggle { /* Style for the hamburger button */
-        display: block; /* Show the button */
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: var(--nav-icon-color-dark); /* Use nav icon color */
-        font-size: 1.8em;
-        cursor: pointer;
-        z-index: 1010; /* Above navbar content */
-    }
-    body.light-mode .menu-toggle {
-        color: var(--nav-icon-color-light);
-    }
+  /* Navbar adjustments for Mobile */
+  .app-navbar {
+    position: relative; /* Needed for absolute positioning of menu */
+  }
+  .menu-toggle {
+    /* Style for the hamburger button */
+    display: block; /* Show the button */
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--nav-icon-color-dark); /* Use nav icon color */
+    font-size: 1.8em;
+    cursor: pointer;
+    z-index: 1010; /* Above navbar content */
+  }
+  body.light-mode .menu-toggle {
+    color: var(--nav-icon-color-light);
+  }
 
-    .app-navbar-nav {
-        display: none; /* Hide nav links by default */
-        flex-direction: column; /* Stack links vertically */
-        position: absolute;
-        top: 100%; /* Position below the header/navbar */
-        left: 0;
-        right: 0;
-        background-color: var(--navbar-bg-dark); /* Use navbar background */
-        border-top: 1px solid var(--navbar-border-dark);
-        box-shadow: 0 4px 8px var(--shadow-color);
-        padding: 10px 0; /* Add some padding */
-        z-index: 1000;
-    }
-    body.light-mode .app-navbar-nav {
-         background-color: var(--navbar-bg-light);
-         border-top: 1px solid var(--navbar-border-light);
-    }
+  .app-navbar-nav {
+    display: none; /* Hide nav links by default */
+    flex-direction: column; /* Stack links vertically */
+    position: absolute;
+    top: 100%; /* Position below the header/navbar */
+    left: 0;
+    right: 0;
+    background-color: var(--navbar-bg-dark); /* Use navbar background */
+    border-top: 1px solid var(--navbar-border-dark);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    padding: 10px 0; /* Add some padding */
+    z-index: 1000;
+  }
+  body.light-mode .app-navbar-nav {
+    background-color: var(--navbar-bg-light);
+    border-top: 1px solid var(--navbar-border-light);
+  }
 
-    .app-navbar-nav.active { /* Class added by JS to show menu */
-        display: flex;
-    }
+  .app-navbar-nav.active {
+    /* Class added by JS to show menu */
+    display: flex;
+  }
 
-    .app-nav-item {
-        width: 100%;
-        text-align: center;
-    }
+  .app-nav-item {
+    width: 100%;
+    text-align: center;
+  }
 
-    .app-nav-link {
-        padding: 12px 20px; /* Restore padding */
-        font-size: 1.1em; /* Restore font size */
-        justify-content: center; /* Center icon and text */
-        border-bottom: none; /* Remove bottom border */
-        border-radius: 0; /* Remove border-radius */
-    }
-     .app-nav-link.active {
-        border-bottom: none; /* Remove bottom border for active */
-        background-color: var(--nav-link-hover-bg-dark); /* Use hover bg for active */
-    }
-     body.light-mode .app-nav-link.active {
-         background-color: var(--nav-link-hover-bg-light);
-     }
+  .app-nav-link {
+    padding: 12px 20px; /* Restore padding */
+    font-size: 1.1em; /* Restore font size */
+    justify-content: center; /* Center icon and text */
+    border-bottom: none; /* Remove bottom border */
+    border-radius: 0; /* Remove border-radius */
+  }
+  .app-nav-link.active {
+    border-bottom: none; /* Remove bottom border for active */
+    background-color: var(--nav-link-hover-bg-dark); /* Use hover bg for active */
+  }
+  body.light-mode .app-nav-link.active {
+    background-color: var(--nav-link-hover-bg-light);
+  }
 
+  /* Main content adjustments */
+  .main-content {
+    width: 95%;
+    padding: 15px;
+    margin: 25px auto; /* Reduced margin */
+    border-radius: 8px;
+  }
+  .main-content h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+  }
 
-    /* Main content adjustments */
-    .main-content {
-        width: 95%;
-        padding: 15px;
-        margin: 25px auto; /* Reduced margin */
-        border-radius: 8px;
-    }
-    .main-content h2 {
-        font-size: 1.8em;
-        margin-bottom: 25px;
-        padding-bottom: 10px;
-    }
+  /* Section adjustments */
+  #inputArea,
+  #userList,
+  #exportSection,
+  .person-input-section,
+  .report-section {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px; /* Reduced margin */
+  }
+  #inputArea h3,
+  #userList h3,
+  #exportSection h3,
+  .person-input-section h3,
+  .report-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+  }
 
-    /* Section adjustments */
-    #inputArea, #userList, #exportSection, .person-input-section, .report-section {
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 25px; /* Reduced margin */
-    }
-     #inputArea h3, #userList h3, #exportSection h3, .person-input-section h3, .report-section h3 {
-        font-size: 1.5em;
-        margin-bottom: 20px;
-        padding-bottom: 8px;
-    }
+  /* Form adjustments */
+  #inputArea {
+    text-align: left; /* Align labels left */
+  }
+  #inputArea label {
+    margin: 8px 0 4px 0; /* Adjust label margin */
+    display: block; /* Stack labels */
+    width: 100%;
+  }
+  #inputArea input[type="text"],
+  #inputArea input[type="date"],
+  #inputArea select {
+    min-width: unset; /* Remove min-width */
+    width: 100%; /* Full width */
+    margin: 0 0 15px 0; /* Margin below */
+    padding: 10px 12px;
+  }
+  #inputArea button {
+    display: block; /* Make button block */
+    width: 100%; /* Full width */
+    padding: 12px 20px;
+    font-size: 1.1em; /* Slightly larger */
+    margin-top: 10px;
+  }
 
-    /* Form adjustments */
-     #inputArea {
-        text-align: left; /* Align labels left */
-    }
-     #inputArea label {
-        margin: 8px 0 4px 0; /* Adjust label margin */
-        display: block; /* Stack labels */
-        width: 100%;
-    }
-    #inputArea input[type="text"],
-    #inputArea input[type="date"],
-    #inputArea select {
-        min-width: unset; /* Remove min-width */
-        width: 100%; /* Full width */
-        margin: 0 0 15px 0; /* Margin below */
-        padding: 10px 12px;
-    }
-     #inputArea button {
-        display: block; /* Make button block */
-        width: 100%; /* Full width */
-        padding: 12px 20px;
-        font-size: 1.1em; /* Slightly larger */
-        margin-top: 10px;
-    }
+  /* User Card List - Ensure single column */
+  .user-card-list {
+    grid-template-columns: 1fr; /* Force single column */
+  }
+  /* Ensure card body stacks */
+  .user-card-body {
+    flex-direction: column !important; /* Force column layout */
+  }
+  .user-card-grid {
+    flex-basis: auto !important; /* Reset basis */
+    padding-top: 15px !important;
+  }
 
-    /* User Card List - Ensure single column */
-    .user-card-list {
-        grid-template-columns: 1fr; /* Force single column */
-    }
-    /* Ensure card body stacks */
-    .user-card-body {
-        flex-direction: column !important; /* Force column layout */
-    }
-     .user-card-grid {
-        flex-basis: auto !important; /* Reset basis */
-        padding-top: 15px !important;
-    }
+  /* Compatibility Checker Layout */
+  .compatibility-container {
+    flex-direction: column; /* Stack person sections */
+    gap: 20px;
+  }
+  .person-input-section {
+    min-width: unset; /* Remove min-width */
+  }
 
+  /* Team Win Percentage Layout */
+  #winPercentageInput > div {
+    /* Target the flex container */
+    flex-direction: column; /* Stack inputs */
+    align-items: center; /* Center stacked items */
+  }
+  #winPercentageInput label,
+  #winPercentageInput select,
+  #winPercentageInput input {
+    width: 80%; /* Adjust width */
+    max-width: 300px;
+  }
+  #resultDisplay > div {
+    /* Target the flex container for results */
+    flex-direction: column;
+    gap: 15px;
+  }
+  #resultDisplay > div > div {
+    /* Target individual team result divs */
+    border-right: none; /* Remove vertical border */
+    border-bottom: 1px solid var(--border-color); /* Add horizontal border */
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 15px;
+    min-width: unset;
+  }
+  #resultDisplay > div > div:last-child {
+    border-bottom: none; /* Remove border from last item */
+    padding-bottom: 0;
+  }
 
-    /* Compatibility Checker Layout */
-    .compatibility-container {
-        flex-direction: column; /* Stack person sections */
-        gap: 20px;
-    }
-    .person-input-section {
-        min-width: unset; /* Remove min-width */
-    }
+  /* Numerology Grid adjustments (Applies to both card and table if used) */
+  .numerology-grid {
+    grid-template-columns: repeat(3, 30px); /* Smaller cells */
+    grid-template-rows: repeat(3, 30px);
+    gap: 2px;
+    padding: 4px;
+  }
+  .grid-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8em;
+  }
 
-    /* Team Win Percentage Layout */
-    #winPercentageInput > div { /* Target the flex container */
-        flex-direction: column; /* Stack inputs */
-        align-items: center; /* Center stacked items */
-    }
-     #winPercentageInput label, #winPercentageInput select, #winPercentageInput input {
-        width: 80%; /* Adjust width */
-        max-width: 300px;
-    }
-    #resultDisplay > div { /* Target the flex container for results */
-       flex-direction: column;
-       gap: 15px;
-    }
-     #resultDisplay > div > div { /* Target individual team result divs */
-        border-right: none; /* Remove vertical border */
-        border-bottom: 1px solid var(--border-color); /* Add horizontal border */
-        padding-right: 0;
-        padding-left: 0;
-        padding-bottom: 15px;
-        min-width: unset;
-     }
-      #resultDisplay > div > div:last-child {
-        border-bottom: none; /* Remove border from last item */
-        padding-bottom: 0;
-      }
+  /* Footer adjustments */
+  .app-footer {
+    padding: 15px 15px;
+    font-size: 0.8em;
+  }
+  .footer-content {
+    flex-direction: column; /* Stack copyright info */
+    gap: 5px;
+  }
 
+  /* Show hamburger menu button on smaller screens */
+  .menu-toggle {
+    display: block; /* Make the button visible */
+  }
 
-    /* Numerology Grid adjustments (Applies to both card and table if used) */
-    .numerology-grid {
-        grid-template-columns: repeat(3, 30px); /* Smaller cells */
-        grid-template-rows: repeat(3, 30px);
-        gap: 2px;
-        padding: 4px;
-    }
-    .grid-cell {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8em;
-    }
+  .app-navbar-nav {
+    display: none; /* Hide the menu by default */
+    flex-direction: column; /* Stack links vertically */
+    position: absolute;
+    top: 100%; /* Position below the navbar */
+    left: 0;
+    right: 0;
+    background-color: var(--navbar-bg-dark); /* Use navbar background */
+    border-top: 1px solid var(--navbar-border-dark);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    padding: 10px 0;
+    z-index: 1000;
+  }
 
-    /* Footer adjustments */
-    .app-footer {
-        padding: 15px 15px;
-        font-size: 0.8em;
-    }
-    .footer-content {
-        flex-direction: column; /* Stack copyright info */
-        gap: 5px;
-    }
-
+  .app-navbar-nav.active {
+    display: flex; /* Show the menu when active */
+  }
 }
-
 
 /* --- Theme Toggle Switch --- */
 .theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between switch and text */
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between switch and text */
 }
 .theme-switch-wrapper span {
-    color: var(--text-muted-color);
-    font-size: 0.8em;
-    transition: color 0.3s ease;
+  color: var(--text-muted-color);
+  font-size: 0.8em;
+  transition: color 0.3s ease;
 }
 
 .theme-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px; /* Width of the switch */
-    height: 24px; /* Height of the switch */
+  position: relative;
+  display: inline-block;
+  width: 50px; /* Width of the switch */
+  height: 24px; /* Height of the switch */
 }
 
 .theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--switch-bg);
-    transition: .4s;
-    border-radius: 24px; /* Rounded switch */
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--switch-bg);
+  transition: 0.4s;
+  border-radius: 24px; /* Rounded switch */
 }
 
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px; /* Size of the knob */
-    width: 18px;
-    left: 3px; /* Position of the knob */
-    bottom: 3px;
-    background-color: var(--switch-slider-bg);
-    transition: .4s;
-    border-radius: 50%; /* Circular knob */
+  position: absolute;
+  content: "";
+  height: 18px; /* Size of the knob */
+  width: 18px;
+  left: 3px; /* Position of the knob */
+  bottom: 3px;
+  background-color: var(--switch-slider-bg);
+  transition: 0.4s;
+  border-radius: 50%; /* Circular knob */
 }
 
 input:checked + .slider {
-    background-color: var(--switch-checked-bg);
+  background-color: var(--switch-checked-bg);
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px); /* Move knob to the right */
-    background-color: var(--switch-checked-slider-bg);
+  transform: translateX(26px); /* Move knob to the right */
+  background-color: var(--switch-checked-slider-bg);
 }
-
 
 /* --- Numerology Grid Component Styles --- */
 .numerology-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 35px); /* Adjust size as needed */
-    grid-template-rows: repeat(3, 35px);    /* Adjust size as needed */
-    gap: 3px; /* Small gap between cells */
-    justify-content: center; /* Center the grid horizontally */
-    margin: 5px auto; /* Center within the table cell */
-    padding: 5px;
-    background-color: var(--grid-bg);
-    border: 1px solid var(--grid-border);
-    border-radius: 4px;
-    width: min-content; /* Make grid only as wide as its content */
-    box-shadow: inset 0 0 5px var(--shadow-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: grid;
+  grid-template-columns: repeat(3, 35px); /* Adjust size as needed */
+  grid-template-rows: repeat(3, 35px); /* Adjust size as needed */
+  gap: 3px; /* Small gap between cells */
+  justify-content: center; /* Center the grid horizontally */
+  margin: 5px auto; /* Center within the table cell */
+  padding: 5px;
+  background-color: var(--grid-bg);
+  border: 1px solid var(--grid-border);
+  border-radius: 4px;
+  width: min-content; /* Make grid only as wide as its content */
+  box-shadow: inset 0 0 5px var(--shadow-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .grid-cell {
-    width: 35px; /* Match grid column size */
-    height: 35px; /* Match grid row size */
-    border: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9em; /* Adjust font size */
-    font-weight: bold;
-    background-color: var(--grid-cell-bg);
-    color: var(--grid-cell-text);
-    border-radius: 3px;
-    overflow: hidden; /* Hide overflow if numbers are too long */
-    text-align: center;
-    padding: 2px; /* Small padding */
-    box-sizing: border-box;
-    line-height: 1.1; /* Adjust line height for multiple numbers */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    word-break: break-all; /* Break long strings of numbers if needed */
+  width: 35px; /* Match grid column size */
+  height: 35px; /* Match grid row size */
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em; /* Adjust font size */
+  font-weight: bold;
+  background-color: var(--grid-cell-bg);
+  color: var(--grid-cell-text);
+  border-radius: 3px;
+  overflow: hidden; /* Hide overflow if numbers are too long */
+  text-align: center;
+  padding: 2px; /* Small padding */
+  box-sizing: border-box;
+  line-height: 1.1; /* Adjust line height for multiple numbers */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  word-break: break-all; /* Break long strings of numbers if needed */
 }
 
 .grid-cell:empty {
-    background-color: var(--grid-cell-empty-bg);
-    color: var(--grid-cell-empty-text);
-    /* Optional: Add a placeholder like a dot */
-    /* content: '·'; */
+  background-color: var(--grid-cell-empty-bg);
+  color: var(--grid-cell-empty-text);
+  /* Optional: Add a placeholder like a dot */
+  /* content: '·'; */
 }
 
 /* --- NEW: Styles for Grid Highlighting Overlay --- */
 .numerology-grid-container {
-    position: relative; /* Needed for absolute positioning of SVG overlay */
-    width: min-content; /* Fit the grid size */
-    margin: 5px auto; /* Center within parent */
+  position: relative; /* Needed for absolute positioning of SVG overlay */
+  width: min-content; /* Fit the grid size */
+  margin: 5px auto; /* Center within parent */
 }
 
 .grid-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* Allow clicks to pass through to grid cells if needed */
-    overflow: visible; /* Allow lines to potentially extend slightly */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Allow clicks to pass through to grid cells if needed */
+  overflow: visible; /* Allow lines to potentially extend slightly */
 }
 
 .analysis-line {
-    stroke: var(--accent-color); /* Default line color */
-    stroke-width: 3; /* Line thickness */
-    stroke-linecap: round;
-    opacity: 0.8; /* Slightly more opaque */
+  stroke: var(--accent-color); /* Default line color */
+  stroke-width: 3; /* Line thickness */
+  stroke-linecap: round;
+  opacity: 0.8; /* Slightly more opaque */
 }
 
 /* Styles for Rectangles (Vertical Planes Only) */
 .analysis-rect {
-    fill: var(--accent-color); /* Default fill color */
-    opacity: 0.15; /* Make rectangles quite transparent */
-    stroke: var(--accent-color); /* Optional border */
-    stroke-width: 0.5; /* Thin border */
-    rx: 2; /* Slightly rounded corners */
-    ry: 2;
+  fill: var(--accent-color); /* Default fill color */
+  opacity: 0.15; /* Make rectangles quite transparent */
+  stroke: var(--accent-color); /* Optional border */
+  stroke-width: 0.5; /* Thin border */
+  rx: 2; /* Slightly rounded corners */
+  ry: 2;
 }
-.analysis-rect.plane-vertical-rect { /* Specific style for vertical planes */
-    fill: rgba(176, 196, 222, 0.15); /* LightSteelBlue fill */
-    stroke: rgba(176, 196, 222, 0.4);
+.analysis-rect.plane-vertical-rect {
+  /* Specific style for vertical planes */
+  fill: rgba(176, 196, 222, 0.15); /* LightSteelBlue fill */
+  stroke: rgba(176, 196, 222, 0.4);
 }
-
 
 /* Specific styles for different line categories */
 
 /* Lines for Horizontal Planes */
 .analysis-line.plane-line {
-    stroke: rgba(218, 165, 32, 0.7); /* Goldenrod line */
-    stroke-width: 3;
+  stroke: rgba(218, 165, 32, 0.7); /* Goldenrod line */
+  stroke-width: 3;
 }
 /* Lines for Arrows (Diagonals) */
 .analysis-line.arrow-line {
-     stroke: rgba(255, 255, 255, 0.8); /* White lines */
-     stroke-width: 3;
+  stroke: rgba(255, 255, 255, 0.8); /* White lines */
+  stroke-width: 3;
 }
 /* Lines for Small Arrows */
 .analysis-line.small-arrow-line {
-    stroke: rgba(200, 200, 200, 0.7); /* Grey */
-    stroke-width: 2.5;
-    stroke-dasharray: 5 3; /* Dashed line */
+  stroke: rgba(200, 200, 200, 0.7); /* Grey */
+  stroke-width: 2.5;
+  stroke-dasharray: 5 3; /* Dashed line */
 }
-
 
 /* Light Mode Adjustments */
 body.light-mode .analysis-line {
-    stroke: var(--accent-color);
-    opacity: 0.8;
+  stroke: var(--accent-color);
+  opacity: 0.8;
 }
 body.light-mode .analysis-rect {
-    fill: var(--accent-color);
-    opacity: 0.15;
-    stroke: var(--accent-color);
+  fill: var(--accent-color);
+  opacity: 0.15;
+  stroke: var(--accent-color);
 }
 body.light-mode .analysis-rect.plane-vertical-rect {
-    fill: rgba(70, 130, 180, 0.15); /* SteelBlue fill */
-    stroke: rgba(70, 130, 180, 0.4);
+  fill: rgba(70, 130, 180, 0.15); /* SteelBlue fill */
+  stroke: rgba(70, 130, 180, 0.4);
 }
 
 body.light-mode .analysis-line.plane-line {
-    stroke: rgba(139, 69, 19, 0.7); /* SaddleBrown */
+  stroke: rgba(139, 69, 19, 0.7); /* SaddleBrown */
 }
 body.light-mode .analysis-line.arrow-line {
-     stroke: rgba(50, 50, 50, 0.8); /* Dark grey */
+  stroke: rgba(50, 50, 50, 0.8); /* Dark grey */
 }
 body.light-mode .analysis-line.small-arrow-line {
-    stroke: rgba(100, 100, 100, 0.7); /* Darker grey */
+  stroke: rgba(100, 100, 100, 0.7); /* Darker grey */
 }
-
 
 /* --- New Navbar Styles --- */
 .app-navbar {
-    background-color: var(--navbar-bg-dark);
-    padding: 10px 25px; /* Adjusted padding */
-    border-bottom: 1px solid var(--navbar-border-dark);
-    box-shadow: 0 2px 4px var(--shadow-color); /* Softer shadow */
-    backdrop-filter: blur(4px); /* Slightly more blur */
-    transition: background-color 0.4s ease, border-color 0.4s ease;
-    position: relative; /* Added for menu toggle positioning */
+  background-color: var(--navbar-bg-dark);
+  padding: 10px 25px; /* Adjusted padding */
+  border-bottom: 1px solid var(--navbar-border-dark);
+  box-shadow: 0 2px 4px var(--shadow-color); /* Softer shadow */
+  backdrop-filter: blur(4px); /* Slightly more blur */
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+  position: relative; /* Added for menu toggle positioning */
 }
 body.light-mode .app-navbar {
-    background-color: var(--navbar-bg-light);
-    border-bottom-color: var(--navbar-border-light);
+  background-color: var(--navbar-bg-light);
+  border-bottom-color: var(--navbar-border-light);
 }
 
 .app-navbar-nav {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    gap: 25px; /* Adjusted gap */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 25px; /* Adjusted gap */
 }
 
 .app-nav-item {
-    /* No specific styles needed */
+  /* No specific styles needed */
 }
 
 .app-nav-link {
-    color: var(--nav-link-text-dark);
-    text-decoration: none;
-    padding: 10px 18px; /* Adjusted padding */
-    border-radius: 4px; /* Smaller radius */
-    transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
-    font-weight: 500;
-    font-family: 'Merriweather', serif;
-    font-size: 1.0em; /* Adjusted size */
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 3px solid transparent;
-    position: relative; /* For potential pseudo-elements */
+  color: var(--nav-link-text-dark);
+  text-decoration: none;
+  padding: 10px 18px; /* Adjusted padding */
+  border-radius: 4px; /* Smaller radius */
+  transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+  font-weight: 500;
+  font-family: "Merriweather", serif;
+  font-size: 1em; /* Adjusted size */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 3px solid transparent;
+  position: relative; /* For potential pseudo-elements */
 }
 body.light-mode .app-nav-link {
-    color: var(--nav-link-text-light);
+  color: var(--nav-link-text-light);
 }
 
 .app-nav-link .nav-icon {
-    font-size: 1.2em;
-    color: var(--nav-icon-color-dark);
-    transition: color 0.3s ease;
+  font-size: 1.2em;
+  color: var(--nav-icon-color-dark);
+  transition: color 0.3s ease;
 }
 body.light-mode .app-nav-link .nav-icon {
-    color: var(--nav-icon-color-light);
+  color: var(--nav-icon-color-light);
 }
 
-
 .app-nav-link:hover,
-.app-nav-link:focus { /* Add focus state */
-    color: var(--nav-link-active-text-dark);
-    background-color: var(--nav-link-hover-bg-dark);
-    outline: none; /* Remove default focus outline */
+.app-nav-link:focus {
+  /* Add focus state */
+  color: var(--nav-link-active-text-dark);
+  background-color: var(--nav-link-hover-bg-dark);
+  outline: none; /* Remove default focus outline */
 }
 body.light-mode .app-nav-link:hover,
 body.light-mode .app-nav-link:focus {
-    color: var(--nav-link-active-text-light);
-    background-color: var(--nav-link-hover-bg-light);
+  color: var(--nav-link-active-text-light);
+  background-color: var(--nav-link-hover-bg-light);
 }
 .app-nav-link:hover .nav-icon,
 .app-nav-link:focus .nav-icon {
-    color: var(--nav-icon-active-color-dark);
+  color: var(--nav-icon-active-color-dark);
 }
 body.light-mode .app-nav-link:hover .nav-icon,
 body.light-mode .app-nav-link:focus .nav-icon {
-    color: var(--nav-icon-active-color-light);
+  color: var(--nav-icon-active-color-light);
 }
-
 
 .app-nav-link.active {
-    color: var(--nav-link-active-text-dark);
-    font-weight: 600; /* Slightly bolder */
-    border-bottom-color: var(--nav-link-active-border-dark);
-    background-color: transparent;
+  color: var(--nav-link-active-text-dark);
+  font-weight: 600; /* Slightly bolder */
+  border-bottom-color: var(--nav-link-active-border-dark);
+  background-color: transparent;
 }
 body.light-mode .app-nav-link.active {
-    color: var(--nav-link-active-text-light);
-    border-bottom-color: var(--nav-link-active-border-light);
+  color: var(--nav-link-active-text-light);
+  border-bottom-color: var(--nav-link-active-border-light);
 }
 
 .app-nav-link.active .nav-icon {
-    color: var(--nav-icon-active-color-dark);
+  color: var(--nav-icon-active-color-dark);
 }
 body.light-mode .app-nav-link.active .nav-icon {
-    color: var(--nav-icon-active-color-light);
+  color: var(--nav-icon-active-color-light);
 }
 
 /* Hamburger Menu Toggle Button (Hidden on Desktop) */
 .menu-toggle {
-    display: none; /* Hidden by default */
+  display: none; /* Hidden by default */
 }
-
 
 /* --- Compatibility Checker Styles --- */
 .compatibility-container {
-    display: flex;
-    justify-content: space-around; /* Space out the two person sections */
-    gap: 30px; /* Gap between sections */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-around; /* Space out the two person sections */
+  gap: 30px; /* Gap between sections */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  margin-bottom: 30px;
 }
 
 .person-input-section {
-    flex: 1; /* Allow sections to grow */
-    min-width: 300px; /* Minimum width before wrapping */
-    padding: 25px;
-    border: 1px solid var(--section-border);
-    border-radius: 10px;
-    background-color: rgba(0,0,0,0.1); /* Slightly different background */
-    text-align: center;
+  flex: 1; /* Allow sections to grow */
+  min-width: 300px; /* Minimum width before wrapping */
+  padding: 25px;
+  border: 1px solid var(--section-border);
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1); /* Slightly different background */
+  text-align: center;
 }
 body.light-mode .person-input-section {
-     background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-
 .person-input-section h3 {
-    margin-top: 0;
-    color: var(--accent-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+  margin-top: 0;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .person-input-section label {
-    display: block; /* Stack labels and inputs */
-    margin: 15px auto; /* Center labels */
-    width: fit-content; /* Adjust width to content */
+  display: block; /* Stack labels and inputs */
+  margin: 15px auto; /* Center labels */
+  width: fit-content; /* Adjust width to content */
 }
 
 .person-input-section input,
 .person-input-section select {
-    display: block; /* Ensure inputs are block level */
-    margin: 5px auto 10px auto; /* Center inputs */
+  display: block; /* Ensure inputs are block level */
+  margin: 5px auto 10px auto; /* Center inputs */
 }
 
 .grid-display {
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px dashed var(--border-color);
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--border-color);
 }
 .grid-display h4 {
-    margin-bottom: 10px;
-    color: var(--text-muted-color);
+  margin-bottom: 10px;
+  color: var(--text-muted-color);
 }
 .grid-display p {
-    font-size: 0.9em;
-    color: var(--text-muted-color);
-    margin-top: 10px;
+  font-size: 0.9em;
+  color: var(--text-muted-color);
+  margin-top: 10px;
 }
 
-
 .report-section {
-    margin-top: 30px;
-    padding: 25px;
-    border: 1px solid var(--section-border);
-    border-radius: 10px;
-    background-color: var(--section-bg);
+  margin-top: 30px;
+  padding: 25px;
+  border: 1px solid var(--section-border);
+  border-radius: 10px;
+  background-color: var(--section-bg);
 }
 
 .report-section h3 {
-     margin-top: 0;
-    color: var(--accent-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+  margin-top: 0;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .report-section pre {
-    white-space: pre-wrap; /* Wrap text */
-    word-wrap: break-word; /* Break long words */
-    font-family: 'Merriweather', serif;
-    font-size: 1em;
-    line-height: 1.7;
-    color: var(--text-color);
-    background-color: var(--input-bg); /* Match input background */
-    padding: 15px;
-    border-radius: 5px;
-    border: 1px solid var(--input-border);
+  white-space: pre-wrap; /* Wrap text */
+  word-wrap: break-word; /* Break long words */
+  font-family: "Merriweather", serif;
+  font-size: 1em;
+  line-height: 1.7;
+  color: var(--text-color);
+  background-color: var(--input-bg); /* Match input background */
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid var(--input-border);
 }
