@@ -1,5 +1,5 @@
-import React from 'react';
-import { FaRegCopyright } from 'react-icons/fa'; // Example icon
+import React from "react";
+import { FaRegCopyright } from "react-icons/fa"; // Example icon
 
 function Footer() {
   return (

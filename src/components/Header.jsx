@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { GiGalaxy } from 'react-icons/gi'; // Example icon
+import React from "react";
+import PropTypes from "prop-types";
+import { GiGalaxy } from "react-icons/gi"; // Example icon
 
 function Header({ theme, handleThemeChange }) {
   return (
@@ -16,7 +16,7 @@ function Header({ theme, handleThemeChange }) {
               type="checkbox"
               id="themeToggleCheckbox"
               onChange={handleThemeChange}
-              checked={theme === 'light'}
+              checked={theme === "light"}
             />
             <div className="slider round"></div>
           </label>

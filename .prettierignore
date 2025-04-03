@@ -1,0 +1,21 @@
+# Build output
+dist
+build
+out
+
+# Dependencies
+node_modules
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env*
+
+# Vite cache
+.vite
+
+# Optional: Ignore specific files if needed
+# public/some-generated-file.js

@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from "react"
-import iplTeamsData from "../data/iplTeams.js" // Import from within src
+import React, { useState, useEffect } from "react";
+import iplTeamsData from "../data/iplTeams.js"; // Import from within src
 
 // Read API URL from environment variable, fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api" // Base API URL
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api"; // Base API URL
 
 // Helper function to get today's date in YYYY-MM-DD format
 const getTodayDateString = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  const day = String(today.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
 function TeamWinPercentage() {
-  const [selectedTeamKey1, setSelectedTeamKey1] = useState("") // Renamed state
-  const [selectedTeamKey2, setSelectedTeamKey2] = useState("") // Added state for second team
-  const [matchDate, setMatchDate] = useState(getTodayDateString()) // Initialize with today's date
-  const [result, setResult] = useState(null) // Will store { team1: {...}, team2: {...} }
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [teamOptions, setTeamOptions] = useState([])
+  const [selectedTeamKey1, setSelectedTeamKey1] = useState(""); // Renamed state
+  const [selectedTeamKey2, setSelectedTeamKey2] = useState(""); // Added state for second team
+  const [matchDate, setMatchDate] = useState(getTodayDateString()); // Initialize with today's date
+  const [result, setResult] = useState(null); // Will store { team1: {...}, team2: {...} }
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [teamOptions, setTeamOptions] = useState([]);
 
   // Populate team options on component mount
   useEffect(() => {
     const options = Object.entries(iplTeamsData).map(([key, team]) => ({
       value: key,
       label: team.fullName,
-    }))
-    setTeamOptions(options)
+    }));
+    setTeamOptions(options);
     // Set default selections for both dropdowns if options exist
     if (options.length > 0) {
-      setSelectedTeamKey1(options[0].value)
+      setSelectedTeamKey1(options[0].value);
       // Select the second team if available, otherwise the first again
-      setSelectedTeamKey2(options.length > 1 ? options[1].value : options[0].value)
+      setSelectedTeamKey2(options.length > 1 ? options[1].value : options[0].value);
     }
-  }, [])
+  }, []);
 
   // Helper function to call the API for a single team
   const fetchWinPercentage = async (teamKey, matchDate) => {
@@ -45,51 +45,51 @@ function TeamWinPercentage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ teamKey, matchDate }),
-    })
-    const data = await response.json()
+    });
+    const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.error || `HTTP error! status: ${response.status}`)
+      throw new Error(data.error || `HTTP error! status: ${response.status}`);
     }
-    return data
-  }
+    return data;
+  };
 
   const handleCalculate = async () => {
     if (!selectedTeamKey1 || !selectedTeamKey2 || !matchDate) {
-      setError("Please select both teams and enter a match date.")
-      setResult(null)
-      return
+      setError("Please select both teams and enter a match date.");
+      setResult(null);
+      return;
     }
     if (selectedTeamKey1 === selectedTeamKey2) {
-      setError("Please select two different teams.")
-      setResult(null)
-      return
+      setError("Please select two different teams.");
+      setResult(null);
+      return;
     }
 
-    setIsLoading(true)
-    setError("")
-    setResult(null)
+    setIsLoading(true);
+    setError("");
+    setResult(null);
 
     try {
       // Fetch results for both teams concurrently
       const [result1, result2] = await Promise.all([
         fetchWinPercentage(selectedTeamKey1, matchDate),
         fetchWinPercentage(selectedTeamKey2, matchDate),
-      ])
+      ]);
 
-      setResult({ team1: result1, team2: result2 }) // Store both results
+      setResult({ team1: result1, team2: result2 }); // Store both results
     } catch (err) {
-      console.error("Calculation error:", err)
-      setError(err.message || "Failed to calculate win percentage. Check API connection.")
-      setResult(null)
+      console.error("Calculation error:", err);
+      setError(err.message || "Failed to calculate win percentage. Check API connection.");
+      setResult(null);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <>
       <h2>IPL Team Matchup Calculator</h2> {/* Updated Title */}
-      <div id='winPercentageInput' className='input-section'>
+      <div id="winPercentageInput" className="input-section">
         {" "}
         {/* Reuse styling */}
         <h3>Select Teams and Match Date</h3>
@@ -130,7 +130,7 @@ function TeamWinPercentage() {
           </select>
           <label>
             Match Date:
-            <input type='date' value={matchDate} onChange={(e) => setMatchDate(e.target.value)} />
+            <input type="date" value={matchDate} onChange={(e) => setMatchDate(e.target.value)} />
           </label>
           <button onClick={handleCalculate} disabled={isLoading}>
             {isLoading ? "Calculating..." : "Calculate Win %"}
@@ -138,17 +138,29 @@ function TeamWinPercentage() {
         </div>
       </div>
       {error && (
-        <div id='errorDisplay' style={{ color: "red", marginTop: "20px", textAlign: "center" }}>
+        <div id="errorDisplay" style={{ color: "red", marginTop: "20px", textAlign: "center" }}>
           <p>Error: {error}</p>
         </div>
       )}
       {result && (
-        <div id='resultDisplay' className='report-section'>
+        <div id="resultDisplay" className="report-section">
           <h3>Matchup Analysis for {result.team1.matchDate}</h3>
-          <div style={{ display: "flex", justifyContent: "space-around", gap: "20px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              gap: "20px",
+              flexWrap: "wrap",
+            }}
+          >
             {/* Team 1 Results */}
             <div
-              style={{ flex: 1, minWidth: "250px", borderRight: "1px solid var(--border-color)", paddingRight: "15px" }}
+              style={{
+                flex: 1,
+                minWidth: "250px",
+                borderRight: "1px solid var(--border-color)",
+                paddingRight: "15px",
+              }}
             >
               <h4>{result.team1.team}</h4>
               <p>
@@ -181,7 +193,7 @@ function TeamWinPercentage() {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default TeamWinPercentage
+export default TeamWinPercentage;

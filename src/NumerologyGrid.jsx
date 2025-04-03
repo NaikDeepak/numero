@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 // --- Define Coordinates for Highlighting ---
 
@@ -28,39 +28,41 @@ const analysisLineMap = {
   "Arrow of Practicality (8-1-6)": [5, 83.3, 95, 83.3], // Same as Practical Plane line
 };
 
-
 /**
  * Renders a 3x3 Lo Shu grid based on provided numbers, highlighting completed arrows/planes.
  * @param {object} props - Component props.
  * @param {number[]} [props.gridNumbers=[]] - Array of numbers to display in the grid.
  * @param {object[]} [props.gridAnalysis=[]] - Array of analysis results for highlighting.
  */
-function NumerologyGrid({ gridNumbers = [], gridAnalysis = [] }) { // Add gridAnalysis prop
+function NumerologyGrid({ gridNumbers = [], gridAnalysis = [] }) {
+  // Add gridAnalysis prop
   // Lo Shu Grid position mapping (Number -> Cell Index 0-8)
   // 4 9 2  -> 0 1 2
   // 3 5 7  -> 3 4 5
   // 8 1 6  -> 6 7 8
   const positionMap = { 4: 0, 9: 1, 2: 2, 3: 3, 5: 4, 7: 5, 8: 6, 1: 7, 6: 8 };
-  let cells = Array(9).fill(''); // Initialize 9 empty cells
+  let cells = Array(9).fill(""); // Initialize 9 empty cells
 
   // Populate cell contents based on gridNumbers
   if (gridNumbers && Array.isArray(gridNumbers)) {
-    gridNumbers.forEach(num => {
+    gridNumbers.forEach((num) => {
       const number = parseInt(num, 10); // Ensure it's a number
       if (!isNaN(number) && number !== 0 && positionMap.hasOwnProperty(number)) {
         let cellIndex = positionMap[number];
         // Append number with space if cell already has content
-        cells[cellIndex] += (cells[cellIndex] ? ' ' : '') + number;
+        cells[cellIndex] += (cells[cellIndex] ? " " : "") + number;
       }
     });
   }
 
   return (
-    <div className="numerology-grid-container"> {/* Added container for SVG overlay */}
+    <div className="numerology-grid-container">
+      {" "}
+      {/* Added container for SVG overlay */}
       <div className="numerology-grid">
         {cells.map((content, index) => (
           <div key={index} className="grid-cell">
-            {content || ''} {/* Render content or empty string */}
+            {content || ""} {/* Render content or empty string */}
           </div>
         ))}
       </div>
@@ -70,7 +72,8 @@ function NumerologyGrid({ gridNumbers = [], gridAnalysis = [] }) { // Add gridAn
           const rectCoords = analysisRectMap[analysisItem.name]; // Check for rectangle first
           const lineCoords = analysisLineMap[analysisItem.name]; // Then check for line
           // Create CSS class from category (e.g., 'plane-vertical-rect', 'arrow-line')
-          const categoryClass = analysisItem.category?.toLowerCase().replace(/[\s()]/g, '-') || 'analysis';
+          const categoryClass =
+            analysisItem.category?.toLowerCase().replace(/[\s()]/g, "-") || "analysis";
 
           if (rectCoords) {
             // Render a rectangle for vertical planes
@@ -107,18 +110,20 @@ function NumerologyGrid({ gridNumbers = [], gridAnalysis = [] }) { // Add gridAn
 // Define prop types for type checking and documentation
 NumerologyGrid.propTypes = {
   gridNumbers: PropTypes.arrayOf(PropTypes.number),
-  gridAnalysis: PropTypes.arrayOf(PropTypes.shape({ // Add prop type for analysis
+  gridAnalysis: PropTypes.arrayOf(
+    PropTypes.shape({
+      // Add prop type for analysis
       name: PropTypes.string,
       category: PropTypes.string,
       interpretation: PropTypes.string,
-      numbers: PropTypes.arrayOf(PropTypes.number)
-  }))
+      numbers: PropTypes.arrayOf(PropTypes.number),
+    })
+  ),
 };
 
 // Default prop for gridAnalysis
 NumerologyGrid.defaultProps = {
-    gridAnalysis: [],
+  gridAnalysis: [],
 };
-
 
 export default NumerologyGrid;

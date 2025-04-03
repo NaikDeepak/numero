@@ -1,66 +1,66 @@
 // Data for IPL teams used in the frontend dropdown
 
 const iplTeamsData = {
-  "CSK": {
-    "fullName": "Chennai Super Kings",
-    "dob": "2008-01-15",
-    "captain": "Ruturaj Gaikwad",
-    "captainDob": "1997-01-31"
+  CSK: {
+    fullName: "Chennai Super Kings",
+    dob: "2008-01-15",
+    captain: "Ruturaj Gaikwad",
+    captainDob: "1997-01-31",
   },
-  "DC": {
-    "fullName": "Delhi Capitals",
-    "dob": "2018-12-04",
-    "captain": "Axar Patel",
-    "captainDob": "1994-01-20"
+  DC: {
+    fullName: "Delhi Capitals",
+    dob: "2018-12-04",
+    captain: "Axar Patel",
+    captainDob: "1994-01-20",
   },
-  "GT": {
-    "fullName": "Gujarat Titans",
-    "dob": "2022-02-09",
-    "captain": "Shubman Gill",
-    "captainDob": "1999-09-08"
+  GT: {
+    fullName: "Gujarat Titans",
+    dob: "2022-02-09",
+    captain: "Shubman Gill",
+    captainDob: "1999-09-08",
   },
-  "KKR": {
-    "fullName": "Kolkata Knight Riders",
-    "dob": "2008-01-15",
-    "captain": "Ajinkya Rahane",
-    "captainDob": "1988-06-06"
+  KKR: {
+    fullName: "Kolkata Knight Riders",
+    dob: "2008-01-15",
+    captain: "Ajinkya Rahane",
+    captainDob: "1988-06-06",
   },
-  "LSG": {
-    "fullName": "Lucknow Super Giants",
-    "dob": "2022-01-24",
-    "captain": "Rishabh Pant",
-    "captainDob": "1997-10-04"
+  LSG: {
+    fullName: "Lucknow Super Giants",
+    dob: "2022-01-24",
+    captain: "Rishabh Pant",
+    captainDob: "1997-10-04",
   },
-  "MI": {
-    "fullName": "Mumbai Indians",
-    "dob": "2008-01-15",
-    "captain": "Rohit Sharma",
-    "captainDob": "1987-04-30"
+  MI: {
+    fullName: "Mumbai Indians",
+    dob: "2008-01-15",
+    captain: "Rohit Sharma",
+    captainDob: "1987-04-30",
   },
-  "PBKS": {
-    "fullName": "Punjab Kings",
-    "dob": "2021-02-17",
-    "captain": "Shreyas Iyer",
-    "captainDob": "1994-12-06"
+  PBKS: {
+    fullName: "Punjab Kings",
+    dob: "2021-02-17",
+    captain: "Shreyas Iyer",
+    captainDob: "1994-12-06",
   },
-  "RR": {
-    "fullName": "Rajasthan Royals",
-    "dob": "2008-01-15",
-    "captain": "Sanju Samson",
-    "captainDob": "1994-11-11"
+  RR: {
+    fullName: "Rajasthan Royals",
+    dob: "2008-01-15",
+    captain: "Sanju Samson",
+    captainDob: "1994-11-11",
   },
-  "RCB": {
-    "fullName": "Royal Challengers Bengaluru",
-    "dob": "2008-01-15",
-    "captain": "Rajat Patidar",
-    "captainDob": "1993-06-01"
+  RCB: {
+    fullName: "Royal Challengers Bengaluru",
+    dob: "2008-01-15",
+    captain: "Rajat Patidar",
+    captainDob: "1993-06-01",
   },
-  "SRH": {
-    "fullName": "Sunrisers Hyderabad",
-    "dob": "2012-12-18",
-    "captain": "Pat Cummins",
-    "captainDob": "1993-05-08"
-  }
+  SRH: {
+    fullName: "Sunrisers Hyderabad",
+    dob: "2012-12-18",
+    captain: "Pat Cummins",
+    captainDob: "1993-05-08",
+  },
 };
 
 export default iplTeamsData;

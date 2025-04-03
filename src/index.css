@@ -122,18 +122,33 @@ body {
   background-color: var(--bg-color);
   /* Layered background: Pattern on top of Image */
   background-image:
-        /* Pattern Layer (Top) */ linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
+        /* Pattern Layer (Top) */
+    linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
     linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px),
     /* Background Image Layer (Bottom) */ url("images/mystical-background.jpg"); /* TODO: Ensure image path is correct relative to public folder or handle differently */
-  background-size: 25px 25px, /* Pattern size */ 25px 25px, /* Pattern size */ cover; /* Image size */
-  background-repeat: repeat, /* Pattern repeat */ repeat, /* Pattern repeat */ no-repeat; /* Image repeat */
-  background-position: top left, /* Pattern position */ top left, /* Pattern position */ center center; /* Image position */
-  background-attachment: scroll, /* Pattern attachment */ scroll, /* Pattern attachment */ fixed; /* Image attachment (parallax effect) */
+  background-size:
+    25px 25px,
+    /* Pattern size */ 25px 25px,
+    /* Pattern size */ cover; /* Image size */
+  background-repeat:
+    repeat,
+    /* Pattern repeat */ repeat,
+    /* Pattern repeat */ no-repeat; /* Image repeat */
+  background-position:
+    top left,
+    /* Pattern position */ top left,
+    /* Pattern position */ center center; /* Image position */
+  background-attachment:
+    scroll,
+    /* Pattern attachment */ scroll,
+    /* Pattern attachment */ fixed; /* Image attachment (parallax effect) */
   background-blend-mode: overlay; /* Blend image with bg-color */
   color: var(--text-color);
   font-size: 16px;
   line-height: 1.8;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Optional: Main App Container */
@@ -150,7 +165,10 @@ body {
   padding: 12px 25px; /* Slightly reduced padding */
   border-bottom: 3px solid var(--border-strong-color); /* Use strong border color */
   box-shadow: 0 4px 8px var(--shadow-color); /* Softer shadow */
-  transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease;
   position: sticky; /* Make header sticky */
   top: 0;
   z-index: 1000; /* Ensure header is above other content */
@@ -204,6 +222,8 @@ body {
 .main-content {
   /* Changed from main to class */
   flex-grow: 1;
+  position: relative; /* Establish stacking context */
+  z-index: 1; /* Ensure it's below header/nav */
   padding: 30px; /* Adjust padding */
   width: 90%;
   max-width: 1200px;
@@ -213,7 +233,9 @@ body {
   box-shadow: 0 6px 15px var(--shadow-strong-color);
   border-radius: 12px;
   border: 1px solid var(--section-border);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .main-content h2 {
@@ -228,7 +250,9 @@ body {
   padding-bottom: 15px;
   display: inline-block;
   letter-spacing: 1.5px; /* Adjusted spacing for Cinzel */
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* --- Footer Styles - Refined --- */
@@ -240,7 +264,10 @@ body {
   font-size: 0.85em; /* Slightly smaller */
   border-top: 2px solid var(--footer-border-dark); /* Use theme variable */
   box-shadow: 0 -3px 6px var(--shadow-color);
-  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
 }
 body.light-mode .app-footer {
   background-color: var(--footer-bg-light);
@@ -269,7 +296,9 @@ body.light-mode .app-footer {
   border: 1px solid var(--grid-border);
   border-radius: 8px;
   box-shadow: inset 0 0 8px var(--shadow-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .cell {
@@ -288,7 +317,10 @@ body.light-mode .app-footer {
   text-align: center;
   padding: 3px;
   box-sizing: border-box;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .cell:empty {
@@ -318,7 +350,9 @@ td {
   vertical-align: middle;
   color: var(--text-color); /* Use main text color */
   font-family: "Merriweather", serif;
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 th {
@@ -329,7 +363,10 @@ th {
   font-size: 0.95em;
   letter-spacing: 1px; /* More spacing */
   border-bottom: 2px solid var(--border-strong-color);
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* Alternating row colors */
@@ -357,7 +394,9 @@ td:last-child {
   background-color: var(--section-bg);
   text-align: center;
   box-shadow: 0 3px 8px var(--shadow-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 #inputArea h3,
@@ -372,7 +411,9 @@ td:last-child {
   font-size: 1.9em; /* Adjust size */
   font-weight: 600;
   letter-spacing: 1.2px; /* Optional: Adjust spacing */
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* --- Form Element Styles --- */
@@ -395,7 +436,11 @@ select {
   background-color: var(--input-bg);
   color: var(--input-text);
   box-shadow: inset 0 2px 5px var(--shadow-color);
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   font-size: 1em;
   font-family: "Merriweather", serif;
 }
@@ -461,7 +506,10 @@ button:active {
   box-shadow: 0 4px 8px var(--shadow-color);
   display: flex;
   flex-direction: column;
-  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .user-card-header {
@@ -627,7 +675,7 @@ button:active {
   }
   .menu-toggle {
     /* Style for the hamburger button */
-    display: block; /* Show the button */
+    display: block; /* Force visibility (remove !important) */
     position: absolute;
     right: 20px;
     top: 50%;
@@ -654,7 +702,7 @@ button:active {
     border-top: 1px solid var(--navbar-border-dark);
     box-shadow: 0 4px 8px var(--shadow-color);
     padding: 10px 0; /* Add some padding */
-    z-index: 1000;
+    z-index: 1005; /* Ensure menu is above header (1000) but below toggle (1010) */
   }
   body.light-mode .app-navbar-nav {
     background-color: var(--navbar-bg-light);
@@ -663,7 +711,11 @@ button:active {
 
   .app-navbar-nav.active {
     /* Class added by JS to show menu */
-    display: flex;
+    display: flex; /* Correct: Show when active on mobile */
+  }
+
+  .app-navbar.menu-open {
+    overflow: hidden; /* Prevent scrolling when menu is open */
   }
 
   .app-nav-item {
@@ -822,7 +874,12 @@ button:active {
 
   /* Show hamburger menu button on smaller screens */
   .menu-toggle {
-    display: block; /* Make the button visible */
+    display: block !important; /* Force visibility */
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1010; /* Ensure it appears above other elements */
   }
 
   .app-navbar-nav {
@@ -835,12 +892,40 @@ button:active {
     background-color: var(--navbar-bg-dark); /* Use navbar background */
     border-top: 1px solid var(--navbar-border-dark);
     box-shadow: 0 4px 8px var(--shadow-color);
-    padding: 10px 0;
+    padding: 10px 0; /* Add some padding */
     z-index: 1000;
+  }
+  body.light-mode .app-navbar-nav {
+    background-color: var(--navbar-bg-light);
+    border-top: 1px solid var(--navbar-border-light);
   }
 
   .app-navbar-nav.active {
     display: flex; /* Show the menu when active */
+  }
+
+  .app-navbar.menu-open {
+    overflow: hidden; /* Prevent scrolling when menu is open */
+  }
+
+  .app-nav-item {
+    width: 100%;
+    text-align: center;
+  }
+
+  .app-nav-link {
+    padding: 12px 20px; /* Restore padding */
+    font-size: 1.1em; /* Restore font size */
+    justify-content: center; /* Center icon and text */
+    border-bottom: none; /* Remove bottom border */
+    border-radius: 0; /* Remove border-radius */
+  }
+  .app-nav-link.active {
+    border-bottom: none; /* Remove bottom border for active */
+    background-color: var(--nav-link-hover-bg-dark); /* Use hover bg for active */
+  }
+  body.light-mode .app-nav-link.active {
+    background-color: var(--nav-link-hover-bg-light);
   }
 }
 
@@ -916,7 +1001,9 @@ input:checked + .slider:before {
   border-radius: 4px;
   width: min-content; /* Make grid only as wide as its content */
   box-shadow: inset 0 0 5px var(--shadow-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .grid-cell {
@@ -936,7 +1023,10 @@ input:checked + .slider:before {
   padding: 2px; /* Small padding */
   box-sizing: border-box;
   line-height: 1.1; /* Adjust line height for multiple numbers */
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
   word-break: break-all; /* Break long strings of numbers if needed */
 }
 
@@ -1037,7 +1127,9 @@ body.light-mode .analysis-line.small-arrow-line {
   border-bottom: 1px solid var(--navbar-border-dark);
   box-shadow: 0 2px 4px var(--shadow-color); /* Softer shadow */
   backdrop-filter: blur(4px); /* Slightly more blur */
-  transition: background-color 0.4s ease, border-color 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease;
   position: relative; /* Added for menu toggle positioning */
 }
 body.light-mode .app-navbar {
@@ -1052,6 +1144,8 @@ body.light-mode .app-navbar {
   display: flex;
   justify-content: center;
   gap: 25px; /* Adjusted gap */
+  /* Ensure this is the base style for desktop */
+  display: flex;
 }
 
 .app-nav-item {
@@ -1063,7 +1157,10 @@ body.light-mode .app-navbar {
   text-decoration: none;
   padding: 10px 18px; /* Adjusted padding */
   border-radius: 4px; /* Smaller radius */
-  transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-bottom-color 0.3s ease;
   font-weight: 500;
   font-family: "Merriweather", serif;
   font-size: 1em; /* Adjusted size */
