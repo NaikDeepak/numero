@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import NumerologyGrid from "../NumerologyGrid"; // Adjust path
+// Removed client-side PDF generator import
 
-// Import the necessary JSON data files directly
+// Import the necessary JSON data files directly (for local calculations like getScore/getRelationship)
 // Adjust paths if your project structure is different
 import compatibilityRules from "../../api/data/compatibilityData.json";
 import houseMeanings from "../../api/data/houseMeanings.json";
@@ -256,24 +257,26 @@ function CompatibilityChecker() {
     setIsLoading(false); // End loading
   };
 
-  // --- Function to handle PDF Download ---
+  // --- Function to handle PDF Download from backend endpoint ---
   const handleDownloadCompatibilityPdf = async () => {
-    // Ensure data is available
-    if (
-      !person1Data ||
-      !person2Data ||
-      !person1Name ||
-      !person2Name ||
-      !person1Dob ||
-      !person2Dob
-    ) {
-      alert(
-        "Cannot download report. Please calculate compatibility first and ensure all details are filled."
-      );
+    // Ensure necessary input data is available
+    if (!person1Name || !person1Dob || !person2Name || !person2Dob) {
+      alert("Please fill in all names and dates of birth before downloading the report.");
       return;
     }
+     // Optional: Check if compatibility has been calculated, though the backend will validate too
+     if (!compatibilityDetails && !calculationAttempted) { // Check if calculation was attempted
+        alert("Please calculate compatibility before downloading the report.");
+        return;
+     }
+     // Also check if there was an error during calculation
+     if (compatibilityDetails?.error) {
+        alert("Cannot download report due to calculation error. Please check inputs and try again.");
+        return;
+     }
 
-    // Construct the URL for the PDF endpoint
+
+    // Construct the URL for the backend PDF endpoint
     const params = new URLSearchParams({
       dob1: person1Dob,
       gender1: person1Gender,
@@ -285,36 +288,14 @@ function CompatibilityChecker() {
     const pdfUrl = `${API_BASE_URL}/report/compatibility/pdf?${params.toString()}`;
 
     try {
-      const response = await fetch(pdfUrl);
-      if (!response.ok) {
-        // Try to get error message from backend response
-        let errorMsg = `PDF download failed: ${response.statusText}`;
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.error || errorMsg;
-        } catch (e) {
-          /* Ignore if response is not JSON */
-        }
-        throw new Error(errorMsg);
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      // Create a filename (e.g., Compatibility_Report_Alice_Bob.pdf)
-      const filename = `Compatibility_Report_${person1Name.replace(/ /g, "_")}_${person2Name.replace(/ /g, "_")}.pdf`;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
+       // Use window.open for a simpler download trigger
+       window.open(pdfUrl, '_blank');
     } catch (error) {
-      console.error("PDF Download error:", error);
-      alert(`Failed to download PDF report: ${error.message}`);
+      console.error("Error initiating compatibility PDF download:", error);
+      alert("Failed to initiate the compatibility PDF download. Please check console for errors.");
     }
   };
+
 
   return (
     <>

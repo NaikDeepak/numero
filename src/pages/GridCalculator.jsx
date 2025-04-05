@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react"; // Added useCallback
+import React, { useState, useEffect, useCallback } from "react";
 import * as XLSX from "xlsx";
 import NumerologyGrid from "../NumerologyGrid"; // Adjust path
+// Removed client-side PDF generator import
 // Import icons for Moolank details
 import { FaStar, FaThumbsUp, FaThumbsDown, FaLightbulb } from "react-icons/fa";
 
@@ -359,36 +360,25 @@ function UserCard({ user, getOrFetchUserData }) {
       : "-";
   // Removed report state
 
-  // Handler for downloading the PDF
+  // Handler for downloading the PDF from the backend endpoint
   const handleDownloadPdf = async () => {
-    // Construct the URL for the PDF endpoint using the base URL, adding the name
-    const pdfUrl = `${API_BASE_URL}/report/pdf?dob=${encodeURIComponent(user.dob)}&gender=${encodeURIComponent(
-      user.gender
-    )}&name=${encodeURIComponent(user.name)}`; // Add name parameter
+    // Construct the URL for the backend PDF endpoint
+    const params = new URLSearchParams({
+      dob: user.dob,
+      gender: user.gender,
+      name: user.name || "", // Include name if available
+    });
+    const pdfUrl = `${API_BASE_URL}/report/pdf?${params.toString()}`;
 
     try {
-      const response = await fetch(pdfUrl);
-      if (!response.ok) {
-        throw new Error(`PDF download failed: ${response.statusText}`);
-      }
-      const blob = await response.blob();
-
-      // Create a link element to trigger the download
-      const link = document.createElement("a");
-      const objectUrl = URL.createObjectURL(blob);
-      link.href = objectUrl;
-      link.download = `Numerology_Report_${user.dob.replace(/-/g, "")}_${user.name.replace(/\s+/g, "_")}.pdf`; // Suggest a filename
-      document.body.appendChild(link); // Required for Firefox
-      link.click();
-
-      // Clean up
-      document.body.removeChild(link);
-      URL.revokeObjectURL(objectUrl);
+      // Use window.open for a simpler download trigger
+      window.open(pdfUrl, '_blank');
     } catch (error) {
-      console.error("Error downloading PDF:", error);
-      alert("Failed to download the report PDF. Please try again.");
+      console.error("Error initiating PDF download:", error);
+      alert("Failed to initiate the report PDF download. Please check console for errors.");
     }
   };
+
 
   // Helper to format number display in the table cell (moved inside UserCard)
   const formatCellDisplay = (numberResult) => {
