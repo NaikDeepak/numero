@@ -67,15 +67,18 @@ console.log(
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // --- Enhanced API Key Logging ---
-if (GEMINI_API_KEY && GEMINI_API_KEY.length > 10) { // Check if key seems present
+if (GEMINI_API_KEY && GEMINI_API_KEY.length > 10) {
+  // Check if key seems present
   console.log("[Gemini Init] GEMINI_API_KEY loaded successfully from environment.");
   // Avoid logging the full key for security, just confirm its presence and partial length
   console.log(`[Gemini Init] API Key starts with: ${GEMINI_API_KEY.substring(0, 4)}...`);
-} else if (GEMINI_API_KEY) { // Key exists but seems short/invalid
-   console.warn(
+} else if (GEMINI_API_KEY) {
+  // Key exists but seems short/invalid
+  console.warn(
     `[Gemini Init] WARNING: GEMINI_API_KEY found but seems short or invalid (length: ${GEMINI_API_KEY.length}). Please verify the key in your .env file.`
   );
-} else { // Key not found at all
+} else {
+  // Key not found at all
   console.warn(
     "[Gemini Init] WARNING: GEMINI_API_KEY environment variable not set or empty. Analysis rewriting will be disabled. Ensure it's defined in api/.env and the server was restarted."
   );
@@ -89,7 +92,9 @@ const geminiModel = genAI ? genAI.getGenerativeModel({ model: "gemini-2.0-flash"
 // --- Function to check Gemini connection on startup ---
 async function checkGeminiConnection() {
   if (!geminiModel) {
-    console.log("[Gemini Check] Skipping connection check: Gemini client not initialized (likely missing API key).");
+    console.log(
+      "[Gemini Check] Skipping connection check: Gemini client not initialized (likely missing API key)."
+    );
     return;
   }
   try {
@@ -99,7 +104,10 @@ async function checkGeminiConnection() {
     await result.response; // Wait for the response processing
     console.log("[Gemini Check] Successfully connected to Google Generative AI.");
   } catch (error) {
-    console.error("[Gemini Check] Failed to connect or communicate with Google Generative AI:", error.message);
+    console.error(
+      "[Gemini Check] Failed to connect or communicate with Google Generative AI:",
+      error.message
+    );
     // Optionally log the full error for more details if needed
     // console.error(error);
   }
@@ -117,6 +125,46 @@ function generateCacheKey(dob, gender, name) {
   const normalizedName = (name || "").trim().toLowerCase();
   return `${dob}-${gender}-${normalizedName}`;
 }
+
+// --- Function to generate conversational summary from Moolank details ---
+async function generateConversationalMoolankSummary(meaningData) {
+  if (!geminiModel || !meaningData) {
+    return null; // Cannot generate if model or data is missing
+  }
+
+  const { characteristics, negativeTraits, suggestions } = meaningData;
+
+  // Basic check if there's anything to summarize
+  if (!characteristics?.length && !negativeTraits?.length && !suggestions?.length) {
+    return null; // Nothing to summarize
+  }
+
+  // Construct the prompt
+  let prompt = `Based on the following numerology details for a Moolank number, write a longer, engaging, smaller but multiple paragraphs with conversational, friendly, professional tone of a seasoned numerlogist who can convey negative trait also with a finesse. Combine the key points from characteristics, potential negative traits, and suggestions into a flowing narrative suitable for a personal report.Do not add introductory phrases like "Here is the summary:".
+
+Characteristics:
+${(characteristics || []).map((c) => `- ${c}`).join("\n")}
+
+Negative Traits to be mindful of:
+${(negativeTraits || []).map((n) => `- ${n}`).join("\n")}
+
+Suggestions for growth:
+${(suggestions || []).map((s) => `- ${s}`).join("\n")}
+
+Conversational Summary:`;
+
+  try {
+    console.log(`[Gemini] Generating conversational summary for Moolank...`);
+    const result = await geminiModel.generateContent(prompt);
+    const response = await result.response;
+    const summaryText = await response.text();
+    console.log(`[Gemini] Summary generation successful.`);
+    return summaryText.trim();
+  } catch (error) {
+    console.error("[Gemini] Error generating conversational summary:", error);
+    return null; // Return null on error
+  }
+}
 // --- End Cache Setup ---
 
 // --- Helper function to rewrite text using Gemini ---
@@ -128,7 +176,9 @@ async function rewriteAnalysisWithGemini(originalText) {
   const prompt = `Rewrite the following numerology analysis text to convey the same core meaning but using different wording. Keep the tone informative and insightful. Do not add any introductory or concluding phrases like "Here's the rewritten text:". Just provide the rewritten analysis itself.\n\nOriginal Text:\n"${originalText}"\n\nRewritten Text:`;
 
   try {
-    console.log(`[Gemini] Rewriting analysis for text starting with: "${originalText.substring(0, 50)}..."`);
+    console.log(
+      `[Gemini] Rewriting analysis for text starting with: "${originalText.substring(0, 50)}..."`
+    );
     const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
     const rewrittenText = await response.text();
@@ -173,7 +223,8 @@ const geminiLimiter = rateLimit({
 
 // API Endpoint for Numerology Calculation (including Name) - Made async
 // Apply the rate limiter specifically to this route
-app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add geminiLimiter middleware
+app.post("/api/calculate", geminiLimiter, async (req, res) => {
+  // <-- Add geminiLimiter middleware
   const { dob, gender, name } = req.body;
 
   // Basic validation
@@ -219,40 +270,64 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add gemin
 
         // Generate cache key
         const cacheKey = generateCacheKey(dob, gender, name);
+        const summaryCacheKey = `summary:${cacheKey}`; // Separate key for summary
 
-        // Store in cache with expiration
+        // --- Rewrite main analysis and cache it ---
+        // const originalAnalysis = moolankMeaningData.analysis; // Already defined above
+        // const rewrittenAnalysis = await rewriteAnalysisWithGemini(originalAnalysis); // Already defined above
         analysisCache.set(cacheKey, rewrittenAnalysis);
-        console.log(`[Cache] Stored analysis for key: ${cacheKey}`);
+        console.log(`[Cache] Stored main analysis for key: ${cacheKey}`);
         setTimeout(() => {
-            if (analysisCache.delete(cacheKey)) {
-                 console.log(`[Cache] Expired analysis for key: ${cacheKey}`);
-            }
+          if (analysisCache.delete(cacheKey)) {
+            console.log(`[Cache] Expired main analysis for key: ${cacheKey}`);
+          }
         }, CACHE_DURATION_MS);
+        // --- End main analysis caching ---
 
+        // --- Generate conversational summary and cache it ---
+        const conversationalSummary =
+          await generateConversationalMoolankSummary(moolankMeaningData); // Generate summary
+        if (conversationalSummary) {
+          analysisCache.set(summaryCacheKey, conversationalSummary);
+          console.log(`[Cache] Stored summary for key: ${summaryCacheKey}`);
+          setTimeout(() => {
+            if (analysisCache.delete(summaryCacheKey)) {
+              console.log(`[Cache] Expired summary for key: ${summaryCacheKey}`);
+            }
+          }, CACHE_DURATION_MS);
+        }
+        // --- End summary generation/caching ---
+
+        // Prepare response for UI
         responseData.moolankMeaning = {
           grah: moolankMeaningData.grah,
           rashi: moolankMeaningData.rashi,
           keywords: moolankMeaningData.keywords,
-          analysis: rewrittenAnalysis, // Send rewritten analysis to UI
-          // Include characteristics etc. if needed by UI directly
+          analysis: rewrittenAnalysis, // Send rewritten main analysis
+          conversationalSummary: conversationalSummary, // Assign the generated summary here
+          // Keep original lists for now, UI might still use them as fallback
           characteristics: moolankMeaningData.characteristics,
           negativeTraits: moolankMeaningData.negativeTraits,
           suggestions: moolankMeaningData.suggestions,
         };
         // --- End Gemini/Cache logic ---
       } else if (moolankMeaningData) {
-         // If analysis text is missing, send other details but null analysis
-         responseData.moolankMeaning = {
+        // If analysis text is missing, still try to generate summary if other fields exist
+        const conversationalSummary =
+          await generateConversationalMoolankSummary(moolankMeaningData);
+        // No caching needed in this step
+
+        responseData.moolankMeaning = {
           grah: moolankMeaningData.grah,
           rashi: moolankMeaningData.rashi,
           keywords: moolankMeaningData.keywords,
           analysis: null,
-          characteristics: moolankMeaningData.characteristics,
-          negativeTraits: moolankMeaningData.negativeTraits,
-          suggestions: moolankMeaningData.suggestions,
+          characteristics: moolankMeaningData.characteristics, // Keep original lists for now
+          negativeTraits: moolankMeaningData.negativeTraits, // Keep original lists for now
+          suggestions: moolankMeaningData.suggestions, // Keep original lists for now
+          conversationalSummary: conversationalSummary, // Add the generated summary
         };
-      }
-      else {
+      } else {
         responseData.moolankMeaning = null;
       }
 
@@ -268,23 +343,24 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add gemin
       // Name numerology numbers are already in responseData.nameNumerology if calculated
       // No need to add meanings here as they are handled by the PDF endpoint if needed
 
-       // --- Add Moolank-Bhagyank Relationship (needed for UI) ---
-       const moolankString = responseData.moolank?.toString(); // Define moolankString if not already defined
+      // --- Add Moolank-Bhagyank Relationship (needed for UI) ---
+      const moolankString = responseData.moolank?.toString(); // Define moolankString if not already defined
       if (moolankString && bhagyankString) {
-         responseData.moolankBhagyankRelation = moolankBhagyankRelations?.[moolankString]?.[bhagyankString] || null;
+        responseData.moolankBhagyankRelation =
+          moolankBhagyankRelations?.[moolankString]?.[bhagyankString] || null;
       } else {
-         responseData.moolankBhagyankRelation = null;
+        responseData.moolankBhagyankRelation = null;
       }
 
       // --- Add Repeating/Missing Number Info (needed for UI) ---
-       const gridNums = responseData.gridNumbers || [];
+      const gridNums = responseData.gridNumbers || [];
       const counts = gridNums.reduce((acc, num) => {
         acc[num] = (acc[num] || 0) + 1;
         return acc;
       }, {});
 
       responseData.repeatingNumbersInfo = Object.entries(counts)
-        .filter(([num, count]) => count > 1 && num !== '0') // Exclude 0 if present
+        .filter(([num, count]) => count > 1 && num !== "0") // Exclude 0 if present
         .map(([num, count]) => {
           const repeatSequence = num.toString().repeat(count);
           return {
@@ -294,9 +370,9 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add gemin
             impact: repeatingNumberImpact?.[repeatSequence] || null,
           };
         })
-        .filter(info => info.impact); // Only include if impact data exists
+        .filter((info) => info.impact); // Only include if impact data exists
 
-      const presentNumbers = new Set(gridNums.filter(n => n !== 0)); // Exclude 0
+      const presentNumbers = new Set(gridNums.filter((n) => n !== 0)); // Exclude 0
       responseData.missingNumbersInfo = [];
       for (let i = 1; i <= 9; i++) {
         if (!presentNumbers.has(i)) {
@@ -311,7 +387,6 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add gemin
         }
       }
       // --- End UI Data Enrichment ---
-
 
       // Return the data needed for the UI
       res.json(responseData);
@@ -330,7 +405,8 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add gemin
 
 // Made async to handle potential Gemini call
 // Apply the rate limiter specifically to this route
-app.get("/api/report/pdf", geminiLimiter, async (req, res) => { // <-- Add geminiLimiter middleware
+app.get("/api/report/pdf", geminiLimiter, async (req, res) => {
+  // <-- Add geminiLimiter middleware
   const { dob, gender, name } = req.query;
 
   // Basic validation
@@ -995,7 +1071,9 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
 
   // Basic validation
   if (!dob1 || !gender1 || !name1 || !dob2 || !gender2 || !name2) {
-    return res.status(400).json({ error: "Missing required query parameters for compatibility report." });
+    return res
+      .status(400)
+      .json({ error: "Missing required query parameters for compatibility report." });
   }
 
   try {
@@ -1010,33 +1088,87 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
     // const person2GridAnalysis = person2Data ? analyzeGrid(person2Data.gridNumbers, gridAnalysisDefinitions) : [];
 
     if (!person1Data || !person2Data) {
-      return res.status(400).json({ error: "Invalid input data provided for one or both individuals." });
+      return res
+        .status(400)
+        .json({ error: "Invalid input data provided for one or both individuals." });
     }
 
     // --- Compatibility Calculation ---
-    const getScore = (num1, num2) => { /* ... scoring logic ... */ const rules1 = compatibilityData[num1]; if (!rules1) return 1; if (rules1.friendly?.includes(num2)) return 3; if (rules1.enemy?.includes(num2)) return 0; return 1; };
-    const getRelationship = (num1, num2) => { /* ... relationship logic ... */ const rules1 = compatibilityData[num1]; if (!rules1) return "Neutral (No data)"; if (rules1.friendly?.includes(num2)) return "Friendly"; if (rules1.enemy?.includes(num2)) return "Enemy"; return "Neutral"; };
-    const m1 = person1Data.moolank; const b1 = person1Data.bhagyank;
-    const m2 = person2Data.moolank; const b2 = person2Data.bhagyank;
-    const scoreM1M2 = getScore(m1, m2); const relationM1M2 = getRelationship(m1, m2);
-    const scoreB1B2 = getScore(b1, b2); const relationB1B2 = getRelationship(b1, b2);
-    const scoreM1B2 = getScore(m1, b2); const relationM1B2 = getRelationship(m1, b2);
-    const scoreB1M2 = getScore(b1, m2); const relationB1M2 = getRelationship(b1, m2);
-    const scoreM2M1 = getScore(m2, m1); const relationM2M1 = getRelationship(m2, m1);
-    const scoreB2B1 = getScore(b2, b1); const relationB2B1 = getRelationship(b2, b1);
-    const scoreM2B1 = getScore(m2, b1); const relationM2B1 = getRelationship(m2, b1);
-    const scoreB2M1 = getScore(b2, m1); const relationB2M1 = getRelationship(b2, m1);
-    const totalScore = scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 + scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
+    const getScore = (num1, num2) => {
+      /* ... scoring logic ... */ const rules1 = compatibilityData[num1];
+      if (!rules1) return 1;
+      if (rules1.friendly?.includes(num2)) return 3;
+      if (rules1.enemy?.includes(num2)) return 0;
+      return 1;
+    };
+    const getRelationship = (num1, num2) => {
+      /* ... relationship logic ... */ const rules1 = compatibilityData[num1];
+      if (!rules1) return "Neutral (No data)";
+      if (rules1.friendly?.includes(num2)) return "Friendly";
+      if (rules1.enemy?.includes(num2)) return "Enemy";
+      return "Neutral";
+    };
+    const m1 = person1Data.moolank;
+    const b1 = person1Data.bhagyank;
+    const m2 = person2Data.moolank;
+    const b2 = person2Data.bhagyank;
+    const scoreM1M2 = getScore(m1, m2);
+    const relationM1M2 = getRelationship(m1, m2);
+    const scoreB1B2 = getScore(b1, b2);
+    const relationB1B2 = getRelationship(b1, b2);
+    const scoreM1B2 = getScore(m1, b2);
+    const relationM1B2 = getRelationship(m1, b2);
+    const scoreB1M2 = getScore(b1, m2);
+    const relationB1M2 = getRelationship(b1, m2);
+    const scoreM2M1 = getScore(m2, m1);
+    const relationM2M1 = getRelationship(m2, m1);
+    const scoreB2B1 = getScore(b2, b1);
+    const relationB2B1 = getRelationship(b2, b1);
+    const scoreM2B1 = getScore(m2, b1);
+    const relationM2B1 = getRelationship(m2, b1);
+    const scoreB2M1 = getScore(b2, m1);
+    const relationB2M1 = getRelationship(b2, m1);
+    const totalScore =
+      scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 + scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
     const maxScore = 24;
     const compatibilityPercentage = Math.round((totalScore / maxScore) * 100);
-    let finalVerdict = ""; const allRelations = [relationM1M2, relationB1B2, relationM1B2, relationB1M2, relationM2M1, relationB2B1, relationM2B1, relationB2M1];
-    if (allRelations.includes("Enemy")) { finalVerdict = "Not Compatible (Due to Enemy Relationship)"; }
-    else { if (compatibilityPercentage >= 75) finalVerdict = "High Compatibility"; else if (compatibilityPercentage <= 35) finalVerdict = "Low Compatibility"; else finalVerdict = "Average Compatibility"; }
+    let finalVerdict = "";
+    const allRelations = [
+      relationM1M2,
+      relationB1B2,
+      relationM1B2,
+      relationB1M2,
+      relationM2M1,
+      relationB2B1,
+      relationM2B1,
+      relationB2M1,
+    ];
+    if (allRelations.includes("Enemy")) {
+      finalVerdict = "Not Compatible (Due to Enemy Relationship)";
+    } else {
+      if (compatibilityPercentage >= 75) finalVerdict = "High Compatibility";
+      else if (compatibilityPercentage <= 35) finalVerdict = "Low Compatibility";
+      else finalVerdict = "Average Compatibility";
+    }
     // --- End Compatibility Calculation ---
 
     // --- PDF Setup ---
-    const colors = { /* ... same colors ... */ primary: "#ff8c00", secondary: "#a0522d", text: "#333333", muted: "#666666", gridLine: "#cccccc", gridText: "#111111", gridBg: "#f9f9f9", heading: "#111111" };
-    const fonts = { /* ... same fonts ... */ heading: "Helvetica-Bold", subheading: "Helvetica-Bold", body: "Helvetica", bodyBold: "Helvetica-Bold" };
+    const colors = {
+      /* ... same colors ... */ primary: "#ff8c00",
+      secondary: "#a0522d",
+      text: "#333333",
+      muted: "#666666",
+      gridLine: "#cccccc",
+      gridText: "#111111",
+      gridBg: "#f9f9f9",
+      heading: "#111111",
+    };
+    const fonts = {
+      /* ... same fonts ... */ heading: "Helvetica-Bold",
+      subheading: "Helvetica-Bold",
+      body: "Helvetica",
+      bodyBold: "Helvetica-Bold",
+    };
     const margin = 50;
     const doc = new PDFDocument({ size: "A4", margin: margin });
     const filename = `Compatibility_Report_${name1.replace(/\s+/g, "_")}_${name2.replace(/\s+/g, "_")}.pdf`; // Use names in filename
@@ -1046,15 +1178,76 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
 
     // --- PDF Content ---
     // Header
-    doc.font(fonts.heading).fontSize(20).fillColor(colors.heading).text("Numerology Compatibility Report", { align: "center" });
+    doc
+      .font(fonts.heading)
+      .fontSize(20)
+      .fillColor(colors.heading)
+      .text("Numerology Compatibility Report", { align: "center" });
     doc.moveDown(0.5);
-    doc.font(fonts.body).fontSize(12).fillColor(colors.muted).text(`${name1} & ${name2}`, { align: "center" });
+    doc
+      .font(fonts.body)
+      .fontSize(12)
+      .fillColor(colors.muted)
+      .text(`${name1} & ${name2}`, { align: "center" });
     doc.moveDown(2);
 
     // Section Helper
-    const addSection = (title, contentFn) => { /* ... same helper ... */ doc.font(fonts.subheading).fontSize(14).fillColor(colors.secondary).text(title, { underline: true }); doc.moveDown(0.7); doc.font(fonts.body).fontSize(10).fillColor(colors.text); contentFn(); doc.moveDown(1.5); };
+    const addSection = (title, contentFn) => {
+      /* ... same helper ... */ doc
+        .font(fonts.subheading)
+        .fontSize(14)
+        .fillColor(colors.secondary)
+        .text(title, { underline: true });
+      doc.moveDown(0.7);
+      doc.font(fonts.body).fontSize(10).fillColor(colors.text);
+      contentFn();
+      doc.moveDown(1.5);
+    };
     // Grid Drawing Helper
-    const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => { /* ... same helper ... */ const positionMap = { 4: 0, 9: 1, 2: 2, 3: 3, 5: 4, 7: 5, 8: 6, 1: 7, 6: 8 }; let cells = Array(9).fill(""); if (gridNumbers && Array.isArray(gridNumbers)) { gridNumbers.forEach((num) => { if (num !== 0 && positionMap.hasOwnProperty(num)) { let cellIndex = positionMap[num]; cells[cellIndex] += (cells[cellIndex] ? " " : "") + num; } }); } doc.save(); doc.lineWidth(0.5).strokeColor(colors.gridLine); for (let row = 0; row < 3; row++) { for (let col = 0; col < 3; col++) { const cellIndex = row * 3 + col; const x = startX + col * (cellSize + gap); const y = startY + row * (cellSize + gap); doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine); if (cells[cellIndex]) { doc.font(fonts.bodyBold).fontSize(10).fillColor(colors.gridText).text(cells[cellIndex], x, y + cellSize / 2 - 5, { width: cellSize, align: "center" }); } } } doc.restore(); return startY + 3 * cellSize + 2 * gap; };
+    const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => {
+      /* ... same helper ... */ const positionMap = {
+        4: 0,
+        9: 1,
+        2: 2,
+        3: 3,
+        5: 4,
+        7: 5,
+        8: 6,
+        1: 7,
+        6: 8,
+      };
+      let cells = Array(9).fill("");
+      if (gridNumbers && Array.isArray(gridNumbers)) {
+        gridNumbers.forEach((num) => {
+          if (num !== 0 && positionMap.hasOwnProperty(num)) {
+            let cellIndex = positionMap[num];
+            cells[cellIndex] += (cells[cellIndex] ? " " : "") + num;
+          }
+        });
+      }
+      doc.save();
+      doc.lineWidth(0.5).strokeColor(colors.gridLine);
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+          const cellIndex = row * 3 + col;
+          const x = startX + col * (cellSize + gap);
+          const y = startY + row * (cellSize + gap);
+          doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine);
+          if (cells[cellIndex]) {
+            doc
+              .font(fonts.bodyBold)
+              .fontSize(10)
+              .fillColor(colors.gridText)
+              .text(cells[cellIndex], x, y + cellSize / 2 - 5, {
+                width: cellSize,
+                align: "center",
+              });
+          }
+        }
+      }
+      doc.restore();
+      return startY + 3 * cellSize + 2 * gap;
+    };
 
     // --- Individual Details Sections ---
     const addPersonSection = (name, dob, gender, data) => {
@@ -1067,22 +1260,41 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
         const textStartX = margin;
         const textWidth = gridStartX - margin - 20;
 
-        doc.font(fonts.bodyBold).text("DOB:", textStartX, textStartY, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("DOB:", textStartX, textStartY, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${dob} (${gender})`);
         doc.moveDown(0.5);
-        doc.font(fonts.bodyBold).text("Moolank:", textStartX, doc.y, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("Moolank:", textStartX, doc.y, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${data.moolank} (${houseMeanings[data.moolank] || "N/A"})`);
         doc.moveDown(0.5);
-        doc.font(fonts.bodyBold).text("Bhagyank:", textStartX, doc.y, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("Bhagyank:", textStartX, doc.y, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${data.bhagyank} (${houseMeanings[data.bhagyank] || "N/A"})`);
         doc.moveDown(0.5);
-        doc.font(fonts.bodyBold).text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${data.kua}`);
         doc.moveDown(0.5);
         const mbRelation = moolankBhagyankRelations[data.moolank]?.[data.bhagyank];
-        doc.font(fonts.bodyBold).text(`Moolank-Bhagyank (${data.moolank}-${data.bhagyank}):`, textStartX, doc.y, { width: textWidth });
-        if (mbRelation) { doc.font(fonts.body).text(`  ${mbRelation.indication || "N/A"} (Rating: ${mbRelation.rating || "N/A"})`, { width: textWidth }); }
-        else { doc.font(fonts.body).text("  No specific data", { width: textWidth }); }
+        doc
+          .font(fonts.bodyBold)
+          .text(`Moolank-Bhagyank (${data.moolank}-${data.bhagyank}):`, textStartX, doc.y, {
+            width: textWidth,
+          });
+        if (mbRelation) {
+          doc
+            .font(fonts.body)
+            .text(`  ${mbRelation.indication || "N/A"} (Rating: ${mbRelation.rating || "N/A"})`, {
+              width: textWidth,
+            });
+        } else {
+          doc.font(fonts.body).text("  No specific data", { width: textWidth });
+        }
         doc.y = Math.max(doc.y, gridEndY) + 10;
       });
     };
@@ -1099,8 +1311,22 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
       doc.moveDown(1);
       doc.font(fonts.bodyBold).text("Relationship Breakdown (Bidirectional):");
       doc.moveDown(0.5);
-      const breakdown = [ { n1: `Moolank (${m1})`, n2: `Moolank (${m2})`, rel: relationM1M2, score: scoreM1M2 }, { n1: `Bhagyank (${b1})`, n2: `Bhagyank (${b2})`, rel: relationB1B2, score: scoreB1B2 }, { n1: `Moolank (${m1})`, n2: `Bhagyank (${b2})`, rel: relationM1B2, score: scoreM1B2 }, { n1: `Bhagyank (${b1})`, n2: `Moolank (${m2})`, rel: relationB1M2, score: scoreB1M2 }, { n1: `Moolank (${m2})`, n2: `Moolank (${m1})`, rel: relationM2M1, score: scoreM2M1 }, { n1: `Bhagyank (${b2})`, n2: `Bhagyank (${b1})`, rel: relationB2B1, score: scoreB2B1 }, { n1: `Moolank (${m2})`, n2: `Bhagyank (${b1})`, rel: relationM2B1, score: scoreM2B1 }, { n1: `Bhagyank (${b2})`, n2: `Moolank (${m1})`, rel: relationB2M1, score: scoreB2M1 }, ];
-      breakdown.forEach((item) => { doc.font(fonts.body).text(`  - ${item.n1} vs ${item.n2}: ${item.rel} (Score: ${item.score})`); doc.moveDown(0.3); });
+      const breakdown = [
+        { n1: `Moolank (${m1})`, n2: `Moolank (${m2})`, rel: relationM1M2, score: scoreM1M2 },
+        { n1: `Bhagyank (${b1})`, n2: `Bhagyank (${b2})`, rel: relationB1B2, score: scoreB1B2 },
+        { n1: `Moolank (${m1})`, n2: `Bhagyank (${b2})`, rel: relationM1B2, score: scoreM1B2 },
+        { n1: `Bhagyank (${b1})`, n2: `Moolank (${m2})`, rel: relationB1M2, score: scoreB1M2 },
+        { n1: `Moolank (${m2})`, n2: `Moolank (${m1})`, rel: relationM2M1, score: scoreM2M1 },
+        { n1: `Bhagyank (${b2})`, n2: `Bhagyank (${b1})`, rel: relationB2B1, score: scoreB2B1 },
+        { n1: `Moolank (${m2})`, n2: `Bhagyank (${b1})`, rel: relationM2B1, score: scoreM2B1 },
+        { n1: `Bhagyank (${b2})`, n2: `Moolank (${m1})`, rel: relationB2M1, score: scoreB2M1 },
+      ];
+      breakdown.forEach((item) => {
+        doc
+          .font(fonts.body)
+          .text(`  - ${item.n1} vs ${item.n2}: ${item.rel} (Score: ${item.score})`);
+        doc.moveDown(0.3);
+      });
     });
 
     // --- Finalize PDF ---
@@ -1122,7 +1348,9 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
 
   // Basic validation
   if (!dob1 || !gender1 || !name1 || !dob2 || !gender2 || !name2) {
-    return res.status(400).json({ error: "Missing required query parameters for compatibility report." });
+    return res
+      .status(400)
+      .json({ error: "Missing required query parameters for compatibility report." });
   }
 
   try {
@@ -1137,33 +1365,87 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
     // const person2GridAnalysis = person2Data ? analyzeGrid(person2Data.gridNumbers, gridAnalysisDefinitions) : [];
 
     if (!person1Data || !person2Data) {
-      return res.status(400).json({ error: "Invalid input data provided for one or both individuals." });
+      return res
+        .status(400)
+        .json({ error: "Invalid input data provided for one or both individuals." });
     }
 
     // --- Compatibility Calculation ---
-    const getScore = (num1, num2) => { /* ... scoring logic ... */ const rules1 = compatibilityData[num1]; if (!rules1) return 1; if (rules1.friendly?.includes(num2)) return 3; if (rules1.enemy?.includes(num2)) return 0; return 1; };
-    const getRelationship = (num1, num2) => { /* ... relationship logic ... */ const rules1 = compatibilityData[num1]; if (!rules1) return "Neutral (No data)"; if (rules1.friendly?.includes(num2)) return "Friendly"; if (rules1.enemy?.includes(num2)) return "Enemy"; return "Neutral"; };
-    const m1 = person1Data.moolank; const b1 = person1Data.bhagyank;
-    const m2 = person2Data.moolank; const b2 = person2Data.bhagyank;
-    const scoreM1M2 = getScore(m1, m2); const relationM1M2 = getRelationship(m1, m2);
-    const scoreB1B2 = getScore(b1, b2); const relationB1B2 = getRelationship(b1, b2);
-    const scoreM1B2 = getScore(m1, b2); const relationM1B2 = getRelationship(m1, b2);
-    const scoreB1M2 = getScore(b1, m2); const relationB1M2 = getRelationship(b1, m2);
-    const scoreM2M1 = getScore(m2, m1); const relationM2M1 = getRelationship(m2, m1);
-    const scoreB2B1 = getScore(b2, b1); const relationB2B1 = getRelationship(b2, b1);
-    const scoreM2B1 = getScore(m2, b1); const relationM2B1 = getRelationship(m2, b1);
-    const scoreB2M1 = getScore(b2, m1); const relationB2M1 = getRelationship(b2, m1);
-    const totalScore = scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 + scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
+    const getScore = (num1, num2) => {
+      /* ... scoring logic ... */ const rules1 = compatibilityData[num1];
+      if (!rules1) return 1;
+      if (rules1.friendly?.includes(num2)) return 3;
+      if (rules1.enemy?.includes(num2)) return 0;
+      return 1;
+    };
+    const getRelationship = (num1, num2) => {
+      /* ... relationship logic ... */ const rules1 = compatibilityData[num1];
+      if (!rules1) return "Neutral (No data)";
+      if (rules1.friendly?.includes(num2)) return "Friendly";
+      if (rules1.enemy?.includes(num2)) return "Enemy";
+      return "Neutral";
+    };
+    const m1 = person1Data.moolank;
+    const b1 = person1Data.bhagyank;
+    const m2 = person2Data.moolank;
+    const b2 = person2Data.bhagyank;
+    const scoreM1M2 = getScore(m1, m2);
+    const relationM1M2 = getRelationship(m1, m2);
+    const scoreB1B2 = getScore(b1, b2);
+    const relationB1B2 = getRelationship(b1, b2);
+    const scoreM1B2 = getScore(m1, b2);
+    const relationM1B2 = getRelationship(m1, b2);
+    const scoreB1M2 = getScore(b1, m2);
+    const relationB1M2 = getRelationship(b1, m2);
+    const scoreM2M1 = getScore(m2, m1);
+    const relationM2M1 = getRelationship(m2, m1);
+    const scoreB2B1 = getScore(b2, b1);
+    const relationB2B1 = getRelationship(b2, b1);
+    const scoreM2B1 = getScore(m2, b1);
+    const relationM2B1 = getRelationship(m2, b1);
+    const scoreB2M1 = getScore(b2, m1);
+    const relationB2M1 = getRelationship(b2, m1);
+    const totalScore =
+      scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 + scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
     const maxScore = 24;
     const compatibilityPercentage = Math.round((totalScore / maxScore) * 100);
-    let finalVerdict = ""; const allRelations = [relationM1M2, relationB1B2, relationM1B2, relationB1M2, relationM2M1, relationB2B1, relationM2B1, relationB2M1];
-    if (allRelations.includes("Enemy")) { finalVerdict = "Not Compatible (Due to Enemy Relationship)"; }
-    else { if (compatibilityPercentage >= 75) finalVerdict = "High Compatibility"; else if (compatibilityPercentage <= 35) finalVerdict = "Low Compatibility"; else finalVerdict = "Average Compatibility"; }
+    let finalVerdict = "";
+    const allRelations = [
+      relationM1M2,
+      relationB1B2,
+      relationM1B2,
+      relationB1M2,
+      relationM2M1,
+      relationB2B1,
+      relationM2B1,
+      relationB2M1,
+    ];
+    if (allRelations.includes("Enemy")) {
+      finalVerdict = "Not Compatible (Due to Enemy Relationship)";
+    } else {
+      if (compatibilityPercentage >= 75) finalVerdict = "High Compatibility";
+      else if (compatibilityPercentage <= 35) finalVerdict = "Low Compatibility";
+      else finalVerdict = "Average Compatibility";
+    }
     // --- End Compatibility Calculation ---
 
     // --- PDF Setup ---
-    const colors = { /* ... same colors ... */ primary: "#ff8c00", secondary: "#a0522d", text: "#333333", muted: "#666666", gridLine: "#cccccc", gridText: "#111111", gridBg: "#f9f9f9", heading: "#111111" };
-    const fonts = { /* ... same fonts ... */ heading: "Helvetica-Bold", subheading: "Helvetica-Bold", body: "Helvetica", bodyBold: "Helvetica-Bold" };
+    const colors = {
+      /* ... same colors ... */ primary: "#ff8c00",
+      secondary: "#a0522d",
+      text: "#333333",
+      muted: "#666666",
+      gridLine: "#cccccc",
+      gridText: "#111111",
+      gridBg: "#f9f9f9",
+      heading: "#111111",
+    };
+    const fonts = {
+      /* ... same fonts ... */ heading: "Helvetica-Bold",
+      subheading: "Helvetica-Bold",
+      body: "Helvetica",
+      bodyBold: "Helvetica-Bold",
+    };
     const margin = 50;
     const doc = new PDFDocument({ size: "A4", margin: margin });
     const filename = `Compatibility_Report_${name1.replace(/\s+/g, "_")}_${name2.replace(/\s+/g, "_")}.pdf`; // Use names in filename
@@ -1173,15 +1455,76 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
 
     // --- PDF Content ---
     // Header
-    doc.font(fonts.heading).fontSize(20).fillColor(colors.heading).text("Numerology Compatibility Report", { align: "center" });
+    doc
+      .font(fonts.heading)
+      .fontSize(20)
+      .fillColor(colors.heading)
+      .text("Numerology Compatibility Report", { align: "center" });
     doc.moveDown(0.5);
-    doc.font(fonts.body).fontSize(12).fillColor(colors.muted).text(`${name1} & ${name2}`, { align: "center" });
+    doc
+      .font(fonts.body)
+      .fontSize(12)
+      .fillColor(colors.muted)
+      .text(`${name1} & ${name2}`, { align: "center" });
     doc.moveDown(2);
 
     // Section Helper
-    const addSection = (title, contentFn) => { /* ... same helper ... */ doc.font(fonts.subheading).fontSize(14).fillColor(colors.secondary).text(title, { underline: true }); doc.moveDown(0.7); doc.font(fonts.body).fontSize(10).fillColor(colors.text); contentFn(); doc.moveDown(1.5); };
+    const addSection = (title, contentFn) => {
+      /* ... same helper ... */ doc
+        .font(fonts.subheading)
+        .fontSize(14)
+        .fillColor(colors.secondary)
+        .text(title, { underline: true });
+      doc.moveDown(0.7);
+      doc.font(fonts.body).fontSize(10).fillColor(colors.text);
+      contentFn();
+      doc.moveDown(1.5);
+    };
     // Grid Drawing Helper
-    const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => { /* ... same helper ... */ const positionMap = { 4: 0, 9: 1, 2: 2, 3: 3, 5: 4, 7: 5, 8: 6, 1: 7, 6: 8 }; let cells = Array(9).fill(""); if (gridNumbers && Array.isArray(gridNumbers)) { gridNumbers.forEach((num) => { if (num !== 0 && positionMap.hasOwnProperty(num)) { let cellIndex = positionMap[num]; cells[cellIndex] += (cells[cellIndex] ? " " : "") + num; } }); } doc.save(); doc.lineWidth(0.5).strokeColor(colors.gridLine); for (let row = 0; row < 3; row++) { for (let col = 0; col < 3; col++) { const cellIndex = row * 3 + col; const x = startX + col * (cellSize + gap); const y = startY + row * (cellSize + gap); doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine); if (cells[cellIndex]) { doc.font(fonts.bodyBold).fontSize(10).fillColor(colors.gridText).text(cells[cellIndex], x, y + cellSize / 2 - 5, { width: cellSize, align: "center" }); } } } doc.restore(); return startY + 3 * cellSize + 2 * gap; };
+    const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => {
+      /* ... same helper ... */ const positionMap = {
+        4: 0,
+        9: 1,
+        2: 2,
+        3: 3,
+        5: 4,
+        7: 5,
+        8: 6,
+        1: 7,
+        6: 8,
+      };
+      let cells = Array(9).fill("");
+      if (gridNumbers && Array.isArray(gridNumbers)) {
+        gridNumbers.forEach((num) => {
+          if (num !== 0 && positionMap.hasOwnProperty(num)) {
+            let cellIndex = positionMap[num];
+            cells[cellIndex] += (cells[cellIndex] ? " " : "") + num;
+          }
+        });
+      }
+      doc.save();
+      doc.lineWidth(0.5).strokeColor(colors.gridLine);
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+          const cellIndex = row * 3 + col;
+          const x = startX + col * (cellSize + gap);
+          const y = startY + row * (cellSize + gap);
+          doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine);
+          if (cells[cellIndex]) {
+            doc
+              .font(fonts.bodyBold)
+              .fontSize(10)
+              .fillColor(colors.gridText)
+              .text(cells[cellIndex], x, y + cellSize / 2 - 5, {
+                width: cellSize,
+                align: "center",
+              });
+          }
+        }
+      }
+      doc.restore();
+      return startY + 3 * cellSize + 2 * gap;
+    };
 
     // --- Individual Details Sections ---
     const addPersonSection = (name, dob, gender, data) => {
@@ -1194,22 +1537,41 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
         const textStartX = margin;
         const textWidth = gridStartX - margin - 20;
 
-        doc.font(fonts.bodyBold).text("DOB:", textStartX, textStartY, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("DOB:", textStartX, textStartY, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${dob} (${gender})`);
         doc.moveDown(0.5);
-        doc.font(fonts.bodyBold).text("Moolank:", textStartX, doc.y, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("Moolank:", textStartX, doc.y, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${data.moolank} (${houseMeanings[data.moolank] || "N/A"})`);
         doc.moveDown(0.5);
-        doc.font(fonts.bodyBold).text("Bhagyank:", textStartX, doc.y, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("Bhagyank:", textStartX, doc.y, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${data.bhagyank} (${houseMeanings[data.bhagyank] || "N/A"})`);
         doc.moveDown(0.5);
-        doc.font(fonts.bodyBold).text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
+        doc
+          .font(fonts.bodyBold)
+          .text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
         doc.font(fonts.body).text(` ${data.kua}`);
         doc.moveDown(0.5);
         const mbRelation = moolankBhagyankRelations[data.moolank]?.[data.bhagyank];
-        doc.font(fonts.bodyBold).text(`Moolank-Bhagyank (${data.moolank}-${data.bhagyank}):`, textStartX, doc.y, { width: textWidth });
-        if (mbRelation) { doc.font(fonts.body).text(`  ${mbRelation.indication || "N/A"} (Rating: ${mbRelation.rating || "N/A"})`, { width: textWidth }); }
-        else { doc.font(fonts.body).text("  No specific data", { width: textWidth }); }
+        doc
+          .font(fonts.bodyBold)
+          .text(`Moolank-Bhagyank (${data.moolank}-${data.bhagyank}):`, textStartX, doc.y, {
+            width: textWidth,
+          });
+        if (mbRelation) {
+          doc
+            .font(fonts.body)
+            .text(`  ${mbRelation.indication || "N/A"} (Rating: ${mbRelation.rating || "N/A"})`, {
+              width: textWidth,
+            });
+        } else {
+          doc.font(fonts.body).text("  No specific data", { width: textWidth });
+        }
         doc.y = Math.max(doc.y, gridEndY) + 10;
       });
     };
@@ -1226,8 +1588,22 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
       doc.moveDown(1);
       doc.font(fonts.bodyBold).text("Relationship Breakdown (Bidirectional):");
       doc.moveDown(0.5);
-      const breakdown = [ { n1: `Moolank (${m1})`, n2: `Moolank (${m2})`, rel: relationM1M2, score: scoreM1M2 }, { n1: `Bhagyank (${b1})`, n2: `Bhagyank (${b2})`, rel: relationB1B2, score: scoreB1B2 }, { n1: `Moolank (${m1})`, n2: `Bhagyank (${b2})`, rel: relationM1B2, score: scoreM1B2 }, { n1: `Bhagyank (${b1})`, n2: `Moolank (${m2})`, rel: relationB1M2, score: scoreB1M2 }, { n1: `Moolank (${m2})`, n2: `Moolank (${m1})`, rel: relationM2M1, score: scoreM2M1 }, { n1: `Bhagyank (${b2})`, n2: `Bhagyank (${b1})`, rel: relationB2B1, score: scoreB2B1 }, { n1: `Moolank (${m2})`, n2: `Bhagyank (${b1})`, rel: relationM2B1, score: scoreM2B1 }, { n1: `Bhagyank (${b2})`, n2: `Moolank (${m1})`, rel: relationB2M1, score: scoreB2M1 }, ];
-      breakdown.forEach((item) => { doc.font(fonts.body).text(`  - ${item.n1} vs ${item.n2}: ${item.rel} (Score: ${item.score})`); doc.moveDown(0.3); });
+      const breakdown = [
+        { n1: `Moolank (${m1})`, n2: `Moolank (${m2})`, rel: relationM1M2, score: scoreM1M2 },
+        { n1: `Bhagyank (${b1})`, n2: `Bhagyank (${b2})`, rel: relationB1B2, score: scoreB1B2 },
+        { n1: `Moolank (${m1})`, n2: `Bhagyank (${b2})`, rel: relationM1B2, score: scoreM1B2 },
+        { n1: `Bhagyank (${b1})`, n2: `Moolank (${m2})`, rel: relationB1M2, score: scoreB1M2 },
+        { n1: `Moolank (${m2})`, n2: `Moolank (${m1})`, rel: relationM2M1, score: scoreM2M1 },
+        { n1: `Bhagyank (${b2})`, n2: `Bhagyank (${b1})`, rel: relationB2B1, score: scoreB2B1 },
+        { n1: `Moolank (${m2})`, n2: `Bhagyank (${b1})`, rel: relationM2B1, score: scoreM2B1 },
+        { n1: `Bhagyank (${b2})`, n2: `Moolank (${m1})`, rel: relationB2M1, score: scoreB2M1 },
+      ];
+      breakdown.forEach((item) => {
+        doc
+          .font(fonts.body)
+          .text(`  - ${item.n1} vs ${item.n2}: ${item.rel} (Score: ${item.score})`);
+        doc.moveDown(0.3);
+      });
     });
 
     // --- Finalize PDF ---

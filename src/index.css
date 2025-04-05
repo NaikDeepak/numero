@@ -1312,3 +1312,7 @@ body.light-mode .person-input-section {
   border-radius: 5px;
   border: 1px solid var(--input-border);
 }
+
+.moolank-conversational-summary {
+  text-align: left;
+}

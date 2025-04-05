@@ -372,13 +372,12 @@ function UserCard({ user, getOrFetchUserData }) {
 
     try {
       // Use window.open for a simpler download trigger
-      window.open(pdfUrl, '_blank');
+      window.open(pdfUrl, "_blank");
     } catch (error) {
       console.error("Error initiating PDF download:", error);
       alert("Failed to initiate the report PDF download. Please check console for errors.");
     }
   };
-
 
   // Helper to format number display in the table cell (moved inside UserCard)
   const formatCellDisplay = (numberResult) => {
@@ -511,41 +510,17 @@ function UserCard({ user, getOrFetchUserData }) {
       {!isLoading && userData?.moolankMeaning && (
         <div className="moolank-full-analysis">
           <h4>Moolank {moolankDisplay} Analysis:</h4>
-          {userData.moolankMeaning.characteristics && (
+
+          {/* NEW: Display Conversational Summary */}
+          {userData.moolankMeaning.conversationalSummary && (
             <div className="moolank-sub-section">
               <h5>
-                <FaThumbsUp className="moolank-icon positive" /> Characteristics:
+                {/* Consider adding a specific icon for summary */}
+                <FaLightbulb className="moolank-icon summary" /> Summary:
               </h5>
-              <ul>
-                {userData.moolankMeaning.characteristics.map((c, i) => (
-                  <li key={`char-${i}`}>{c}</li>
-                ))}
-              </ul>
-              {/* Add a "show more" button if needed */}
-            </div>
-          )}
-          {userData.moolankMeaning.negativeTraits && (
-            <div className="moolank-sub-section">
-              <h5>
-                <FaThumbsDown className="moolank-icon negative" /> Negative Traits:
-              </h5>
-              <ul>
-                {userData.moolankMeaning.negativeTraits.slice(0, 3).map((n, i) => (
-                  <li key={`neg-${i}`}>{n}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {userData.moolankMeaning.suggestions && (
-            <div className="moolank-sub-section">
-              <h5>
-                <FaLightbulb className="moolank-icon suggestion" /> Suggestions:
-              </h5>
-              <ul>
-                {userData.moolankMeaning.suggestions.slice(0, 3).map((s, i) => (
-                  <li key={`sug-${i}`}>{s}</li>
-                ))}
-              </ul>
+              <p className="moolank-conversational-summary">
+                {userData.moolankMeaning.conversationalSummary}
+              </p>
             </div>
           )}
         </div>
