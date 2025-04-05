@@ -287,6 +287,7 @@ app.get("/api/report/pdf", (req, res) => {
         .font(fonts.bodyBold)
         .text("Moolank:", textStartX, textStartY, { width: textWidth, continued: true });
       doc.font(fonts.body).text(` ${moolank}`); // Display number first
+      console.log("first moolankMeaningData", moolankMeaningData); // <-- Add log here
       if (moolankMeaningData) {
         doc
           .font(fonts.bodyBold)
@@ -303,6 +304,17 @@ app.get("/api/report/pdf", (req, res) => {
           .text(`Keywords: ${(moolankMeaningData.keywords || []).join(", ")}`, textStartX, doc.y, {
             width: textWidth,
           });
+        // --- Add Moolank Analysis ---
+        doc.moveDown(0.3); // Add a small space before analysis
+        doc
+          .font(fonts.body)
+          .fontSize(9)
+          .fillColor(colors.text) // Ensure text color is reset
+          .text(`Analysis: ${moolankMeaningData.analysis || "N/A"}`, textStartX, doc.y, {
+            width: textWidth,
+            align: "justify", // Justify the analysis text
+          });
+        // --- End Moolank Analysis ---
         // Optionally add more details like characteristics if space allows or in a separate section
       } else {
         doc

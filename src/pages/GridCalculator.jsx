@@ -416,7 +416,7 @@ function UserCard({ user, getOrFetchUserData }) {
   const destinyDisplay = formatCellDisplay(userData?.nameNumerology?.destinyNumber);
   const soulUrgeDisplay = formatCellDisplay(userData?.nameNumerology?.soulUrgeNumber);
   const personalityDisplay = formatCellDisplay(userData?.nameNumerology?.personalityNumber);
-
+  console.log("User Data:", userData); // Debugging log
   // Render as a card div instead of table row
   return (
     <div className="user-card">
@@ -429,12 +429,10 @@ function UserCard({ user, getOrFetchUserData }) {
       <div className="user-card-body">
         <div className="user-card-details">
           <p>
-            <strong
-              title={userData?.bhagyank?.karmic ? `Karmic Debt: ${userData.bhagyank.karmic}` : ""}
-            >
-              Bhagyank:
-            </strong>{" "}
-            {bhagyankDisplay}
+            <strong>Bhagyank:</strong> {bhagyankDisplay}
+          </p>
+          <p>
+            <strong>Kua:</strong> {kuaDisplay}
           </p>
           {/* Moolank Details - Expanded */}
           <div className="moolank-details-section">
@@ -447,16 +445,16 @@ function UserCard({ user, getOrFetchUserData }) {
                   <FaStar className="moolank-icon" /> Grah: {userData.moolankMeaning.grah || "N/A"}{" "}
                   | Rashi: {userData.moolankMeaning.rashi || "N/A"}
                 </p>
+                {/* Keywords in their own paragraph */}
                 <p className="moolank-keywords">
                   <em>Keywords: {userData.moolankMeaning.keywords?.join(", ") || "N/A"}</em>
                 </p>
+                {/* Display Moolank Analysis */}
+                <p className="moolank-analysis">{userData.moolankMeaning.analysis || ""}</p>
                 {/* Optionally add collapsible sections for more details */}
               </>
             )}
           </div>
-          <p>
-            <strong>Kua:</strong> {kuaDisplay}
-          </p>
           <hr /> {/* Separator */}
           <p>
             <strong
