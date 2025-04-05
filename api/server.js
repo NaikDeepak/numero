@@ -14,6 +14,7 @@ import express from "express";
 import cors from "cors";
 import PDFDocument from "pdfkit";
 import { createRequire } from "module";
+import rateLimit from "express-rate-limit"; // Import rate limiter
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
 import {
   calculateNumerologyData,
@@ -148,8 +149,20 @@ const port = process.env.PORT || 3001;
 app.use(cors()); // Enable CORS for all origins (adjust for production)
 app.use(express.json());
 
+// --- Rate Limiter for Gemini-dependent routes ---
+const geminiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs (adjust as needed)
+  message: "Too many requests from this IP, please try again after 15 minutes",
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  // Only apply this limiter if Gemini is actually configured
+  skip: (req, res) => !geminiModel,
+});
+
 // API Endpoint for Numerology Calculation (including Name) - Made async
-app.post("/api/calculate", async (req, res) => { // <-- Make handler async
+// Apply the rate limiter specifically to this route
+app.post("/api/calculate", geminiLimiter, async (req, res) => { // <-- Add geminiLimiter middleware
   const { dob, gender, name } = req.body;
 
   // Basic validation
@@ -220,7 +233,8 @@ app.post("/api/calculate", async (req, res) => { // <-- Make handler async
 // PDFDocument import moved to top
 
 // Made async to handle potential Gemini call
-app.get("/api/report/pdf", async (req, res) => { // <-- Make handler async
+// Apply the rate limiter specifically to this route
+app.get("/api/report/pdf", geminiLimiter, async (req, res) => { // <-- Add geminiLimiter middleware
   const { dob, gender, name } = req.query;
 
   // Basic validation
