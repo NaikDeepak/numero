@@ -557,14 +557,43 @@ app.get("/api/report/pdf", geminiLimiter, async (req, res) => {
 
     // --- Report Sections ---
     const { moolank, bhagyank, kua, gridNumbers } = numerologyData;
-    // --- NEW: Analyze Grid for PDF ---
-    const gridAnalysis = analyzeGrid(gridNumbers, gridAnalysisDefinitions);
-    console.log(`[/api/report/pdf] Grid Analysis for DOB ${dob}:`, gridAnalysis);
 
-    // --- Get Moolank meaning data (original analysis will be used) ---
+    // --- Get Moolank meaning data ---
     const moolankMeaningData = moolankMeanings[moolank.toString()];
     // Log original data for debugging if needed
     // console.log("Moolank Meaning Data for PDF:", moolankMeaningData);
+
+    // --- NEW: Get or Generate Conversational Summary for PDF ---
+    let summaryParagraphsToUse = null;
+    const cacheKey = generateCacheKey(dob, gender, name); // Use the helper function
+    const summaryCacheKey = `summary:${cacheKey}`;
+
+    if (analysisCache.has(summaryCacheKey)) {
+        summaryParagraphsToUse = analysisCache.get(summaryCacheKey);
+        console.log(`[PDF Report / Cache] Retrieved summary paragraphs for key: ${summaryCacheKey}`);
+    } else if (geminiModel && moolankMeaningData) { // Only generate if Gemini is available and data exists
+        console.log(`[PDF Report / Gemini] Generating conversational summary paragraphs for Moolank ${moolank}...`);
+        summaryParagraphsToUse = await generateConversationalMoolankSummary(moolankMeaningData);
+        if (summaryParagraphsToUse && summaryParagraphsToUse.length > 0) {
+            analysisCache.set(summaryCacheKey, summaryParagraphsToUse); // Cache the result
+            console.log(`[PDF Report / Cache] Stored summary paragraphs for key: ${summaryCacheKey}`);
+            setTimeout(() => {
+                if (analysisCache.delete(summaryCacheKey)) {
+                    console.log(`[PDF Report / Cache] Expired summary for key: ${summaryCacheKey}`);
+                }
+            }, CACHE_DURATION_MS);
+        } else {
+             console.log(`[PDF Report / Gemini] Summary generation returned null or empty array.`);
+        }
+    } else {
+         console.log(`[PDF Report] Skipping summary generation (Gemini unavailable or no moolank data).`);
+    }
+    // --- End Summary Retrieval/Generation ---
+
+    // --- Analyze Grid for PDF ---
+    const gridAnalysis = analyzeGrid(gridNumbers, gridAnalysisDefinitions);
+    console.log(`[/api/report/pdf] Grid Analysis for DOB ${dob}:`, gridAnalysis);
+
 
     // 1. Basic Numbers & Grid
     addSection("Core Numbers & Lo Shu Grid", () => {
@@ -766,6 +795,52 @@ app.get("/api/report/pdf", geminiLimiter, async (req, res) => {
         });
       });
     }
+
+    // --- NEW: Moolank Conversational Summary Section ---
+    // Use the summaryParagraphsToUse variable populated earlier
+    if (summaryParagraphsToUse && summaryParagraphsToUse.length > 0) {
+        addSection(`Moolank ${moolank} - Personality Insights`, () => {
+            // Iterate through paragraphs and add them with spacing
+            summaryParagraphsToUse.forEach((para, index) => {
+                // Ensure 'para' is a string before passing to .text()
+                const paragraphText = typeof para === 'string' ? para : '';
+                if (paragraphText.trim().length > 0) { // Avoid adding empty paragraphs
+                    doc.font(fonts.body).fontSize(10).text(paragraphText, { align: 'justify' });
+                    // Add space only if it's not the last paragraph and the current one wasn't empty
+                    if (index < summaryParagraphsToUse.length - 1) {
+                         doc.moveDown(0.5); // Add space between paragraphs
+                    }
+                }
+            });
+        });
+    } else if (moolankMeaningData) {
+        // Fallback: If summary generation failed or wasn't possible, show original lists
+        addSection(`Moolank ${moolank} - Core Traits & Suggestions`, () => { // Slightly different title for fallback
+            let contentAdded = false;
+            if (moolankMeaningData.characteristics && moolankMeaningData.characteristics.length > 0) {
+                doc.font(fonts.bodyBold).text("Characteristics:");
+                moolankMeaningData.characteristics.forEach(item => doc.font(fonts.body).text(`- ${item}`));
+                doc.moveDown(0.5);
+                contentAdded = true;
+            }
+            if (moolankMeaningData.negativeTraits && moolankMeaningData.negativeTraits.length > 0) {
+                doc.font(fonts.bodyBold).text("Negative Traits:");
+                moolankMeaningData.negativeTraits.forEach(item => doc.font(fonts.body).text(`- ${item}`));
+                doc.moveDown(0.5);
+                contentAdded = true;
+            }
+            if (moolankMeaningData.suggestions && moolankMeaningData.suggestions.length > 0) {
+                doc.font(fonts.bodyBold).text("Suggestions:");
+                moolankMeaningData.suggestions.forEach(item => doc.font(fonts.body).text(`- ${item}`));
+                contentAdded = true;
+            }
+            if (!contentAdded) {
+                 doc.font(fonts.body).text("No specific trait details available.");
+            }
+        });
+    }
+    // --- End Moolank Conversational Summary Section ---
+
 
     // --- Finalize PDF ---
     doc.end();
