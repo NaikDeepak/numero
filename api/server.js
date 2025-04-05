@@ -1,9 +1,20 @@
+import path from "path"; // Move path import up
+import { fileURLToPath } from "url"; // Move fileURLToPath import up
+import dotenv from "dotenv"; // Import dotenv
+
+// --- Calculate __dirname for ES Modules ---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// --- Load Environment Variables ---
+dotenv.config({ path: path.resolve(__dirname, ".env") }); // Load .env using calculated __dirname
+
+// --- Other Imports ---
 import express from "express";
 import cors from "cors";
 import PDFDocument from "pdfkit";
-import { createRequire } from "module"; // Import createRequire
-import { fileURLToPath } from "url";
-import path from "path";
+import { createRequire } from "module";
+import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
 import {
   calculateNumerologyData,
   calculatePersonalYear,
@@ -17,8 +28,7 @@ import {
 
 // --- Load JSON Data using createRequire ---
 const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// __filename and __dirname are now defined above
 
 // Function to resolve path and require JSON safely
 function loadJsonData(relativePath) {
@@ -48,8 +58,76 @@ console.log(
   Array.isArray(gridAnalysisDefinitions)
     ? `${gridAnalysisDefinitions.length} definitions loaded.`
     : "FAILED TO LOAD OR NOT AN ARRAY"
-); // <-- Add log here
+);
 // --- End JSON Data Loading ---
+
+// --- Initialize Gemini ---
+// IMPORTANT: Store your API key securely, preferably in environment variables.
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+// --- Enhanced API Key Logging ---
+if (GEMINI_API_KEY && GEMINI_API_KEY.length > 10) { // Check if key seems present
+  console.log("[Gemini Init] GEMINI_API_KEY loaded successfully from environment.");
+  // Avoid logging the full key for security, just confirm its presence and partial length
+  console.log(`[Gemini Init] API Key starts with: ${GEMINI_API_KEY.substring(0, 4)}...`);
+} else if (GEMINI_API_KEY) { // Key exists but seems short/invalid
+   console.warn(
+    `[Gemini Init] WARNING: GEMINI_API_KEY found but seems short or invalid (length: ${GEMINI_API_KEY.length}). Please verify the key in your .env file.`
+  );
+} else { // Key not found at all
+  console.warn(
+    "[Gemini Init] WARNING: GEMINI_API_KEY environment variable not set or empty. Analysis rewriting will be disabled. Ensure it's defined in api/.env and the server was restarted."
+  );
+}
+// --- End Enhanced Logging ---
+
+const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
+// Try the model name from the latest documentation example: "gemini-2.0-flash"
+const geminiModel = genAI ? genAI.getGenerativeModel({ model: "gemini-2.0-flash" }) : null;
+
+// --- Function to check Gemini connection on startup ---
+async function checkGeminiConnection() {
+  if (!geminiModel) {
+    console.log("[Gemini Check] Skipping connection check: Gemini client not initialized (likely missing API key).");
+    return;
+  }
+  try {
+    console.log("[Gemini Check] Attempting a test API call...");
+    // Use a very simple prompt for the test
+    const result = await geminiModel.generateContent("Test");
+    await result.response; // Wait for the response processing
+    console.log("[Gemini Check] Successfully connected to Google Generative AI.");
+  } catch (error) {
+    console.error("[Gemini Check] Failed to connect or communicate with Google Generative AI:", error.message);
+    // Optionally log the full error for more details if needed
+    // console.error(error);
+  }
+}
+
+// --- Run the connection check ---
+checkGeminiConnection();
+
+// --- Helper function to rewrite text using Gemini ---
+async function rewriteAnalysisWithGemini(originalText) {
+  if (!geminiModel || !originalText) {
+    return originalText; // Return original if Gemini is not configured or text is empty
+  }
+
+  const prompt = `Rewrite the following numerology analysis text to convey the same core meaning but using different wording. Keep the tone informative and insightful. Do not add any introductory or concluding phrases like "Here's the rewritten text:". Just provide the rewritten analysis itself.\n\nOriginal Text:\n"${originalText}"\n\nRewritten Text:`;
+
+  try {
+    console.log(`[Gemini] Rewriting analysis for text starting with: "${originalText.substring(0, 50)}..."`);
+    const result = await geminiModel.generateContent(prompt);
+    const response = await result.response;
+    const rewrittenText = await response.text();
+    console.log(`[Gemini] Rewriting successful.`);
+    return rewrittenText.trim();
+  } catch (error) {
+    console.error("[Gemini] Error rewriting analysis:", error);
+    return originalText; // Fallback to original text on error
+  }
+}
+// --- End Gemini Setup ---
 
 // Add logging to check loaded data
 console.log(
@@ -68,13 +146,13 @@ const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors()); // Enable CORS for all origins (adjust for production)
-app.use(express.json()); // Parse JSON request bodies
+app.use(express.json());
 
-// API Endpoint for Numerology Calculation (including Name)
-app.post("/api/calculate", (req, res) => {
-  const { dob, gender, name } = req.body; // Add name
+// API Endpoint for Numerology Calculation (including Name) - Made async
+app.post("/api/calculate", async (req, res) => { // <-- Make handler async
+  const { dob, gender, name } = req.body;
 
-  // Basic validation for presence of dob and gender (name is optional here)
+  // Basic validation
   if (!dob || !gender) {
     return res.status(400).json({ error: "Missing required fields: dob and gender" });
   }
@@ -106,19 +184,25 @@ app.post("/api/calculate", (req, res) => {
 
       const gridAnalysis = analyzeGrid(numerologyData.gridNumbers, gridAnalysisDefinitions);
       console.log(`[/api/calculate] Grid Analysis for DOB ${dob}:`, gridAnalysis); // <-- Add console log
-      responseData.gridAnalysis = gridAnalysis; // Add grid analysis results
+      responseData.gridAnalysis = gridAnalysis;
 
-      // --- NEW: Add Moolank Meaning to API response ---
-      const moolankMeaningData = moolankMeanings?.[responseData.moolank?.toString()]; // <-- Add safe access
-      responseData.moolankMeaning = moolankMeaningData
-        ? {
-            grah: moolankMeaningData.grah,
-            rashi: moolankMeaningData.rashi,
-            keywords: moolankMeaningData.keywords,
-            analysis: moolankMeaningData.analysis, // Send the analysis paragraph
-            // characteristics: moolankMeaningData.characteristics // Remove characteristics
-          }
-        : null;
+      // --- Add Moolank Meaning (with potential rewriting) ---
+      const moolankMeaningData = moolankMeanings?.[responseData.moolank?.toString()];
+      if (moolankMeaningData) {
+        // Rewrite the analysis text using Gemini
+        const originalAnalysis = moolankMeaningData.analysis;
+        const rewrittenAnalysis = await rewriteAnalysisWithGemini(originalAnalysis); // <-- Call rewrite function
+
+        responseData.moolankMeaning = {
+          grah: moolankMeaningData.grah,
+          rashi: moolankMeaningData.rashi,
+          keywords: moolankMeaningData.keywords,
+          analysis: rewrittenAnalysis, // Use the rewritten (or original if failed) analysis
+          // characteristics: moolankMeaningData.characteristics
+        };
+      } else {
+        responseData.moolankMeaning = null;
+      }
 
       // Return the combined data
       res.json(responseData);
@@ -135,8 +219,9 @@ app.post("/api/calculate", (req, res) => {
 // --- NEW: API Endpoint for PDF Report Generation ---
 // PDFDocument import moved to top
 
-app.get("/api/report/pdf", (req, res) => {
-  const { dob, gender, name } = req.query; // Get data from query parameters, add name
+// Made async to handle potential Gemini call
+app.get("/api/report/pdf", async (req, res) => { // <-- Make handler async
+  const { dob, gender, name } = req.query;
 
   // Basic validation
   if (!dob || !gender) {
@@ -268,7 +353,15 @@ app.get("/api/report/pdf", (req, res) => {
     const { moolank, bhagyank, kua, gridNumbers } = numerologyData;
     // --- NEW: Analyze Grid for PDF ---
     const gridAnalysis = analyzeGrid(gridNumbers, gridAnalysisDefinitions);
-    console.log(`[/api/report/pdf] Grid Analysis for DOB ${dob}:`, gridAnalysis); // <-- Add console log
+    console.log(`[/api/report/pdf] Grid Analysis for DOB ${dob}:`, gridAnalysis);
+
+    // --- Pre-calculate rewritten Moolank analysis ---
+    const moolankMeaningData = moolankMeanings[moolank.toString()];
+    let rewrittenMoolankAnalysis = "N/A"; // Default value
+    if (moolankMeaningData?.analysis) {
+      rewrittenMoolankAnalysis = await rewriteAnalysisWithGemini(moolankMeaningData.analysis);
+    }
+    console.log("first moolankMeaningData", moolankMeaningData); // Log original data
 
     // 1. Basic Numbers & Grid
     addSection("Core Numbers & Lo Shu Grid", () => {
@@ -279,15 +372,14 @@ app.get("/api/report/pdf", (req, res) => {
       // Place text next to or below grid
       const textStartY = gridStartY; // Start text at the same Y as grid
       const textStartX = margin;
-      const textWidth = gridStartX - margin - 20; // Width for text column
+      const textWidth = gridStartX - margin - 20;
 
-      // Display Moolank (with detailed interpretation)
-      const moolankMeaningData = moolankMeanings[moolank.toString()]; // Get data for the moolank
+      // Display Moolank (using pre-calculated rewritten interpretation)
       doc
         .font(fonts.bodyBold)
         .text("Moolank:", textStartX, textStartY, { width: textWidth, continued: true });
       doc.font(fonts.body).text(` ${moolank}`); // Display number first
-      console.log("first moolankMeaningData", moolankMeaningData); // <-- Add log here
+      // Use the moolankMeaningData loaded *before* addSection
       if (moolankMeaningData) {
         doc
           .font(fonts.bodyBold)
@@ -309,13 +401,18 @@ app.get("/api/report/pdf", (req, res) => {
         doc
           .font(fonts.body)
           .fontSize(9)
-          .fillColor(colors.text) // Ensure text color is reset
-          .text(`Analysis: ${moolankMeaningData.analysis || "N/A"}`, textStartX, doc.y, {
-            width: textWidth,
-            align: "justify", // Justify the analysis text
-          });
+          .fillColor(colors.text)
+          // Use the pre-calculated rewritten analysis text
+          .text(
+            `Analysis: ${rewrittenMoolankAnalysis}`, // <-- Use variable here
+            textStartX,
+            doc.y,
+            {
+              width: textWidth,
+              align: "justify",
+            }
+          );
         // --- End Moolank Analysis ---
-        // Optionally add more details like characteristics if space allows or in a separate section
       } else {
         doc
           .font(fonts.body)
