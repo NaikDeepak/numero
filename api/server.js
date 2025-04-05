@@ -140,9 +140,10 @@ async function generateConversationalMoolankSummary(meaningData) {
   }
 
   // Construct the prompt
-  let prompt = `Based on the following numerology details for a Moolank number, write a longer, engaging, smaller but multiple paragraphs with conversational, friendly, professional tone of a seasoned numerlogist who can convey negative trait also with a finesse. Combine the key points from characteristics, potential negative traits, and suggestions into a flowing narrative suitable for a personal report.Do not add introductory phrases like "Here is the summary:".
+  // Ask for multiple paragraphs separated by double line breaks
+  let prompt = `Based on the following numerology details for a Moolank number, write an engaging and insightful analysis with a conversational, friendly, yet professional tone, suitable for a seasoned numerologist's report. Structure the response into several smaller paragraphs (separated by double line breaks: '\\n\\n'), elaborating on the key points from characteristics, potential negative traits (conveyed with finesse), and suggestions for growth. Do not add introductory phrases like "Here is the summary:".
 
-Characteristics:
+**Key Characteristics:**
 ${(characteristics || []).map((c) => `- ${c}`).join("\n")}
 
 Negative Traits to be mindful of:
@@ -151,17 +152,23 @@ ${(negativeTraits || []).map((n) => `- ${n}`).join("\n")}
 Suggestions for growth:
 ${(suggestions || []).map((s) => `- ${s}`).join("\n")}
 
-Conversational Summary:`;
+Conversational Analysis (Multiple Paragraphs):`; // Updated final instruction
 
   try {
-    console.log(`[Gemini] Generating conversational summary for Moolank...`);
+    console.log(`[Gemini] Generating conversational analysis paragraphs for Moolank...`); // Update log
     const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
     const summaryText = await response.text();
-    console.log(`[Gemini] Summary generation successful.`);
-    return summaryText.trim();
+    console.log(`[Gemini] Conversational analysis generation successful.`); // Update log
+    // Split the response into paragraphs based on double (or more) line breaks and trim each one
+    const paragraphs = summaryText
+                        .trim() // Trim overall response first
+                        .split(/[\r\n\s*]{2,}/) // Split by two or more newline/whitespace characters
+                        .map(p => p.trim()) // Trim each individual paragraph
+                        .filter(p => p.trim().length > 0); // Filter out paragraphs that are empty *after* trimming
+    return paragraphs; // Return array of trimmed, non-empty paragraphs
   } catch (error) {
-    console.error("[Gemini] Error generating conversational summary:", error);
+    console.error("[Gemini] Error generating conversational analysis paragraphs:", error); // Update log
     return null; // Return null on error
   }
 }
@@ -285,11 +292,12 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => {
         // --- End main analysis caching ---
 
         // --- Generate conversational summary and cache it ---
-        const conversationalSummary =
-          await generateConversationalMoolankSummary(moolankMeaningData); // Generate summary
-        if (conversationalSummary) {
-          analysisCache.set(summaryCacheKey, conversationalSummary);
-          console.log(`[Cache] Stored summary for key: ${summaryCacheKey}`);
+        const conversationalSummaryParagraphs = // Rename variable
+          await generateConversationalMoolankSummary(moolankMeaningData); // Generate summary (returns array or null)
+        // conversationalSummary is now an array of paragraphs or null
+        if (conversationalSummaryParagraphs && conversationalSummaryParagraphs.length > 0) {
+          analysisCache.set(summaryCacheKey, conversationalSummaryParagraphs); // Cache the array
+          console.log(`[Cache] Stored summary paragraphs for key: ${summaryCacheKey}`); // Update log
           setTimeout(() => {
             if (analysisCache.delete(summaryCacheKey)) {
               console.log(`[Cache] Expired summary for key: ${summaryCacheKey}`);
@@ -304,28 +312,40 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => {
           rashi: moolankMeaningData.rashi,
           keywords: moolankMeaningData.keywords,
           analysis: rewrittenAnalysis, // Send rewritten main analysis
-          conversationalSummary: conversationalSummary, // Assign the generated summary here
-          // Keep original lists for now, UI might still use them as fallback
-          characteristics: moolankMeaningData.characteristics,
-          negativeTraits: moolankMeaningData.negativeTraits,
-          suggestions: moolankMeaningData.suggestions,
+          conversationalSummaryParagraphs: conversationalSummaryParagraphs, // Send array of paragraphs
+          // Raw lists are no longer needed by UI
+          // characteristics: moolankMeaningData.characteristics,
+          // negativeTraits: moolankMeaningData.negativeTraits,
+          // suggestions: moolankMeaningData.suggestions,
         };
         // --- End Gemini/Cache logic ---
       } else if (moolankMeaningData) {
         // If analysis text is missing, still try to generate summary if other fields exist
-        const conversationalSummary =
+        const conversationalSummaryParagraphs = // Rename variable
           await generateConversationalMoolankSummary(moolankMeaningData);
-        // No caching needed in this step
+        // Cache the generated paragraphs if successful
+        const cacheKey = generateCacheKey(dob, gender, name); // Need cache key here too
+        const summaryCacheKey = `summary:${cacheKey}`;
+        if (conversationalSummaryParagraphs && conversationalSummaryParagraphs.length > 0) {
+            analysisCache.set(summaryCacheKey, conversationalSummaryParagraphs);
+            console.log(`[Cache] Stored summary paragraphs (no main analysis) for key: ${summaryCacheKey}`);
+            setTimeout(() => {
+                if (analysisCache.delete(summaryCacheKey)) {
+                    console.log(`[Cache] Expired summary paragraphs (no main analysis) for key: ${summaryCacheKey}`);
+                }
+            }, CACHE_DURATION_MS);
+        }
 
         responseData.moolankMeaning = {
           grah: moolankMeaningData.grah,
           rashi: moolankMeaningData.rashi,
           keywords: moolankMeaningData.keywords,
-          analysis: null,
-          characteristics: moolankMeaningData.characteristics, // Keep original lists for now
-          negativeTraits: moolankMeaningData.negativeTraits, // Keep original lists for now
-          suggestions: moolankMeaningData.suggestions, // Keep original lists for now
-          conversationalSummary: conversationalSummary, // Add the generated summary
+          analysis: null, // Main analysis was missing
+          conversationalSummaryParagraphs: conversationalSummaryParagraphs, // Send array of paragraphs
+          // Raw lists are no longer needed by UI
+          // characteristics: moolankMeaningData.characteristics,
+          // negativeTraits: moolankMeaningData.negativeTraits,
+          // suggestions: moolankMeaningData.suggestions,
         };
       } else {
         responseData.moolankMeaning = null;
@@ -1044,283 +1064,6 @@ app.get("/api/report/compatibility/pdf", async (req, res) => {
       ];
 
       // Use list format for better readability in PDF
-      breakdown.forEach((item) => {
-        doc
-          .font(fonts.body)
-          .text(`  - ${item.n1} vs ${item.n2}: ${item.rel} (Score: ${item.score})`);
-        doc.moveDown(0.3);
-      });
-    });
-
-    // --- Finalize PDF ---
-    doc.end();
-  } catch (error) {
-    console.error("Compatibility PDF Generation error:", error);
-    if (!res.headersSent) {
-      res.status(500).json({ error: "An internal server error occurred during PDF generation." });
-    } else {
-      res.end();
-    }
-  }
-});
-
-// --- Restored API Endpoint for Compatibility PDF Report Generation ---
-// Note: Compatibility PDF does not use Gemini analysis, so no caching needed here.
-app.get("/api/report/compatibility/pdf", async (req, res) => {
-  const { dob1, gender1, name1, dob2, gender2, name2 } = req.query;
-
-  // Basic validation
-  if (!dob1 || !gender1 || !name1 || !dob2 || !gender2 || !name2) {
-    return res
-      .status(400)
-      .json({ error: "Missing required query parameters for compatibility report." });
-  }
-
-  try {
-    // Calculate data for both individuals
-    const person1Data = calculateNumerologyData(dob1, gender1);
-    const person2Data = calculateNumerologyData(dob2, gender2);
-    // Name calculations are not strictly needed for the PDF content as defined, but good practice
-    // const person1NameData = name1 ? calculateNameNumbers(name1) : null;
-    // const person2NameData = name2 ? calculateNameNumbers(name2) : null;
-    // Grid analysis is also not used in this specific PDF layout
-    // const person1GridAnalysis = person1Data ? analyzeGrid(person1Data.gridNumbers, gridAnalysisDefinitions) : [];
-    // const person2GridAnalysis = person2Data ? analyzeGrid(person2Data.gridNumbers, gridAnalysisDefinitions) : [];
-
-    if (!person1Data || !person2Data) {
-      return res
-        .status(400)
-        .json({ error: "Invalid input data provided for one or both individuals." });
-    }
-
-    // --- Compatibility Calculation ---
-    const getScore = (num1, num2) => {
-      /* ... scoring logic ... */ const rules1 = compatibilityData[num1];
-      if (!rules1) return 1;
-      if (rules1.friendly?.includes(num2)) return 3;
-      if (rules1.enemy?.includes(num2)) return 0;
-      return 1;
-    };
-    const getRelationship = (num1, num2) => {
-      /* ... relationship logic ... */ const rules1 = compatibilityData[num1];
-      if (!rules1) return "Neutral (No data)";
-      if (rules1.friendly?.includes(num2)) return "Friendly";
-      if (rules1.enemy?.includes(num2)) return "Enemy";
-      return "Neutral";
-    };
-    const m1 = person1Data.moolank;
-    const b1 = person1Data.bhagyank;
-    const m2 = person2Data.moolank;
-    const b2 = person2Data.bhagyank;
-    const scoreM1M2 = getScore(m1, m2);
-    const relationM1M2 = getRelationship(m1, m2);
-    const scoreB1B2 = getScore(b1, b2);
-    const relationB1B2 = getRelationship(b1, b2);
-    const scoreM1B2 = getScore(m1, b2);
-    const relationM1B2 = getRelationship(m1, b2);
-    const scoreB1M2 = getScore(b1, m2);
-    const relationB1M2 = getRelationship(b1, m2);
-    const scoreM2M1 = getScore(m2, m1);
-    const relationM2M1 = getRelationship(m2, m1);
-    const scoreB2B1 = getScore(b2, b1);
-    const relationB2B1 = getRelationship(b2, b1);
-    const scoreM2B1 = getScore(m2, b1);
-    const relationM2B1 = getRelationship(m2, b1);
-    const scoreB2M1 = getScore(b2, m1);
-    const relationB2M1 = getRelationship(b2, m1);
-    const totalScore =
-      scoreM1M2 + scoreB1B2 + scoreM1B2 + scoreB1M2 + scoreM2M1 + scoreB2B1 + scoreM2B1 + scoreB2M1;
-    const maxScore = 24;
-    const compatibilityPercentage = Math.round((totalScore / maxScore) * 100);
-    let finalVerdict = "";
-    const allRelations = [
-      relationM1M2,
-      relationB1B2,
-      relationM1B2,
-      relationB1M2,
-      relationM2M1,
-      relationB2B1,
-      relationM2B1,
-      relationB2M1,
-    ];
-    if (allRelations.includes("Enemy")) {
-      finalVerdict = "Not Compatible (Due to Enemy Relationship)";
-    } else {
-      if (compatibilityPercentage >= 75) finalVerdict = "High Compatibility";
-      else if (compatibilityPercentage <= 35) finalVerdict = "Low Compatibility";
-      else finalVerdict = "Average Compatibility";
-    }
-    // --- End Compatibility Calculation ---
-
-    // --- PDF Setup ---
-    const colors = {
-      /* ... same colors ... */ primary: "#ff8c00",
-      secondary: "#a0522d",
-      text: "#333333",
-      muted: "#666666",
-      gridLine: "#cccccc",
-      gridText: "#111111",
-      gridBg: "#f9f9f9",
-      heading: "#111111",
-    };
-    const fonts = {
-      /* ... same fonts ... */ heading: "Helvetica-Bold",
-      subheading: "Helvetica-Bold",
-      body: "Helvetica",
-      bodyBold: "Helvetica-Bold",
-    };
-    const margin = 50;
-    const doc = new PDFDocument({ size: "A4", margin: margin });
-    const filename = `Compatibility_Report_${name1.replace(/\s+/g, "_")}_${name2.replace(/\s+/g, "_")}.pdf`; // Use names in filename
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
-    doc.pipe(res);
-
-    // --- PDF Content ---
-    // Header
-    doc
-      .font(fonts.heading)
-      .fontSize(20)
-      .fillColor(colors.heading)
-      .text("Numerology Compatibility Report", { align: "center" });
-    doc.moveDown(0.5);
-    doc
-      .font(fonts.body)
-      .fontSize(12)
-      .fillColor(colors.muted)
-      .text(`${name1} & ${name2}`, { align: "center" });
-    doc.moveDown(2);
-
-    // Section Helper
-    const addSection = (title, contentFn) => {
-      /* ... same helper ... */ doc
-        .font(fonts.subheading)
-        .fontSize(14)
-        .fillColor(colors.secondary)
-        .text(title, { underline: true });
-      doc.moveDown(0.7);
-      doc.font(fonts.body).fontSize(10).fillColor(colors.text);
-      contentFn();
-      doc.moveDown(1.5);
-    };
-    // Grid Drawing Helper
-    const drawLoShuGrid = (gridNumbers, startX, startY, cellSize = 30, gap = 3) => {
-      /* ... same helper ... */ const positionMap = {
-        4: 0,
-        9: 1,
-        2: 2,
-        3: 3,
-        5: 4,
-        7: 5,
-        8: 6,
-        1: 7,
-        6: 8,
-      };
-      let cells = Array(9).fill("");
-      if (gridNumbers && Array.isArray(gridNumbers)) {
-        gridNumbers.forEach((num) => {
-          if (num !== 0 && positionMap.hasOwnProperty(num)) {
-            let cellIndex = positionMap[num];
-            cells[cellIndex] += (cells[cellIndex] ? " " : "") + num;
-          }
-        });
-      }
-      doc.save();
-      doc.lineWidth(0.5).strokeColor(colors.gridLine);
-      for (let row = 0; row < 3; row++) {
-        for (let col = 0; col < 3; col++) {
-          const cellIndex = row * 3 + col;
-          const x = startX + col * (cellSize + gap);
-          const y = startY + row * (cellSize + gap);
-          doc.rect(x, y, cellSize, cellSize).fillAndStroke(colors.gridBg, colors.gridLine);
-          if (cells[cellIndex]) {
-            doc
-              .font(fonts.bodyBold)
-              .fontSize(10)
-              .fillColor(colors.gridText)
-              .text(cells[cellIndex], x, y + cellSize / 2 - 5, {
-                width: cellSize,
-                align: "center",
-              });
-          }
-        }
-      }
-      doc.restore();
-      return startY + 3 * cellSize + 2 * gap;
-    };
-
-    // --- Individual Details Sections ---
-    const addPersonSection = (name, dob, gender, data) => {
-      addSection(`${name}'s Details`, () => {
-        const gridStartY = doc.y;
-        const gridWidth = 3 * 30 + 2 * 3;
-        const gridStartX = doc.page.width - margin - gridWidth;
-        const gridEndY = drawLoShuGrid(data.gridNumbers, gridStartX, gridStartY);
-        const textStartY = gridStartY;
-        const textStartX = margin;
-        const textWidth = gridStartX - margin - 20;
-
-        doc
-          .font(fonts.bodyBold)
-          .text("DOB:", textStartX, textStartY, { width: textWidth, continued: true });
-        doc.font(fonts.body).text(` ${dob} (${gender})`);
-        doc.moveDown(0.5);
-        doc
-          .font(fonts.bodyBold)
-          .text("Moolank:", textStartX, doc.y, { width: textWidth, continued: true });
-        doc.font(fonts.body).text(` ${data.moolank} (${houseMeanings[data.moolank] || "N/A"})`);
-        doc.moveDown(0.5);
-        doc
-          .font(fonts.bodyBold)
-          .text("Bhagyank:", textStartX, doc.y, { width: textWidth, continued: true });
-        doc.font(fonts.body).text(` ${data.bhagyank} (${houseMeanings[data.bhagyank] || "N/A"})`);
-        doc.moveDown(0.5);
-        doc
-          .font(fonts.bodyBold)
-          .text("Kua Number:", textStartX, doc.y, { width: textWidth, continued: true });
-        doc.font(fonts.body).text(` ${data.kua}`);
-        doc.moveDown(0.5);
-        const mbRelation = moolankBhagyankRelations[data.moolank]?.[data.bhagyank];
-        doc
-          .font(fonts.bodyBold)
-          .text(`Moolank-Bhagyank (${data.moolank}-${data.bhagyank}):`, textStartX, doc.y, {
-            width: textWidth,
-          });
-        if (mbRelation) {
-          doc
-            .font(fonts.body)
-            .text(`  ${mbRelation.indication || "N/A"} (Rating: ${mbRelation.rating || "N/A"})`, {
-              width: textWidth,
-            });
-        } else {
-          doc.font(fonts.body).text("  No specific data", { width: textWidth });
-        }
-        doc.y = Math.max(doc.y, gridEndY) + 10;
-      });
-    };
-    addPersonSection(name1, dob1, gender1, person1Data);
-    addPersonSection(name2, dob2, gender2, person2Data);
-
-    // --- Compatibility Analysis Section ---
-    addSection("Compatibility Analysis", () => {
-      doc.font(fonts.bodyBold).text("Overall Compatibility Score: ", { continued: true });
-      doc.font(fonts.body).text(`${totalScore} / ${maxScore} (${compatibilityPercentage}%)`);
-      doc.moveDown(0.5);
-      doc.font(fonts.bodyBold).text("General Indication: ", { continued: true });
-      doc.font(fonts.body).text(finalVerdict);
-      doc.moveDown(1);
-      doc.font(fonts.bodyBold).text("Relationship Breakdown (Bidirectional):");
-      doc.moveDown(0.5);
-      const breakdown = [
-        { n1: `Moolank (${m1})`, n2: `Moolank (${m2})`, rel: relationM1M2, score: scoreM1M2 },
-        { n1: `Bhagyank (${b1})`, n2: `Bhagyank (${b2})`, rel: relationB1B2, score: scoreB1B2 },
-        { n1: `Moolank (${m1})`, n2: `Bhagyank (${b2})`, rel: relationM1B2, score: scoreM1B2 },
-        { n1: `Bhagyank (${b1})`, n2: `Moolank (${m2})`, rel: relationB1M2, score: scoreB1M2 },
-        { n1: `Moolank (${m2})`, n2: `Moolank (${m1})`, rel: relationM2M1, score: scoreM2M1 },
-        { n1: `Bhagyank (${b2})`, n2: `Bhagyank (${b1})`, rel: relationB2B1, score: scoreB2B1 },
-        { n1: `Moolank (${m2})`, n2: `Bhagyank (${b1})`, rel: relationM2B1, score: scoreM2B1 },
-        { n1: `Bhagyank (${b2})`, n2: `Moolank (${m1})`, rel: relationB2M1, score: scoreB2M1 },
-      ];
       breakdown.forEach((item) => {
         doc
           .font(fonts.body)

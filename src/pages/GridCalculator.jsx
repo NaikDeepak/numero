@@ -506,25 +506,36 @@ function UserCard({ user, getOrFetchUserData }) {
           </ul>
         </div>
       )}
-      {/* NEW: Detailed Moolank Analysis Section */}
-      {!isLoading && userData?.moolankMeaning && (
-        <div className="moolank-full-analysis">
-          <h4>Moolank {moolankDisplay} Analysis:</h4>
-
-          {/* NEW: Display Conversational Summary */}
-          {userData.moolankMeaning.conversationalSummary && (
-            <div className="moolank-sub-section">
-              <h5>
-                {/* Consider adding a specific icon for summary */}
-                <FaLightbulb className="moolank-icon summary" /> Summary:
-              </h5>
-              <p className="moolank-conversational-summary">
-                {userData.moolankMeaning.conversationalSummary}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+      {/* NEW: Display Moolank Conversational Summary Paragraphs */}
+      {!isLoading &&
+        userData?.moolankMeaning?.conversationalSummaryParagraphs &&
+        Array.isArray(userData.moolankMeaning.conversationalSummaryParagraphs) &&
+        userData.moolankMeaning.conversationalSummaryParagraphs.length > 0 && (
+          <div className="moolank-personality-insights">
+            {" "}
+            {/* Use a distinct class */}
+            <h4>Moolank {moolankDisplay} - Personality Insights:</h4>
+            {/* Render each paragraph from the array */}
+            {userData.moolankMeaning.conversationalSummaryParagraphs
+              .filter((para) => para.trim() !== "\\n\\n") // Filter out entries with only \n\n
+              .map((para, index) => (
+                <p key={index} className="moolank-conversational-summary-para">
+                  {para}
+                </p>
+              ))}
+          </div>
+        )}
+      {/* Fallback message if summary couldn't be generated */}
+      {!isLoading &&
+        userData?.moolankMeaning &&
+        (!userData.moolankMeaning.conversationalSummaryParagraphs ||
+          userData.moolankMeaning.conversationalSummaryParagraphs.length === 0) && (
+          <div className="moolank-personality-insights">
+            <h4>Moolank {moolankDisplay} - Personality Insights:</h4>
+            <p>Detailed personality insights could not be generated.</p>
+          </div>
+        )}
+      {/* END NEW SECTION */}
       <div className="user-card-actions">
         <button
           onClick={handleDownloadPdf}
