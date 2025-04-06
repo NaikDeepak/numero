@@ -692,7 +692,7 @@ button:active {
   }
 
   .app-navbar-nav {
-    display: none; /* Hide nav links by default */
+    display: none; /* Ensure menu is hidden by default */
     flex-direction: column; /* Stack links vertically */
     position: absolute;
     top: 100%; /* Position below the header/navbar */
@@ -702,7 +702,7 @@ button:active {
     border-top: 1px solid var(--navbar-border-dark);
     box-shadow: 0 4px 8px var(--shadow-color);
     padding: 10px 0; /* Add some padding */
-    z-index: 1005; /* Ensure menu is above header (1000) but below toggle (1010) */
+    z-index: 1000; /* Ensure menu is above header (1000) but below toggle (1010) */
   }
   body.light-mode .app-navbar-nav {
     background-color: var(--navbar-bg-light);
@@ -711,7 +711,7 @@ button:active {
 
   .app-navbar-nav.active {
     /* Class added by JS to show menu */
-    display: flex; /* Correct: Show when active on mobile */
+    display: flex; /* Show the menu when active */
   }
 
   .app-navbar.menu-open {
@@ -883,7 +883,7 @@ button:active {
   }
 
   .app-navbar-nav {
-    display: none; /* Hide the menu by default */
+    display: none; /* Ensure menu is hidden by default */
     flex-direction: column; /* Stack links vertically */
     position: absolute;
     top: 100%; /* Position below the navbar */
@@ -1138,14 +1138,25 @@ body.light-mode .app-navbar {
 }
 
 .app-navbar-nav {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  gap: 25px; /* Adjusted gap */
-  /* Ensure this is the base style for desktop */
-  display: flex;
+  display: none; /* Ensure menu is hidden by default */
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--navbar-bg-dark);
+  border-top: 1px solid var(--navbar-border-dark);
+  box-shadow: 0 4px 8px var(--shadow-color);
+  padding: 10px 0;
+  z-index: 1000;
+}
+body.light-mode .app-navbar-nav {
+  background-color: var(--navbar-bg-light);
+  border-top: 1px solid var(--navbar-border-light);
+}
+
+.app-navbar-nav.active {
+  display: flex; /* Show the menu when active */
 }
 
 .app-nav-item {
@@ -1315,4 +1326,83 @@ body.light-mode .person-input-section {
 
 .moolank-conversational-summary-para {
   text-align: left;
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: var(--navbar-bg-dark);
+  color: var(--header-text);
+  padding: 10px 20px;
+  position: relative;
+  z-index: 1000;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar-logo h1 {
+  font-size: 1.5em;
+  color: var(--accent-color);
+}
+
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--header-text);
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: var(--nav-link-text-dark);
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: var(--accent-color);
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: block;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--navbar-bg-dark);
+    padding: 20px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+
+  .navbar-links.drawer-open {
+    display: flex;
+  }
+
+  .navbar-link {
+    padding: 10px 20px;
+    text-align: center;
+  }
 }
