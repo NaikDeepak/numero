@@ -141,7 +141,7 @@ async function generateConversationalMoolankSummary(meaningData) {
 
   // Construct the prompt
   // Ask for multiple paragraphs separated by double line breaks
-  let prompt = `Based on the following numerology details for a Moolank number, write an engaging and insightful analysis with a conversational, friendly, yet professional tone, suitable for a seasoned numerologist's report. Structure the response into several smaller paragraphs (separated by double line breaks: '\\n\\n'), elaborating on the key points from characteristics, potential negative traits (conveyed with finesse), and suggestions for growth. Do not add introductory phrases like "Here is the summary:".
+  let prompt = `Based on the following numerology details for a Moolank number, write an engaging and insightful analysis with a conversational, friendly, yet professional tone, suitable for a seasoned numerologist's report. Structure the response into several smaller paragraphs (separated by double line breaks: '\\n\\n'), elaborating on the key points from characteristics,some possible anecdotes or examples which relate to that, potential negative traits (conveyed with finesse), and suggestions for growth. Do not add introductory phrases like "Here is the summary:".
 
 **Key Characteristics:**
 ${(characteristics || []).map((c) => `- ${c}`).join("\n")}

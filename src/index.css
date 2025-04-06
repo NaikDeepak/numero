@@ -416,6 +416,48 @@ td:last-child {
     border-color 0.3s ease;
 }
 
+#inputArea {
+  margin-bottom: 35px;
+  padding: 30px;
+  border: 1px solid var(--section-border);
+  border-radius: 12px;
+  background-color: var(--section-bg);
+  text-align: center;
+  box-shadow: 0 3px 8px var(--shadow-color);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.input-fields-wrapper {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+  justify-content: space-between; /* Distribute fields evenly */
+  align-items: center; /* Align items vertically */
+}
+
+.input-fields-wrapper label {
+  flex: 1; /* Ensure fields take up equal width */
+  min-width: 200px; /* Set a minimum width for smaller screens */
+  max-width: 300px; /* Optional: Set a maximum width for consistency */
+}
+
+.input-fields-wrapper input,
+.input-fields-wrapper select {
+  width: 100%; /* Ensure inputs take full width of their container */
+  box-sizing: border-box; /* Include padding and border in width */
+}
+
+@media (max-width: 768px) {
+  .input-fields-wrapper {
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  }
+
+  .input-fields-wrapper label {
+    flex: 1 1 100%; /* Stack fields vertically on smaller screens */
+  }
+}
+
 /* --- Form Element Styles --- */
 label {
   margin: 12px 8px;

@@ -264,29 +264,33 @@ function GridCalculator() {
       {/* Input Area */}
       <div id="inputArea">
         <h3>Add User Details</h3>
-        {/* Name input was already present, ensure it's correctly bound */}
-        <label>
-          Full Name:
-          <input
-            type="text"
-            id="name"
-            placeholder="Enter Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required // Make visually required, validation is in addUser
-          />
-        </label>
-        <label>
-          Date of Birth:
-          <input type="date" id="dob" value={dob} onChange={(e) => setDob(e.target.value)} />
-        </label>
-        <label>
-          Gender:
-          <select id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </label>
+        <div className="input-fields-wrapper">
+          {/* Name input */}
+          <label>
+            Full Name:
+            <input
+              type="text"
+              id="name"
+              placeholder="Enter Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
+          {/* Date of Birth input */}
+          <label>
+            Date of Birth:
+            <input type="date" id="dob" value={dob} onChange={(e) => setDob(e.target.value)} />
+          </label>
+          {/* Gender input */}
+          <label>
+            Gender:
+            <select id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </label>
+        </div>
         <button onClick={addUser}>Add User</button>
       </div>
 
