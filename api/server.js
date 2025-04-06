@@ -164,8 +164,8 @@ Conversational Analysis (Multiple Paragraphs):`; // Updated final instruction
     const paragraphs = summaryText
       .trim() // Trim overall response first
       .split(/[\r\n\s*]{2,}/) // Split by two or more newline/whitespace characters
-      .map((p) => p.trim()) // Trim each individual paragraph
-      .filter((p) => p.trim().length > 0); // Filter out paragraphs that are empty *after* trimming
+      .map(p => p.trim().replace(/^[\r\n\s*]+/, '')) // Trim and remove leading newlines/whitespace
+      .filter(p => p.length > 0); // Filter out genuinely empty strings after trimming
     return paragraphs; // Return array of trimmed, non-empty paragraphs
   } catch (error) {
     console.error("[Gemini] Error generating conversational analysis paragraphs:", error); // Update log
