@@ -1,94 +1,92 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
-
-/* style.css - Styles for Numerology Calculator - Mystical Black/Orange Theme */
-
-/* --- CSS Variables --- */
 :root {
-  /* Dark Mode (Default) */
-  --bg-color: #1a1a1a; /* Very dark grey/off-black */
-  --bg-pattern-color: rgba(255, 165, 0, 0.05); /* Subtle orange pattern */
-  --text-color: #e0e0e0; /* Light grey text */
-  --text-muted-color: #a0a0a0; /* Muted grey text */
-  --header-bg: #111111; /* Near black */
-  --header-text: #ffffff;
-  --accent-color: #ff8c00; /* Dark Orange */
-  --accent-hover: #ffa500; /* Lighter Orange */
-  --accent-text-color: #111111; /* Text on orange buttons */
-  --border-color: rgba(255, 140, 0, 0.3); /* Orange border, semi-transparent */
-  --border-strong-color: #ff8c00;
-  --section-bg: rgba(40, 40, 40, 0.85); /* Dark grey, semi-transparent */
-  --section-border: rgba(255, 140, 0, 0.4);
-  --table-bg: rgba(45, 45, 45, 0.7);
-  --table-header-bg: linear-gradient(to bottom, #333333, #222222);
-  --table-header-text: #ff8c00;
-  --table-row-even-bg: rgba(55, 55, 55, 0.3);
-  --table-row-hover-bg: rgba(80, 80, 80, 0.5);
-  --table-border-color: rgba(255, 140, 0, 0.2);
-  --grid-bg: rgba(20, 20, 20, 0.7);
-  --grid-border: #ff8c00;
-  --grid-cell-bg: #2a2a2a;
-  --grid-cell-text: #ff8c00;
-  --grid-cell-empty-bg: rgba(42, 42, 42, 0.5);
-  --grid-cell-empty-text: rgba(255, 140, 0, 0.3);
-  --input-bg: rgba(10, 10, 10, 0.8);
-  --input-text: #e0e0e0;
-  --input-border: rgba(255, 140, 0, 0.3);
-  --input-focus-border: #ff8c00;
-  --input-focus-shadow: rgba(255, 140, 0, 0.4);
-  --button-bg: linear-gradient(to bottom, #ff8c00, #e67e00);
-  --button-text: #111111;
-  --button-hover-bg: linear-gradient(to bottom, #ffa500, #ff8c00);
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --shadow-strong-color: rgba(0, 0, 0, 0.5);
-  --switch-bg: #555;
-  --switch-slider-bg: #ccc;
-  --switch-checked-bg: #ff8c00;
-  --switch-checked-slider-bg: #fff;
+  /* Modern Light Mode */
+  --bg-color: #f4f7f6; /* Light grey background */
+  --text-color: #333; /* Dark grey text */
+  --text-muted-color: #666;
+  --header-bg: #ffffff;
+  --header-text: #333;
+  --accent-color: #5cb3f0; /* Softer Blue Accent */
+  --accent-hover: #40a0d9; /* Darker blue */
+  --accent-text-color: #fff;
+  --border-color: #ddd;
+  --border-strong-color: #5cb3f0;
+  --section-bg: #ffffff;
+  --section-border: #eee;
+  --table-bg: #ffffff;
+  --table-header-bg: #e9ecef; /* Light grey header */
+  --table-header-text: #495057;
+  --table-row-even-bg: #f8f9fa; /* Very light grey */
+  --table-row-hover-bg: #e2e6ea; /* Lighter grey */
+  --table-border-color: #dee2e6;
+  --grid-bg: #ffffff;
+  --grid-border: #ced4da;
+  --grid-cell-bg: #e9ecef;
+  --grid-cell-text: #495057;
+  --grid-cell-empty-bg: #f8f9fa;
+  --grid-cell-empty-text: #adb5bd;
+  --input-bg: #ffffff;
+  --input-text: #495057;
+  --input-border: #ced4da;
+  --input-focus-border: #80bdff;
+  --input-focus-shadow: rgba(92, 179, 240, 0.25);
+  --button-bg: #5cb3f0;
+  --button-text: #fff;
+  --button-hover-bg: #40a0d9;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --shadow-strong-color: rgba(0, 0, 0, 0.15);
+  --switch-bg: #ced4da;
+  --switch-slider-bg: #ffffff;
+  --switch-checked-bg: #5cb3f0;
+  --switch-checked-slider-bg: #ffffff;
 }
 
-body.light-mode {
-  /* Light Mode Overrides */
-  --bg-color: #fffaf0; /* Floral white / light cream */
-  --bg-pattern-color: rgba(0, 0, 0, 0.03); /* Subtle black pattern */
-  --text-color: #333333; /* Dark grey text */
-  --text-muted-color: #666666;
-  --header-bg: #ffffff;
-  --header-text: #111111;
-  /* Accent remains orange */
-  --border-color: rgba(255, 140, 0, 0.4);
-  --border-strong-color: #ff8c00;
-  --section-bg: rgba(255, 255, 255, 0.9); /* White, slightly transparent */
-  --section-border: rgba(221, 221, 221, 0.8); /* Lighter border */
-  --table-bg: rgba(255, 255, 255, 0.8);
-  --table-header-bg: linear-gradient(to bottom, #fff8e1, #ffecb3); /* Light yellow */
-  --table-header-text: #cc5200; /* Darker orange */
-  --table-row-even-bg: rgba(255, 248, 225, 0.5); /* Cornsilk */
-  --table-row-hover-bg: rgba(255, 235, 205, 0.6); /* BlanchedAlmond */
-  --table-border-color: #eee;
-  --grid-bg: rgba(255, 248, 225, 0.7); /* Cornsilk */
-  --grid-border: #ffcc66; /* Lighter orange */
-  --grid-cell-bg: #ffffff;
-  --grid-cell-text: #ff8c00;
-  --grid-cell-empty-bg: #f9f9f9;
-  --grid-cell-empty-text: #ccc;
-  --input-bg: #ffffff;
-  --input-text: #333333;
-  --input-border: #ccc;
-  --input-focus-border: #ff8c00;
-  --input-focus-shadow: rgba(255, 140, 0, 0.3);
-  /* Button remains orange */
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --shadow-strong-color: rgba(0, 0, 0, 0.2);
-  --switch-bg: #ccc;
-  --switch-slider-bg: #fff;
-  --switch-checked-bg: #ff8c00;
-  --switch-checked-slider-bg: #fff;
+body.dark-mode {
+  /* Modern Dark Mode - Vibrant */
+  --bg-color: #1a2a3a; /* Deep space blue */
+  --text-color: #e0e7ec; /* Light grey-blue text */
+  --text-muted-color: #aab; /* Muted text */
+  --header-bg: #283e51; /* Darker header */
+  --header-text: #ffda63; /* Gold/Yellow for header text */
+  --accent-color: #ffab40; /* Orange/Gold Accent */
+  --accent-hover: #ff9100; /* Darker Orange */
+  --accent-text-color: #1a2a3a;
+  --border-color: #4a6d8f; /* Blue-grey border */
+  --border-strong-color: #ffab40; /* Accent border */
+  --section-bg: #283e51; /* Section background */
+  --section-border: #37475a; /* Section border */
+  --table-bg: #283e51;
+  --table-header-bg: #37475a; /* Table header background */
+  --table-header-text: #ffda63; /* Table header text */
+  --table-row-even-bg: #34495e; /* Even row background */
+  --table-row-hover-bg: #4a5c70; /* Row hover background */
+  --table-border-color: #34495e; /* Table border */
+  --grid-bg: #37475a; /* Grid background */
+  --grid-border: #ffab40; /* Grid border */
+  --grid-cell-bg: #4a5c70; /* Grid cell background */
+  --grid-cell-text: #ffda63; /* Grid cell text */
+  --grid-cell-empty-bg: #34495e; /* Empty grid cell */
+  --grid-cell-empty-text: #7f8c8d; /* Empty grid cell text */
+  --input-bg: #34495e; /* Input background */
+  --input-text: #e0e7ec; /* Input text */
+  --input-border: #4a6d8f; /* Input border */
+  --input-focus-border: #ffda63; /* Input focus */
+  --input-focus-shadow: rgba(255, 171, 64, 0.35);
+  --button-bg: #ffab40; /* Button background */
+  --button-text: #1a2a3a; /* Button text */
+  --button-hover-bg: #ff9100; /* Button hover */
+  --shadow-color: rgba(0, 0, 0, 0.4); /* Shadow */
+  --shadow-strong-color: rgba(0, 0, 0, 0.6); /* Stronger shadow */
+  --switch-bg: #4a6d8f; /* Switch background */
+  --switch-slider-bg: #e0e7ec; /* Switch slider */
+  --switch-checked-bg: #ffab40; /* Checked switch */
+  --switch-checked-slider-bg: #1a2a3a; /* Checked slider */
 }
 
 /* --- Base & Typography --- */
 html {
   box-sizing: border-box;
 }
+
 *,
 *:before,
 *:after {
@@ -96,57 +94,44 @@ html {
 }
 
 body {
-  font-family: "Merriweather", serif; /* Default body font */
+  font-family: 'Roboto', sans-serif; /* Professional Sans-serif */
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: var(--bg-color);
-  /* Layered background: Pattern on top of Image - Using Placeholder */
-  background-image:
-        /* Pattern Layer (Top) */
-    linear-gradient(var(--bg-pattern-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bg-pattern-color) 1px, transparent 1px),
-    /* Background Image Layer (Bottom) - Placeholder */
-      url("/images/placeholder-background-1920x1080.jpg"); /* Suggesting path in public folder */
-  background-size:
-    30px 30px,
-    /* Pattern size */ 30px 30px,
-    /* Pattern size */ cover; /* Image size */
-  background-repeat:
-    repeat,
-    /* Pattern repeat */ repeat,
-    /* Pattern repeat */ no-repeat; /* Image repeat */
-  background-position:
-    top left,
-    /* Pattern position */ top left,
-    /* Pattern position */ center center; /* Image position */
-  background-attachment:
-    scroll,
-    /* Pattern attachment */ scroll,
-    /* Pattern attachment */ fixed; /* Image attachment (parallax effect) */
-  background-blend-mode: multiply; /* Blend image with bg-color - adjust blend mode */
   color: var(--text-color);
-  font-size: 16px; /* Base font size */
-  line-height: 1.7; /* Improved line height */
+  font-size: 16px;
+  line-height: 1.6;
   transition:
     background-color 0.4s ease,
-    color 0.4s ease; /* Slightly slower transition */
-  -webkit-font-smoothing: antialiased; /* Smoother fonts */
+    color 0.4s ease;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Import professional fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif; /* Elegant Serif for headings */
+    color: var(--header-text);
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
 }
 
 /* --- Header --- */
 header {
   background-color: var(--header-bg);
   color: var(--header-text);
-  padding: 20px 40px;
+  padding: 15px 30px; /* Adjusted padding */
   text-align: center;
-  box-shadow: 0 4px 8px var(--shadow-color);
-  border-bottom: 3px solid var(--border-strong-color);
+  box-shadow: 0 2px 4px var(--shadow-color); /* Softer shadow */
+  border-bottom: 1px solid var(--border-strong-color); /* Thinner border */
   position: relative;
-  display: flex; /* Align title and switch */
+  display: flex;
   justify-content: space-between;
   align-items: center;
   transition:
@@ -155,27 +140,25 @@ header {
 }
 
 header h1 {
-  font-family: "Cinzel", serif; /* Apply Cinzel font */
-  margin: 0;
-  font-size: 2.6em; /* Slightly larger */
+  font-size: 2.2em; /* Adjusted size */
   font-weight: 700;
   color: var(--header-text);
-  text-shadow: 1px 1px 3px var(--shadow-color);
-  letter-spacing: 2px; /* More spacing for Cinzel */
+  text-shadow: none;
+  letter-spacing: normal;
   transition: color 0.3s ease;
 }
 
 /* --- Main Content Area --- */
 main {
   flex-grow: 1;
-  padding: 40px;
-  width: 90%;
-  max-width: 1200px;
-  margin: 40px auto;
+  padding: 30px; /* Adjusted padding */
+  width: 95%; /* Slightly wider */
+  max-width: 1000px; /* Slightly narrower max-width */
+  margin: 30px auto; /* Adjusted margin */
   background-color: var(--section-bg);
-  backdrop-filter: blur(3px); /* Subtle blur */
-  box-shadow: 0 6px 15px var(--shadow-strong-color);
-  border-radius: 12px;
+  backdrop-filter: blur(0);
+  box-shadow: 0 4px 12px var(--shadow-strong-color); /* Softer shadow */
+  border-radius: 8px; /* Softer corners */
   border: 1px solid var(--section-border);
   transition:
     background-color 0.3s ease,
@@ -183,16 +166,16 @@ main {
 }
 
 main h2 {
-  font-family: "Cinzel", serif; /* Apply Cinzel font */
+  font-family: 'Playfair Display', serif; /* Elegant Serif */
   text-align: center;
   color: var(--accent-color);
-  margin-bottom: 35px;
-  font-size: 2.3em; /* Adjust size */
-  font-weight: 600;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 15px;
-  display: inline-block;
-  letter-spacing: 1.5px; /* Adjusted spacing for Cinzel */
+  margin-bottom: 25px; /* Adjusted margin */
+  font-size: 2em; /* Adjusted size */
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-color); /* Thinner border */
+  padding-bottom: 10px; /* Adjusted padding */
+  display: block;
+  letter-spacing: normal;
   transition:
     color 0.3s ease,
     border-color 0.3s ease;
@@ -200,13 +183,13 @@ main h2 {
 
 /* --- Footer --- */
 footer {
-  background-color: var(--header-bg); /* Match header */
+  background-color: var(--header-bg);
   color: var(--text-muted-color);
   text-align: center;
-  padding: 25px;
+  padding: 20px; /* Adjusted padding */
   margin-top: auto;
   font-size: 0.9em;
-  border-top: 3px solid var(--border-strong-color);
+  border-top: 1px solid var(--border-strong-color); /* Thinner border */
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
@@ -216,35 +199,35 @@ footer {
 /* --- Lo Shu Grid Styles --- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 50px);
-  gap: 5px;
+  grid-template-columns: repeat(3, 70px); /* Slightly larger cells */
+  gap: 12px; /* Increased gap */
   justify-content: center;
-  margin: 15px auto;
-  padding: 8px;
+  margin: 25px auto; /* Adjusted margin */
+  padding: 15px; /* Adjusted padding */
   background-color: var(--grid-bg);
   border: 1px solid var(--grid-border);
   border-radius: 8px;
-  box-shadow: inset 0 0 8px var(--shadow-color);
+  box-shadow: inset 0 0 8px var(--shadow-color); /* Softer shadow */
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease;
 }
 
 .cell {
-  width: 50px;
-  height: 50px;
+  width: 70px; /* Slightly larger cells */
+  height: 70px; /* Slightly larger cells */
   border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1em;
+  font-size: 1.5em; /* Larger font */
   font-weight: bold;
   background-color: var(--grid-cell-bg);
   color: var(--grid-cell-text);
-  border-radius: 5px;
+  border-radius: 6px;
   overflow: hidden;
   text-align: center;
-  padding: 3px;
+  padding: 5px;
   box-sizing: border-box;
   transition:
     background-color 0.3s ease,
@@ -255,43 +238,56 @@ footer {
 .cell:empty {
   background-color: var(--grid-cell-empty-bg);
   color: var(--grid-cell-empty-text);
+  font-size: 1em; /* Smaller font for empty cells */
 }
 
 /* --- Table Styles --- */
 table {
   width: 100%;
-  margin: 35px 0;
-  border-collapse: separate;
+  margin: 25px 0; /* Adjusted margin */
+  border-collapse: separate; /* Use separate for rounded corners */
   border-spacing: 0;
   background-color: var(--table-bg);
-  border-radius: 10px;
+  border-radius: 8px; /* Softer corners */
   overflow: hidden;
-  box-shadow: 0 4px 10px var(--shadow-color);
+  box-shadow: 0 2px 8px var(--shadow-color); /* Softer shadow */
   transition: background-color 0.3s ease;
 }
 
 th,
 td {
-  border: none;
-  border-bottom: 1px solid var(--table-border-color);
-  padding: 14px 18px;
+  padding: 12px 15px; /* Adjusted padding */
   text-align: left;
   vertical-align: middle;
-  color: var(--text-color); /* Use main text color */
-  font-family: "Merriweather", serif;
+  color: var(--text-color);
+  font-family: 'Roboto', sans-serif;
   transition:
     color 0.3s ease,
     border-color 0.3s ease;
 }
 
+tr:first-child th:first-child {
+  border-top-left-radius: 8px;
+}
+tr:first-child th:last-child {
+  border-top-right-radius: 8px;
+}
+tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+
 th {
   background: var(--table-header-bg);
   color: var(--table-header-text);
-  font-weight: 700; /* Bolder */
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.95em;
-  letter-spacing: 1px; /* More spacing */
-  border-bottom: 2px solid var(--border-strong-color);
+  font-size: 0.9em; /* Slightly smaller font */
+  letter-spacing: normal;
+  border-bottom: 2px solid var(--border-color); /* Thinner bottom border */
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
@@ -307,6 +303,18 @@ tbody tr:hover {
   background-color: var(--table-row-hover-bg);
 }
 
+/* Add borders between cells in tbody */
+tbody td {
+  border-bottom: 1px solid var(--table-border-color);
+  border-right: 1px solid var(--table-border-color);
+}
+tbody td:first-child {
+  border-left: 1px solid var(--table-border-color);
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
 /* Center grid within the table cell */
 td:last-child {
   text-align: center;
@@ -316,13 +324,13 @@ td:last-child {
 #inputArea,
 #userList,
 #exportSection {
-  margin-bottom: 35px;
-  padding: 30px;
+  margin-bottom: 25px;
+  padding: 25px;
   border: 1px solid var(--section-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background-color: var(--section-bg);
   text-align: center;
-  box-shadow: 0 3px 8px var(--shadow-color);
+  box-shadow: 0 2px 6px var(--shadow-color);
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease;
@@ -331,15 +339,15 @@ td:last-child {
 #inputArea h3,
 #userList h3,
 #exportSection h3 {
-  font-family: "Cinzel", serif; /* Apply Cinzel font */
+  font-family: 'Playfair Display', serif; /* Elegant Serif */
   margin-top: 0;
   color: var(--accent-color);
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 12px;
-  margin-bottom: 25px;
-  font-size: 1.9em; /* Adjust size */
-  font-weight: 600;
-  letter-spacing: 1.2px; /* Optional: Adjust spacing */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 1.8em; /* Adjusted size */
+  font-weight: 700;
+  letter-spacing: normal;
   transition:
     color 0.3s ease,
     border-color 0.3s ease;
@@ -347,49 +355,46 @@ td:last-child {
 
 /* --- Form Element Styles --- */
 label {
-  margin: 12px 8px;
+  margin: 8px;
   font-weight: 500;
-  color: var(--text-muted-color); /* Muted text */
+  color: var(--text-color);
   display: inline-block;
-  font-family: "Merriweather", serif;
+  font-family: 'Roboto', sans-serif;
   transition: color 0.3s ease;
 }
 
 input[type="text"],
 input[type="date"],
 select {
-  padding: 12px 15px;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border-radius: 4px;
   border: 1px solid var(--input-border);
-  min-width: 200px;
+  min-width: 180px;
   background-color: var(--input-bg);
   color: var(--input-text);
-  box-shadow: inset 0 2px 5px var(--shadow-color);
+  box-shadow: inset 0 1px 3px var(--shadow-color);
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
   font-size: 1em;
-  font-family: "Merriweather", serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 input[type="text"]:focus,
 input[type="date"]:focus,
 select:focus {
   border-color: var(--input-focus-border);
-  box-shadow: 0 0 8px var(--input-focus-shadow);
+  box-shadow: 0 0 5px var(--input-focus-shadow);
   outline: none;
-  background-color: var(--section-bg); /* Use section bg on focus */
+  background-color: var(--input-bg);
 }
 
 /* Style date input placeholder text */
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(75%) sepia(50%) saturate(500%) hue-rotate(330deg); /* Orange icon */
+  filter: none;
   cursor: pointer;
-}
-body.light-mode input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(50%) sepia(90%) saturate(1500%) hue-rotate(350deg); /* Darker orange in light mode */
 }
 
 button {
@@ -398,44 +403,45 @@ button {
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  padding: 14px 25px;
-  border-radius: 8px;
-  font-size: 1.1em;
-  font-weight: bold;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.1);
-  box-shadow: 0 3px 6px var(--shadow-color);
-  margin-top: 10px;
-  font-family: "Merriweather", serif;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: 600;
+  text-shadow: none;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  margin-top: 15px;
+  font-family: 'Roboto', sans-serif;
 }
 
 button:hover {
   background: var(--button-hover-bg);
-  box-shadow: 0 5px 10px var(--shadow-strong-color);
-  transform: translateY(-2px);
+  box-shadow: 0 3px 6px var(--shadow-strong-color);
+  transform: translateY(-1px);
 }
 
 button:active {
   transform: translateY(0px);
-  box-shadow: 0 2px 4px var(--shadow-color);
+  box-shadow: 0 1px 3px var(--shadow-color);
 }
 
 /* --- Theme Toggle Switch --- */
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between switch and text */
+  gap: 10px;
 }
 .theme-switch-wrapper span {
   color: var(--text-muted-color);
-  font-size: 0.8em;
+  font-size: 0.9em;
   transition: color 0.3s ease;
+  font-family: 'Roboto', sans-serif;
 }
 
 .theme-switch {
   position: relative;
   display: inline-block;
-  width: 50px; /* Width of the switch */
-  height: 24px; /* Height of the switch */
+  width: 44px;
+  height: 24px;
 }
 
 .theme-switch input {
@@ -453,19 +459,19 @@ button:active {
   bottom: 0;
   background-color: var(--switch-bg);
   transition: 0.4s;
-  border-radius: 24px; /* Rounded switch */
+  border-radius: 24px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px; /* Size of the knob */
-  width: 18px;
-  left: 3px; /* Position of the knob */
-  bottom: 3px;
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
   background-color: var(--switch-slider-bg);
   transition: 0.4s;
-  border-radius: 50%; /* Circular knob */
+  border-radius: 50%;
 }
 
 input:checked + .slider {
@@ -473,6 +479,6 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px); /* Move knob to the right */
+  transform: translateX(20px);
   background-color: var(--switch-checked-slider-bg);
 }
