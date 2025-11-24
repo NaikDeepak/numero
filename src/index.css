@@ -4,111 +4,129 @@
 
 /* --- CSS Variables --- */
 :root {
-  /* Dark Mode (Default) - Refined */
-  --bg-color: #121212; /* Slightly darker off-black */
-  --bg-pattern-color: rgba(218, 165, 32, 0.04); /* Goldenrod pattern, more subtle */
-  --text-color: #dcdcdc; /* Lighter grey text */
-  --text-muted-color: #999999; /* Muted grey text */
-  --header-bg: linear-gradient(to bottom, #202020, #111111); /* Dark gradient */
-  --header-text: #ffffff;
-  --accent-color: #daa520; /* Goldenrod */
-  --accent-hover: #f0e68c; /* Khaki (lighter gold) */
-  --accent-text-color: #111111; /* Text on accent buttons */
-  --border-color: rgba(218, 165, 32, 0.25); /* Goldenrod border, subtle */
-  --border-strong-color: #daa520;
-  --section-bg: rgba(28, 28, 28, 0.9); /* Darker grey, slightly more opaque */
-  --section-border: rgba(218, 165, 32, 0.35);
-  --table-bg: rgba(35, 35, 35, 0.8);
-  --table-header-bg: linear-gradient(to bottom, #282828, #1e1e1e);
-  --table-header-text: #daa520;
-  --table-row-even-bg: rgba(45, 45, 45, 0.4);
-  --table-row-hover-bg: rgba(60, 60, 60, 0.6);
-  --table-border-color: rgba(218, 165, 32, 0.15);
-  --grid-bg: rgba(15, 15, 15, 0.8);
-  --grid-border: #daa520;
-  --grid-cell-bg: #222222;
-  --grid-cell-text: #daa520;
-  --grid-cell-empty-bg: rgba(34, 34, 34, 0.6);
-  --grid-cell-empty-text: rgba(218, 165, 32, 0.3);
-  --input-bg: rgba(10, 10, 10, 0.9);
-  --input-text: #dcdcdc;
-  --input-border: rgba(218, 165, 32, 0.25);
-  --input-focus-border: #daa520;
-  --input-focus-shadow: rgba(218, 165, 32, 0.3);
-  --button-bg: linear-gradient(to bottom, #daa520, #b8860b); /* Goldenrod gradient */
-  --button-text: #111111;
-  --button-hover-bg: linear-gradient(to bottom, #f0e68c, #daa520);
-  --shadow-color: rgba(0, 0, 0, 0.2); /* Softer shadow */
-  --shadow-strong-color: rgba(0, 0, 0, 0.4);
-  --switch-bg: #444;
-  --switch-slider-bg: #aaa;
-  --switch-checked-bg: #daa520;
+  /* Celestial Clarity Theme (Dark Mode Default) */
+  --bg-color: #0f172a; /* Deep Indigo/Slate 900 */
+  --bg-pattern-color: rgba(99, 102, 241, 0.05); /* Indigo 500, very subtle */
+  --text-color: #f1f5f9; /* Slate 100 */
+  --text-muted-color: #94a3b8; /* Slate 400 */
+  
+  --header-bg: rgba(15, 23, 42, 0.85); /* Semi-transparent dark */
+  --header-text: #f8fafc;
+  
+  --accent-color: #fbbf24; /* Amber 400 (Soft Gold) */
+  --accent-hover: #fcd34d; /* Amber 300 */
+  --accent-text-color: #0f172a;
+  
+  --secondary-accent: #8b5cf6; /* Violet 500 */
+  
+  --border-color: rgba(251, 191, 36, 0.2); /* Amber with opacity */
+  --border-strong-color: #d97706; /* Amber 600 */
+  
+  --section-bg: rgba(30, 41, 59, 0.7); /* Slate 800 with opacity (Glassmorphism) */
+  --section-border: rgba(255, 255, 255, 0.1);
+  
+  --table-bg: rgba(30, 41, 59, 0.5);
+  --table-header-bg: linear-gradient(to right, #1e293b, #334155);
+  --table-header-text: #fbbf24;
+  --table-row-even-bg: rgba(51, 65, 85, 0.3);
+  --table-row-hover-bg: rgba(71, 85, 105, 0.4);
+  --table-border-color: rgba(148, 163, 184, 0.2);
+  
+  --grid-bg: rgba(15, 23, 42, 0.6);
+  --grid-border: #fbbf24;
+  --grid-cell-bg: #1e293b;
+  --grid-cell-text: #fbbf24;
+  --grid-cell-empty-bg: rgba(30, 41, 59, 0.4);
+  --grid-cell-empty-text: rgba(148, 163, 184, 0.3);
+  
+  --input-bg: rgba(15, 23, 42, 0.8);
+  --input-text: #f1f5f9;
+  --input-border: rgba(148, 163, 184, 0.4);
+  --input-focus-border: #fbbf24;
+  --input-focus-shadow: rgba(251, 191, 36, 0.25);
+  
+  --button-bg: linear-gradient(135deg, #d97706, #fbbf24); /* Amber Gradient */
+  --button-text: #0f172a;
+  --button-hover-bg: linear-gradient(135deg, #fbbf24, #fcd34d);
+  
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-strong-color: rgba(0, 0, 0, 0.5);
+  
+  --switch-bg: #334155;
+  --switch-slider-bg: #94a3b8;
+  --switch-checked-bg: #fbbf24;
   --switch-checked-slider-bg: #fff;
 
-  /* Navbar Variables - Refined */
-  --navbar-bg-dark: rgba(18, 18, 18, 0.85); /* Match bg, slightly transparent */
-  --navbar-bg-light: rgba(255, 255, 255, 0.8); /* Light, slightly transparent */
-  --navbar-border-dark: rgba(218, 165, 32, 0.2);
-  --navbar-border-light: rgba(184, 134, 11, 0.3); /* DarkGoldenrod border */
-  --nav-link-text-dark: #b0b0b0; /* Slightly brighter muted */
-  --nav-link-text-light: #5a4d3c; /* Brownish text */
-  --nav-link-hover-bg-dark: rgba(218, 165, 32, 0.1);
-  --nav-link-hover-bg-light: rgba(184, 134, 11, 0.08);
-  --nav-link-active-text-dark: #daa520;
-  --nav-link-active-text-light: #8b4513; /* SaddleBrown */
-  --nav-link-active-border-dark: #daa520;
-  --nav-link-active-border-light: #8b4513;
-  --nav-icon-color-dark: #b0b0b0;
-  --nav-icon-color-light: #5a4d3c;
-  --nav-icon-active-color-dark: #daa520;
-  --nav-icon-active-color-light: #8b4513;
+  /* Navbar Variables */
+  --navbar-bg-dark: rgba(15, 23, 42, 0.9);
+  --navbar-bg-light: rgba(255, 255, 255, 0.9);
+  --navbar-border-dark: rgba(251, 191, 36, 0.15);
+  --navbar-border-light: rgba(217, 119, 6, 0.2);
+  --nav-link-text-dark: #cbd5e1;
+  --nav-link-text-light: #475569;
+  --nav-link-hover-bg-dark: rgba(251, 191, 36, 0.1);
+  --nav-link-hover-bg-light: rgba(217, 119, 6, 0.08);
+  --nav-link-active-text-dark: #fbbf24;
+  --nav-link-active-text-light: #d97706;
+  --nav-link-active-border-dark: #fbbf24;
+  --nav-link-active-border-light: #d97706;
+  --nav-icon-color-dark: #94a3b8;
+  --nav-icon-color-light: #64748b;
+  --nav-icon-active-color-dark: #fbbf24;
+  --nav-icon-active-color-light: #d97706;
 
-  /* Footer Variables - Refined */
-  --footer-bg-dark: #111111;
-  --footer-bg-light: #f5f5dc; /* Beige */
-  --footer-text-dark: #999999;
-  --footer-text-light: #5a4d3c;
-  --footer-border-dark: #daa520;
-  --footer-border-light: #8b4513;
+  /* Footer Variables */
+  --footer-bg-dark: #020617; /* Slate 950 */
+  --footer-bg-light: #f8fafc;
+  --footer-text-dark: #64748b;
+  --footer-text-light: #475569;
+  --footer-border-dark: #1e293b;
+  --footer-border-light: #e2e8f0;
 }
 
 body.light-mode {
-  /* Light Mode Overrides - Refined */
-  --bg-color: #fdfbf5; /* Lighter cream */
-  --bg-pattern-color: rgba(0, 0, 0, 0.02); /* Even more subtle black pattern */
-  --text-color: #2c2c2c; /* Darker grey text */
-  --text-muted-color: #555555;
-  --header-bg: linear-gradient(to bottom, #ffffff, #f0f0f0); /* White to light grey */
-  --header-text: #2c2c2c;
-  /* Accent remains Goldenrod */
-  --border-color: rgba(218, 165, 32, 0.3);
-  --border-strong-color: #daa520;
-  --section-bg: rgba(255, 255, 255, 0.95); /* White, slightly more opaque */
-  --section-border: rgba(200, 200, 200, 0.7); /* Lighter border */
+  /* Light Mode Overrides - Ethereal Day */
+  --bg-color: #f8fafc; /* Slate 50 */
+  --bg-pattern-color: rgba(99, 102, 241, 0.03);
+  --text-color: #1e293b; /* Slate 800 */
+  --text-muted-color: #64748b; /* Slate 500 */
+  
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --header-text: #0f172a;
+  
+  --accent-color: #d97706; /* Amber 600 (Darker for contrast) */
+  --border-color: rgba(217, 119, 6, 0.3);
+  --border-strong-color: #b45309;
+  
+  --section-bg: rgba(255, 255, 255, 0.85);
+  --section-border: rgba(203, 213, 225, 0.6);
+  
   --table-bg: rgba(255, 255, 255, 0.9);
-  --table-header-bg: linear-gradient(to bottom, #fff8dc, #faf0e6); /* Cornsilk to Linen */
-  --table-header-text: #8b4513; /* SaddleBrown */
-  --table-row-even-bg: rgba(245, 245, 245, 0.6); /* Whitesmoke */
-  --table-row-hover-bg: rgba(230, 230, 230, 0.7);
-  --table-border-color: #e0e0e0;
-  --grid-bg: rgba(255, 250, 240, 0.8); /* FloralWhite */
-  --grid-border: #e6be8a; /* Lighter gold */
-  --grid-cell-bg: #ffffff;
-  --grid-cell-text: #daa520;
-  --grid-cell-empty-bg: #f8f8f8;
-  --grid-cell-empty-text: #cccccc;
+  --table-header-bg: linear-gradient(to right, #f1f5f9, #e2e8f0);
+  --table-header-text: #b45309;
+  --table-row-even-bg: rgba(241, 245, 249, 0.6);
+  --table-row-hover-bg: rgba(226, 232, 240, 0.7);
+  --table-border-color: #cbd5e1;
+  
+  --grid-bg: rgba(255, 255, 255, 0.8);
+  --grid-border: #d97706;
+  --grid-cell-bg: #fff;
+  --grid-cell-text: #b45309;
+  --grid-cell-empty-bg: #f1f5f9;
+  --grid-cell-empty-text: #cbd5e1;
+  
   --input-bg: #ffffff;
-  --input-text: #2c2c2c;
-  --input-border: #cccccc;
-  --input-focus-border: #daa520;
-  --input-focus-shadow: rgba(218, 165, 32, 0.25);
-  /* Button remains Goldenrod */
-  --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
-  --shadow-strong-color: rgba(0, 0, 0, 0.15);
-  --switch-bg: #ccc;
+  --input-text: #0f172a;
+  --input-border: #cbd5e1;
+  --input-focus-border: #d97706;
+  --input-focus-shadow: rgba(217, 119, 6, 0.2);
+  
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --shadow-strong-color: rgba(0, 0, 0, 0.1);
+  
+  --switch-bg: #cbd5e1;
   --switch-slider-bg: #fff;
-  --switch-checked-bg: #daa520;
-  --switch-checked-slider-bg: #fff;
+  --switch-checked-bg: #d97706;
 }
 
 /* --- Base & Typography --- */
@@ -579,6 +597,7 @@ button:active {
   gap: 15px;
   flex-grow: 1; /* Allow body to take up space */
   margin-bottom: 15px;
+  flex-wrap: wrap; /* Allow wrapping */
 }
 
 .user-card-details p {
@@ -1447,4 +1466,44 @@ body.light-mode .person-input-section {
     padding: 10px 20px;
     text-align: center;
   }
+}
+
+/* --- Result Cards Grid --- */
+.result-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Increased min-width to fit cards */
+  gap: 20px;
+  flex: 1; /* Allow it to take available space in flex container */
+  min-width: 300px; /* Minimum width before wrapping */
+  margin-bottom: 30px;
+}
+
+.moolank-details-section {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.moolank-details-section h4 {
+  color: var(--accent-color);
+  font-family: 'Cinzel', serif;
+  margin-top: 0;
+}
+
+.moolank-meta {
+  color: var(--text-muted-color);
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.moolank-icon {
+  color: var(--accent-color);
+  margin-right: 5px;
+}
+
+.moolank-analysis {
+  line-height: 1.6;
+  text-align: justify;
 }

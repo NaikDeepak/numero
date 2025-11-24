@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as XLSX from "xlsx";
 import NumerologyGrid from "../NumerologyGrid"; // Adjust path
+import ResultCard from "../components/ResultCard"; // Import ResultCard
 // Removed client-side PDF generator import
 // Import icons for Moolank details
 import { FaStar, FaThumbsUp, FaThumbsDown, FaLightbulb } from "react-icons/fa";
@@ -420,72 +421,45 @@ function UserCard({ user, getOrFetchUserData }) {
         </span>
       </div>
       <div className="user-card-body">
-        <div className="user-card-details">
-          <p>
-            <strong>Bhagyank:</strong> {bhagyankDisplay}
-          </p>
-          <p>
-            <strong>Kua:</strong> {kuaDisplay}
-          </p>
-          {/* Moolank Details - Expanded */}
-          <div className="moolank-details-section">
-            <p>
-              <strong>Moolank:</strong> {moolankDisplay}
-            </p>
-            {!isLoading && userData?.moolankMeaning && (
-              <>
-                <p className="moolank-meta">
-                  <FaStar className="moolank-icon" /> Grah: {userData.moolankMeaning.grah || "N/A"}{" "}
-                  | Rashi: {userData.moolankMeaning.rashi || "N/A"}
-                </p>
-                {/* Keywords in their own paragraph */}
-                <p className="moolank-keywords">
-                  <em>Keywords: {userData.moolankMeaning.keywords?.join(", ") || "N/A"}</em>
-                </p>
-                {/* Display Moolank Analysis */}
-                <p className="moolank-analysis">{userData.moolankMeaning.analysis || ""}</p>
-                {/* Optionally add collapsible sections for more details */}
-              </>
-            )}
-          </div>
-          <hr /> {/* Separator */}
-          <p>
-            <strong
-              title={
-                userData?.nameNumerology?.destinyNumber?.karmic
-                  ? `Karmic Debt: ${userData.nameNumerology.destinyNumber.karmic}`
-                  : ""
-              }
-            >
-              Destiny:
-            </strong>{" "}
-            {destinyDisplay}
-          </p>
-          <p>
-            <strong
-              title={
-                userData?.nameNumerology?.soulUrgeNumber?.karmic
-                  ? `Karmic Debt: ${userData.nameNumerology.soulUrgeNumber.karmic}`
-                  : ""
-              }
-            >
-              Soul Urge:
-            </strong>{" "}
-            {soulUrgeDisplay}
-          </p>
-          <p>
-            <strong
-              title={
-                userData?.nameNumerology?.personalityNumber?.karmic
-                  ? `Karmic Debt: ${userData.nameNumerology.personalityNumber.karmic}`
-                  : ""
-              }
-            >
-              Personality:
-            </strong>{" "}
-            {personalityDisplay}
-          </p>
+        {/* REPLACED: Use ResultCard Grid for key numbers */}
+        <div className="result-cards-grid">
+          <ResultCard 
+            title="Moolank" 
+            number={moolankDisplay} 
+            meaning={userData?.moolankMeaning?.keywords?.[0]} 
+            delay={100} 
+          />
+          <ResultCard 
+            title="Bhagyank" 
+            number={bhagyankDisplay} 
+            delay={200} 
+          />
+          <ResultCard 
+            title="Kua" 
+            number={kuaDisplay} 
+            delay={300} 
+          />
+          <ResultCard 
+            title="Destiny" 
+            number={destinyDisplay} 
+            subtext={userData?.nameNumerology?.destinyNumber?.karmic ? `KD: ${userData.nameNumerology.destinyNumber.karmic}` : null}
+            delay={400} 
+          />
+          <ResultCard 
+            title="Soul Urge" 
+            number={soulUrgeDisplay} 
+            subtext={userData?.nameNumerology?.soulUrgeNumber?.karmic ? `KD: ${userData.nameNumerology.soulUrgeNumber.karmic}` : null}
+            delay={500} 
+          />
+          <ResultCard 
+            title="Personality" 
+            number={personalityDisplay} 
+            subtext={userData?.nameNumerology?.personalityNumber?.karmic ? `KD: ${userData.nameNumerology.personalityNumber.karmic}` : null}
+            delay={600} 
+          />
         </div>
+
+        {/* Grid Display */}
         <div className="user-card-grid">
           {isLoading ? (
             <p>Loading Grid...</p>
@@ -497,6 +471,22 @@ function UserCard({ user, getOrFetchUserData }) {
           )}
         </div>
       </div>
+
+      {/* Moolank Details - Expanded (Below cards) */}
+      {!isLoading && userData?.moolankMeaning && (
+        <div className="moolank-details-section">
+          <h4>Moolank Analysis</h4>
+          <p className="moolank-meta">
+            <FaStar className="moolank-icon" /> Grah: {userData.moolankMeaning.grah || "N/A"}{" "}
+            | Rashi: {userData.moolankMeaning.rashi || "N/A"}
+          </p>
+          <p className="moolank-keywords">
+            <em>Keywords: {userData.moolankMeaning.keywords?.join(", ") || "N/A"}</em>
+          </p>
+          <p className="moolank-analysis">{userData.moolankMeaning.analysis || ""}</p>
+        </div>
+      )}
+
       {/* NEW: Display Grid Analysis */}
       {!isLoading && userData?.gridAnalysis && userData.gridAnalysis.length > 0 && (
         <div className="user-card-analysis">
