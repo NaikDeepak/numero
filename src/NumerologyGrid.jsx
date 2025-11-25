@@ -3,29 +3,30 @@ import PropTypes from "prop-types";
 
 // --- Define Coordinates for Highlighting ---
 
-// For Rectangles (Vertical Planes Only) - [x, y, width, height] percentages
+// For Rectangles (Both Vertical and Horizontal Planes) - [x, y, width, height] percentages
 const analysisRectMap = {
+  // Vertical Planes
   "Thought Plane": [0, 0, 33.3, 100],
   "Will Plane": [33.3, 0, 33.3, 100],
   "Action Plane": [66.6, 0, 33.3, 100],
+  // Horizontal Planes (now as rectangles for consistent cell highlighting)
+  "Mental Plane": [0, 0, 100, 33.3],
+  "Emotional Plane": [0, 33.3, 100, 33.3],
+  "Practical Plane": [0, 66.6, 100, 33.3],
 };
 
-// For Lines (Horizontal Planes, Diagonals, Small Arrows) - [x1, y1, x2, y2] percentages
+// For Lines (Diagonals and Small Arrows Only) - [x1, y1, x2, y2] percentages
 const analysisLineMap = {
-  // Horizontal Planes (as lines)
-  "Mental Plane": [5, 16.6, 95, 16.6],
-  "Emotional Plane": [5, 50, 95, 50],
-  "Practical Plane": [5, 83.3, 95, 83.3],
   // Diagonals (Rajyogs)
   "Success Plane (Golden Rajyog)": [5, 5, 95, 95],
   "Success Plane (Silver Rajyog)": [95, 5, 5, 95],
   // Small Arrows
   "Arrow of Balance (7-1)": [50, 83.3, 83.3, 83.3], // Line between 1 and 7 centers
   "Arrow of Litigation (3-9)": [16.6, 50, 50, 16.6], // Line between 3 and 9 centers
-  // Arrow names corresponding to Horizontal Planes
-  "Arrow of Spirituality (3-5-7)": [5, 50, 95, 50], // Same as Emotional Plane line
-  "Arrow of Intellect (4-9-2)": [5, 16.6, 95, 16.6], // Same as Mental Plane line
-  "Arrow of Practicality (8-1-6)": [5, 83.3, 95, 83.3], // Same as Practical Plane line
+  // Arrow names corresponding to Horizontal Planes (keep as rectangles via main names)
+  "Arrow of Spirituality (3-5-7)": [5, 50, 95, 50], // Fallback as line if needed
+  "Arrow of Intellect (4-9-2)": [5, 16.6, 95, 16.6], // Fallback as line if needed
+  "Arrow of Practicality (8-1-6)": [5, 83.3, 95, 83.3], // Fallback as line if needed
 };
 
 /**

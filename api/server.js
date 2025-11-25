@@ -162,10 +162,11 @@ Conversational Analysis (Multiple Paragraphs):`; // Updated final instruction
     console.log(`[Gemini] Conversational analysis generation successful.`); // Update log
     // Split the response into paragraphs based on double (or more) line breaks and trim each one
     const paragraphs = summaryText
-      .trim() // Trim overall response first
-      .split(/[\r\n\s*]{2,}/) // Split by two or more newline/whitespace characters
-      .map(p => p.trim().replace(/^[\r\n\s*]+/, '')) // Trim and remove leading newlines/whitespace
-      .filter(p => p.length > 0); // Filter out genuinely empty strings after trimming
+      .replace(/\\n/g, '\n') // Convert literal \n to actual newline first
+      .trim() // Trim overall response
+      .split(/[\r\n]{2,}/) // Split by two or more newline characters
+      .map(p => p.trim()) // Trim each paragraph
+      .filter(p => p.length > 0); // Filter out empty strings
     return paragraphs; // Return array of trimmed, non-empty paragraphs
   } catch (error) {
     console.error("[Gemini] Error generating conversational analysis paragraphs:", error); // Update log

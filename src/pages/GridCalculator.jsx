@@ -420,20 +420,50 @@ function UserCard({ user, getOrFetchUserData }) {
           {user.dob} ({user.gender})
         </span>
       </div>
-      <div className="user-card-body">
-        {/* REPLACED: Use ResultCard Grid for key numbers */}
-        <div className="result-cards-grid">
-          <ResultCard 
-            title="Moolank" 
-            number={moolankDisplay} 
-            meaning={userData?.moolankMeaning?.keywords?.[0]} 
-            delay={100} 
-          />
-          <ResultCard 
-            title="Bhagyank" 
-            number={bhagyankDisplay} 
-            delay={200} 
-          />
+        {/* --- TRINITY DASHBOARD LAYOUT --- */}
+        
+        {/* Hero Section: Moolank - Grid - Bhagyank */}
+        <div className="dashboard-hero-section">
+          {/* Left Pillar: Moolank */}
+          <div className="hero-pillar left">
+            <ResultCard 
+              title="Moolank" 
+              number={moolankDisplay} 
+              meaning={userData?.moolankMeaning?.keywords?.[0]} 
+              delay={100}
+              primary={true}
+              className="hero-card"
+            />
+          </div>
+
+          {/* Center Pillar: The Grid (Focal Point) */}
+          <div className="hero-pillar center">
+            <div className="grid-container-wrapper">
+              {isLoading ? (
+                <div className="grid-loading">Loading Grid...</div>
+              ) : gridNumbersArray ? (
+                <NumerologyGrid gridNumbers={gridNumbersArray} gridAnalysis={userData?.gridAnalysis} />
+              ) : (
+                <div className="grid-empty">-</div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Pillar: Bhagyank */}
+          <div className="hero-pillar right">
+            <ResultCard 
+              title="Bhagyank" 
+              number={bhagyankDisplay} 
+              meaning={userData?.bhagyankMeaning}
+              delay={200}
+              primary={true}
+              className="hero-card"
+            />
+          </div>
+        </div>
+
+        {/* Secondary Section: Supporting Numbers */}
+        <div className="dashboard-secondary-section">
           <ResultCard 
             title="Kua" 
             number={kuaDisplay} 
@@ -458,19 +488,6 @@ function UserCard({ user, getOrFetchUserData }) {
             delay={600} 
           />
         </div>
-
-        {/* Grid Display */}
-        <div className="user-card-grid">
-          {isLoading ? (
-            <p>Loading Grid...</p>
-          ) : gridNumbersArray ? (
-            // Pass gridAnalysis data to the NumerologyGrid component
-            <NumerologyGrid gridNumbers={gridNumbersArray} gridAnalysis={userData?.gridAnalysis} />
-          ) : (
-            <p>-</p> // Show dash if no grid or error
-          )}
-        </div>
-      </div>
 
       {/* Moolank Details - Expanded (Below cards) */}
       {!isLoading && userData?.moolankMeaning && (

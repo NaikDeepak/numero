@@ -1,10 +1,12 @@
 import React from 'react';
 import './ResultCard.css';
 
-const ResultCard = ({ title, number, meaning, subtext, delay = 0 }) => {
+const ResultCard = ({ title, number, meaning, subtext, delay = 0, primary = false, className = '' }) => {
+  const cardClassName = `result-card ${primary ? 'primary' : ''} ${className}`.trim();
+  
   return (
     <div 
-      className="result-card" 
+      className={cardClassName} 
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="result-card-content">
