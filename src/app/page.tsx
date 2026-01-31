@@ -1,8 +1,8 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   const { theme, setTheme } = useTheme()
@@ -29,9 +29,7 @@ export default function Home() {
       <div className="text-center space-y-8">
         <div>
           <h1 className="text-4xl font-bold mb-4">Numero</h1>
-          <p className="text-lg text-muted-foreground">
-            Next Gen Numerology - Foundation Ready
-          </p>
+          <p className="text-lg text-muted-foreground">Next Gen Numerology - Foundation Ready</p>
         </div>
 
         <div className="flex gap-4 justify-center">
@@ -58,9 +56,7 @@ export default function Home() {
           </Button>
         </div>
 
-        <div className="text-sm text-muted-foreground">
-          Current theme: {theme}
-        </div>
+        <div className="text-sm text-muted-foreground">Current theme: {theme}</div>
       </div>
     </main>
   )
