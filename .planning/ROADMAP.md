@@ -29,10 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Production build deploys successfully to hosting platform
   3. Environment variables and API keys are securely configured
   4. Firebase project is connected and authenticated
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD during planning
+- [ ] 01-01-PLAN.md — Next.js scaffolding with TypeScript, Tailwind, and Biome tooling
+- [ ] 01-02-PLAN.md — shadcn/ui component library with next-themes dark mode
+- [ ] 01-03-PLAN.md — Firebase backend connection and Vercel deployment setup
 
 ### Phase 2: Core Numerology
 **Goal**: Working numerology application with grid calculations and interpretations
@@ -101,7 +103,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation Setup | 0/TBD | Not started | - |
+| 1. Foundation Setup | 0/3 | Planned | - |
 | 2. Core Numerology | 0/TBD | Not started | - |
 | 3. Immersive UI | 0/TBD | Not started | - |
 | 4. AI Infrastructure + Daily Forecasts | 0/TBD | Not started | - |
