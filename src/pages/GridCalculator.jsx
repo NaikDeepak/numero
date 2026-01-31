@@ -1,7 +1,10 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import * as XLSX from "xlsx";
 import NumerologyGrid from "../NumerologyGrid"; // Adjust path
 import ResultCard from "../components/ResultCard"; // Import ResultCard
+import PremiumLock from "../components/PremiumLock"; // Import PremiumLock
+import { useAuth } from '../context/AuthContext'; // Import useAuth
 // Removed client-side PDF generator import
 // Import icons for Moolank details
 import { FaStar, FaThumbsUp, FaThumbsDown, FaLightbulb } from "react-icons/fa";
@@ -39,6 +42,10 @@ function GridCalculator() {
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("Male"); // Default gender
+
+  // New states for PremiumLock
+  const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false); // New state for premium lock
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false); // New state for payment processing
 
   // State for the list of users (stores only basic info now)
   const [usersData, setUsersData] = useState([]);
@@ -100,10 +107,123 @@ function GridCalculator() {
         kua: "Error",
         gridNumbers: null,
         nameNumerology: null,
+        gridAnalysis: [], // Prevent crash on map
       };
     },
     [calculatedUsersData] // Dependency remains the same
   ); // Dependency: re-create if cache changes (though unlikely needed here)
+
+
+
+// ... inside component ...
+  const { currentUser, login } = useAuth(); // Get auth context
+
+  const handleUnlock = async () => {
+    setPaymentError(null);
+
+    // 1. Require Login
+    let user = currentUser;
+    if (!user) {
+      try {
+        const result = await login();
+        user = result.user;
+      } catch (error) {
+        console.error("Login failed:", error);
+        return; // Stop if login fails
+      }
+    }
+
+    setIsProcessingPayment(true);
+
+    try {
+      // 2. Initiate Payment (Pass Firebase User ID)
+      // Get ID Token for backend verification
+      const idToken = await user.getIdToken();
+
+      const initResponse = await fetch('http://localhost:3001/api/initiate-payment', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}` // Send Token
+        },
+        body: JSON.stringify({ amount: 900, userId: user.uid }) 
+      });
+      const initData = await initResponse.json();
+
+      if (!initData.success) throw new Error("Payment initiation failed");
+
+      // 3. Simulate Payment Process (Mock Redirect)
+      console.log("Redirecting to:", initData.data.instrumentResponse.redirectInfo.url);
+      
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
+
+      // 4. Verify Payment
+      const verifyResponse = await fetch('http://localhost:3001/api/verify-payment', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+           'Authorization': `Bearer ${idToken}`
+        },
+        body: JSON.stringify({ transactionId: initData.data.merchantTransactionId })
+      });
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyData.success) throw new Error("Payment verification failed");
+
+      // 5. Securely Fetch Premium Data
+      if (usersData.length > 0) {
+        await fetchPremiumData(verifyData.token, usersData[0].dob, usersData[0].id);
+      } else {
+        setIsPremiumUnlocked(true);
+        setIsProcessingPayment(false);
+      }
+
+    } catch (error) {
+      console.error("Payment Error:", error);
+      setPaymentError("Payment failed. Please try again.");
+      setIsProcessingPayment(false);
+    }
+  };
+
+  const fetchPremiumData = async (token, dob, userId) => {
+    try {
+      // Get fresh token
+      const idToken = await currentUser.getIdToken();
+      
+      const response = await fetch('http://localhost:3001/api/get-premium-data', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`
+        },
+        body: JSON.stringify({ dob: dob, token: token })
+      });
+      const premiumData = await response.json();
+
+      if (premiumData.error) throw new Error(premiumData.error);
+
+      setCalculatedUsersData(prev => ({
+        ...prev,
+        [userId]: {
+          ...prev[userId],
+          ...premiumData 
+        }
+      }));
+      
+      setIsPremiumUnlocked(true);
+      setIsProcessingPayment(false);
+
+      setTimeout(() => {
+        const element = document.getElementById('premium-section');
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+
+    } catch (error) {
+      console.error("Error fetching premium data:", error);
+      setPaymentError("Failed to load premium content.");
+      setIsProcessingPayment(false);
+    }
+  };
 
   // Function to export data to Excel (fetches all data first)
   const exportToExcel = async () => {
@@ -258,24 +378,24 @@ function GridCalculator() {
     XLSX.writeFile(wb, "NumerologyInsights_Export.xlsx"); // File name
   };
 
+  // Helper to format number display in the table cell (moved inside UserCard)
+  // ... (keep formatCellDisplay logic if needed, or move to utils)
+
   return (
     <>
-      <h2>Numerology Grid Calculator</h2>
-
-      {/* Input Area */}
-      <div id="inputArea">
-        <h3>Add User Details</h3>
-        <div className="input-fields-wrapper">
+      <div className="container">
+        <h1>Numerology Calculator</h1>
+        {/* Input Form */}
+        <div id="inputForm">
           {/* Name input */}
           <label>
             Full Name:
             <input
               type="text"
               id="name"
-              placeholder="Enter Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
+              placeholder="Enter full name"
             />
           </label>
           {/* Date of Birth input */}
@@ -307,7 +427,15 @@ function GridCalculator() {
           ) : (
             usersData.map((user) => (
               // Render UserCard instead of UserTableRow
-              <UserCard key={user.id} user={user} getOrFetchUserData={getOrFetchUserData} />
+              <UserCard
+                key={user.id}
+                user={user}
+                userData={calculatedUsersData[user.id]} // Pass data directly
+                isPremiumUnlocked={isPremiumUnlocked} // Pass down premium state
+                isProcessingPayment={isProcessingPayment} // Pass down processing state
+                handleUnlock={handleUnlock} // Pass down unlock handler
+                currentUser={currentUser} // Pass currentUser for button text logic
+              />
             ))
           )}
         </div>
@@ -323,25 +451,28 @@ function GridCalculator() {
 }
 
 // --- REVISED: Renamed UserTableRow to UserCard and updated structure ---
-function UserCard({ user, getOrFetchUserData }) {
-  // Renamed component
-  const [userData, setUserData] = useState(null); // State for calculated data
-  const [isLoading, setIsLoading] = useState(true); // Start in loading state
+function UserCard({ user, userData, isPremiumUnlocked, isProcessingPayment, handleUnlock, currentUser }) {
+  // No internal state for data fetching!
+  const isLoading = !userData; // Loading if data not yet passed
 
-  useEffect(() => {
-    let isMounted = true; // Flag to prevent state update on unmounted component
-    setIsLoading(true);
-    getOrFetchUserData(user).then((data) => {
-      if (isMounted) {
-        console.log(`User ${user.id} (${user.name}) Data Received:`, data); // <-- Add console log here
-        setUserData(data);
-        setIsLoading(false);
-      }
-    });
-    return () => {
-      isMounted = false;
-    }; // Cleanup function
-  }, [user, getOrFetchUserData]); // Re-fetch if user or fetch function changes
+  // Helper to format number display in the table cell (moved inside UserCard)
+  const formatCellDisplay = (numberResult) => {
+    if (isLoading) return "...";
+    if (!numberResult) return "-";
+
+    // Handle both direct numbers (like Moolank, Kua) and result objects
+    const value = numberResult.value ?? numberResult; // Get final value
+    const karmic = numberResult.karmic ?? null;
+
+    if (isNaN(value)) return "-"; // Handle potential NaN
+
+    let display = value.toString();
+    if (karmic) {
+      // Add a small indicator for Karmic Debt, tooltip could be added with CSS/JS
+      display += ` (KD ${karmic})`;
+    }
+    return display;
+  };
 
   const bhagyank = isLoading ? "..." : userData ? userData.bhagyank : "-";
   const moolank = isLoading ? "..." : userData ? userData.moolank : "-";
@@ -384,25 +515,6 @@ function UserCard({ user, getOrFetchUserData }) {
     }
   };
 
-  // Helper to format number display in the table cell (moved inside UserCard)
-  const formatCellDisplay = (numberResult) => {
-    if (isLoading) return "...";
-    if (!numberResult) return "-";
-
-    // Handle both direct numbers (like Moolank, Kua) and result objects
-    const value = numberResult.value ?? numberResult; // Get final value
-    const karmic = numberResult.karmic ?? null;
-
-    if (isNaN(value)) return "-"; // Handle potential NaN
-
-    let display = value.toString();
-    if (karmic) {
-      // Add a small indicator for Karmic Debt, tooltip could be added with CSS/JS
-      display += ` (KD ${karmic})`;
-    }
-    return display;
-  };
-
   // Extract display values using the helper
   const bhagyankDisplay = formatCellDisplay(userData?.bhagyank);
   const moolankDisplay = formatCellDisplay(userData?.moolank); // Moolank is simple value
@@ -410,7 +522,7 @@ function UserCard({ user, getOrFetchUserData }) {
   const destinyDisplay = formatCellDisplay(userData?.nameNumerology?.destinyNumber);
   const soulUrgeDisplay = formatCellDisplay(userData?.nameNumerology?.soulUrgeNumber);
   const personalityDisplay = formatCellDisplay(userData?.nameNumerology?.personalityNumber);
-  console.log("User Data:", userData); // Debugging log
+  
   // Render as a card div instead of table row
   return (
     <div className="user-card">
@@ -494,13 +606,13 @@ function UserCard({ user, getOrFetchUserData }) {
         <div className="moolank-details-section">
           <h4>Moolank Analysis</h4>
           <p className="moolank-meta">
-            <FaStar className="moolank-icon" /> Grah: {userData.moolankMeaning.grah || "N/A"}{" "}
-            | Rashi: {userData.moolankMeaning.rashi || "N/A"}
+            <FaStar className="moolank-icon" /> Grah: {userData.moolankMeaning?.grah || "N/A"}{" "}
+            | Rashi: {userData.moolankMeaning?.rashi || "N/A"}
           </p>
           <p className="moolank-keywords">
-            <em>Keywords: {userData.moolankMeaning.keywords?.join(", ") || "N/A"}</em>
+            <em>Keywords: {userData.moolankMeaning?.keywords?.join(", ") || "N/A"}</em>
           </p>
-          <p className="moolank-analysis">{userData.moolankMeaning.analysis || ""}</p>
+          <p className="moolank-analysis">{userData.moolankMeaning?.analysis || ""}</p>
         </div>
       )}
 
@@ -509,7 +621,7 @@ function UserCard({ user, getOrFetchUserData }) {
         <div className="user-card-analysis">
           <h4>Grid Analysis:</h4>
           <ul>
-            {userData.gridAnalysis.map((item, index) => (
+            {userData.gridAnalysis?.map((item, index) => (
               <li key={index}>
                 <strong>{item.name}:</strong> {item.interpretation}
               </li>
@@ -555,8 +667,95 @@ function UserCard({ user, getOrFetchUserData }) {
           {isLoading ? "Loading..." : "Download PDF"}
         </button>
       </div>
+
+        {/* --- Premium Section (New) --- */}
+        {userData && userData.moolank !== "Error" && (
+          <PremiumLock
+            isLocked={!isPremiumUnlocked}
+            onUnlock={handleUnlock}
+            price="$9"
+            isProcessing={isProcessingPayment}
+            buttonText={currentUser ? "Unlock for $9" : "Login to Unlock"}
+          >
+            <div className="premium-insights-container">
+              <h2 className="section-title">🔮 Future Predictions & Remedies (Premium)</h2>
+              
+              <div className="premium-grid">
+                <div className="premium-card">
+                  <h3>📅 {new Date().getFullYear()} Personal Year: {userData.personalYear}</h3>
+                  <h4 style={{color: 'var(--accent-color)', marginBottom: '10px'}}>{userData.personalYearData?.title}</h4>
+                  <p>
+                    {userData.personalYearData?.description || "Your personal year calculation indicates a time of significant energy shift."}
+                  </p>
+                  <div style={{marginTop: '10px'}}>
+                    <strong>Keywords: </strong> 
+                    {userData.personalYearData?.keywords?.join(", ") || "Transformation, Growth"}
+                  </div>
+                </div>
+
+                <div className="premium-card">
+                  <h3>🌙 Personal Month: {userData.personalMonth}</h3>
+                  <p>
+                    This month brings a vibration of <strong>Number {userData.personalMonth}</strong>. 
+                    {userData.personalMonth === 1 && " A time for new beginnings and taking initiative."}
+                    {userData.personalMonth === 2 && " Focus on cooperation, patience, and relationships."}
+                    {userData.personalMonth === 3 && " Express yourself creatively and enjoy social gatherings."}
+                    {userData.personalMonth === 4 && " Work hard and attend to details. Build your foundation."}
+                    {userData.personalMonth === 5 && " Embrace change and be flexible. Unexpected events may occur."}
+                    {userData.personalMonth === 6 && " Focus on home, family, and domestic responsibilities."}
+                    {userData.personalMonth === 7 && " A time for introspection, rest, and spiritual growth."}
+                    {userData.personalMonth === 8 && " Focus on business, career, and financial empowerment."}
+                    {userData.personalMonth === 9 && " Wrap up loose ends and prepare for a new cycle."}
+                  </p>
+                </div>
+
+                <div className="premium-card">
+                  <h3>💎 Gemstone Recommendation</h3>
+                  <p>
+                    Based on your Moolank {userData.moolank}, wearing a <strong>
+                      {userData.moolank === 1 ? "Ruby" : 
+                       userData.moolank === 2 ? "Pearl" :
+                       userData.moolank === 3 ? "Yellow Sapphire" :
+                       userData.moolank === 4 ? "Gomed (Hessonite)" :
+                       userData.moolank === 5 ? "Emerald" :
+                       userData.moolank === 6 ? "Diamond/White Sapphire" :
+                       userData.moolank === 7 ? "Cat's Eye" :
+                       userData.moolank === 8 ? "Blue Sapphire" : "Red Coral"}
+                    </strong> is highly recommended to enhance your luck and vitality.
+                  </p>
+                </div>
+
+                <div className="premium-card">
+                  <h3>🧘‍♂️ Remedial Measures</h3>
+                  <p>
+                    - <strong>Lucky Color:</strong> {
+                       userData.moolank === 1 ? "Orange/Red" : 
+                       userData.moolank === 2 ? "White/Silver" :
+                       userData.moolank === 3 ? "Yellow" :
+                       userData.moolank === 4 ? "Blue" :
+                       userData.moolank === 5 ? "Green" :
+                       userData.moolank === 6 ? "White/Pink" :
+                       userData.moolank === 7 ? "Grey/Multi-color" :
+                       userData.moolank === 8 ? "Black/Dark Blue" : "Red"}
+                    <br/>
+                    - <strong>Direction:</strong> {
+                       userData.moolank === 1 ? "East" : 
+                       userData.moolank === 2 ? "North-West" :
+                       userData.moolank === 3 ? "North-East" :
+                       userData.moolank === 4 ? "South-West" :
+                       userData.moolank === 5 ? "North" :
+                       userData.moolank === 6 ? "South-East" :
+                       userData.moolank === 7 ? "North-East" :
+                       userData.moolank === 8 ? "West" : "South"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </PremiumLock>
+        )}
     </div>
   );
 }
 
 export default GridCalculator;
+
