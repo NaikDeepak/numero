@@ -10,11 +10,7 @@ export const metadata: Metadata = {
   description: "AI-driven numerological insights in a visually stunning experience",
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
