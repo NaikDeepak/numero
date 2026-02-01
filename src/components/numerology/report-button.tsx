@@ -1,7 +1,7 @@
 "use client"
 
-import { FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { FileText } from "lucide-react"
 import type { Gender } from "@/lib/numerology/types"
 
 interface ReportButtonProps {
@@ -14,6 +14,8 @@ export function ReportButton({ name, dob, gender }: ReportButtonProps) {
   const handleDownload = () => {
     // Trigger download via API route
     const params = new URLSearchParams({ name, dob, gender })
+    // Use window.open to open in new tab or specific location to trigger download
+    // For attachments, simple navigation works, but window.open is safer for avoiding UI disruptions
     window.location.href = `/api/report?${params.toString()}`
   }
 

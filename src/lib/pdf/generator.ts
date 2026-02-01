@@ -33,7 +33,11 @@ export async function generateNumerologyPDF(data: {
     // AI Analysis
     doc.fontSize(14).text("Cosmic Analysis", { underline: true })
     doc.moveDown(1)
-    doc.fontSize(11).lineGap(4).text(data.aiAnalysis, { align: "justify" })
+
+    // Clean up markdown bolding from AI response for PDF text
+    const cleanText = data.aiAnalysis.replace(/\*\*/g, "")
+
+    doc.fontSize(11).lineGap(4).text(cleanText, { align: "justify" })
 
     // Footer
     doc.moveDown(4)
