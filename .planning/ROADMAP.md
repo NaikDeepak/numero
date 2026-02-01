@@ -46,10 +46,14 @@ Plans:
   3. User can view standard interpretations for their numbers from JSON data
   4. User can save their profile locally and retrieve it on return visits
   5. All calculations match existing backend logic (verified accuracy)
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: TBD during planning
+- [x] 02-01-PLAN.md — Port proven calculation engine with TypeScript and Zod
+- [ ] 02-02-PLAN.md — Setup Zustand store with local persistence and interpretation data loader
+- [ ] 02-03-PLAN.md — Implement shadcn/ui input form and hero result badges with animations
+- [ ] 02-04-PLAN.md — Create animated Lo Shu Grid component with pattern analysis
+- [ ] 02-05-PLAN.md — Add name analysis details and progressive disclosure interpretations
 
 ### Phase 3: Immersive UI
 **Goal**: Modern minimal aesthetic with smooth animations differentiating from cosmic-themed competitors
