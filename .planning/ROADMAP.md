@@ -50,8 +50,8 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Port proven calculation engine with TypeScript and Zod
-- [ ] 02-02-PLAN.md — Setup Zustand store with local persistence and interpretation data loader
-- [ ] 02-03-PLAN.md — Implement shadcn/ui input form and hero result badges with animations
+- [x] 02-02-PLAN.md — Setup Zustand store with local persistence and interpretation data loader
+- [x] 02-03-PLAN.md — Implement shadcn/ui input form and hero result badges with animations
 - [ ] 02-04-PLAN.md — Create animated Lo Shu Grid component with pattern analysis
 - [ ] 02-05-PLAN.md — Add name analysis details and progressive disclosure interpretations
 
