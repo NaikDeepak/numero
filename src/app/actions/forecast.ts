@@ -1,10 +1,15 @@
 "use server"
 
-import { getGeminiClient, GEMINI_MODEL } from "@/lib/ai/gemini"
-import { rateLimit } from "@/lib/ai/rate-limit"
 import { forecastCache } from "@/lib/ai/cache"
+import { GEMINI_MODEL, getGeminiClient } from "@/lib/ai/gemini"
 import { generateDailyForecastPrompt, SYSTEM_INSTRUCTION } from "@/lib/ai/prompts"
-import { calculatePersonalYear, calculatePersonalMonth, calculatePersonalDay, calculateNumerologyData } from "@/lib/numerology/engine"
+import { rateLimit } from "@/lib/ai/rate-limit"
+import {
+  calculateNumerologyData,
+  calculatePersonalDay,
+  calculatePersonalMonth,
+  calculatePersonalYear,
+} from "@/lib/numerology/engine"
 import type { Gender } from "@/lib/numerology/types"
 
 // Initialize rate limiter: 5 requests per minute per IP (mocking IP with simple string for now in server actions)
@@ -34,7 +39,7 @@ export async function getDailyForecast(dob: string, gender: Gender) {
     return {
       forecast: forecastCache.get(cacheKey) as string,
       personalDay: personalDayNum,
-      cached: true
+      cached: true,
     }
   }
 
@@ -42,30 +47,29 @@ export async function getDailyForecast(dob: string, gender: Gender) {
   // In a real app we'd get IP or Session ID. For V1 MVP, we'll use a placeholder since we don't have auth yet in this context
   const limitResult = limiter.check(5, "CACHE_TOKEN") // Global limit for now to prevent abuse
   if (limitResult.isRateLimited) {
-      return { error: "Rate limit exceeded. Please try again later." }
+    return { error: "Rate limit exceeded. Please try again later." }
   }
-
 
   // 4. Generate with AI
   const client = getGeminiClient()
   if (!client) {
     return {
-      forecast: "AI service unavailable. Today is Personal Day " + personalDayNum,
-      personalDay: personalDayNum
+      forecast: `AI service unavailable. Today is Personal Day ${personalDayNum}`,
+      personalDay: personalDayNum,
     }
   }
 
   try {
     const model = client.getGenerativeModel({
       model: GEMINI_MODEL,
-      systemInstruction: SYSTEM_INSTRUCTION
+      systemInstruction: SYSTEM_INSTRUCTION,
     })
 
     const prompt = generateDailyForecastPrompt(
       personalDayNum,
       nums.moolank,
       nums.bhagyank,
-      today.toDateString()
+      today.toDateString(),
     )
 
     const result = await model.generateContent(prompt)
@@ -78,7 +82,7 @@ export async function getDailyForecast(dob: string, gender: Gender) {
     return {
       forecast: text,
       personalDay: personalDayNum,
-      cached: false
+      cached: false,
     }
   } catch (error) {
     console.error("AI Generation Error:", error)

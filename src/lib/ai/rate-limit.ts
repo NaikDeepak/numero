@@ -25,7 +25,7 @@ export function rateLimit(options?: RateLimitOptions) {
       return {
         isRateLimited,
         currentUsage,
-        limit
+        limit,
       }
     },
   }

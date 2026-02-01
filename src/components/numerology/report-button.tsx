@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { FileText } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import type { Gender } from "@/lib/numerology/types"
 
 interface ReportButtonProps {

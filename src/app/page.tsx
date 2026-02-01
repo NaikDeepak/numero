@@ -2,10 +2,11 @@
 
 import { AnimatePresence, motion } from "framer-motion"
 import { RefreshCcw } from "lucide-react"
-import { HeroResult } from "@/components/numerology/hero-result"
+import Link from "next/link"
 import { DailyForecast } from "@/components/numerology/daily-forecast"
-import { ReportButton } from "@/components/numerology/report-button"
+import { HeroResult } from "@/components/numerology/hero-result"
 import { NumerologyInputForm } from "@/components/numerology/input-form"
+import { ReportButton } from "@/components/numerology/report-button"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { calculateNameNumbers, calculateNumerologyData } from "@/lib/numerology/engine"
@@ -74,9 +75,7 @@ export default function Home() {
                 />
               )}
 
-              {results && profile && (
-                <DailyForecast dob={profile.dob} gender={profile.gender} />
-              )}
+              {results && profile && <DailyForecast dob={profile.dob} gender={profile.gender} />}
 
               <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
                 {profile && (
@@ -90,6 +89,13 @@ export default function Home() {
                   <RefreshCcw className="w-4 h-4" />
                   Reset Profile
                 </Button>
+              </div>
+              <div className="mt-4">
+                <Link href="/compatibility">
+                  <Button variant="link" className="text-muted-foreground hover:text-primary">
+                    Check Relationship Compatibility →
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           )}

@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getDailyForecast } from "@/app/actions/forecast"
-import type { Gender } from "@/lib/numerology/types"
-import ReactMarkdown from "react-markdown"
 import { motion } from "framer-motion"
-import { Sparkles, Loader2 } from "lucide-react"
+import { Loader2, Sparkles } from "lucide-react"
+import { useEffect, useState } from "react"
+import ReactMarkdown from "react-markdown"
+import { getDailyForecast } from "@/app/actions/forecast"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { Gender } from "@/lib/numerology/types"
 
 interface DailyForecastProps {
   dob: string
@@ -34,7 +34,7 @@ export function DailyForecast({ dob, gender }: DailyForecastProps) {
           }
           setLoading(false)
         }
-      } catch (err) {
+      } catch (_err) {
         if (mounted) {
           setError("Failed to load forecast")
           setLoading(false)
