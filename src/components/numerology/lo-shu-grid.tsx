@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, type Variants } from "framer-motion"
+import { motion, type Variants, useReducedMotion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
@@ -13,22 +13,6 @@ interface LoShuGridProps {
 // 3 5 7
 // 8 1 6
 const GRID_POSITIONS = [4, 9, 2, 3, 5, 7, 8, 1, 6]
-
-const container: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-}
-
-const item: Variants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  show: { opacity: 1, scale: 1, transition: { type: "spring", bounce: 0.4 } },
-}
 
 const ELEMENT_COLORS: Record<number, string> = {
   1: "bg-slate-900/10 text-slate-900 border-slate-900/20 dark:bg-slate-100/10 dark:text-slate-100 dark:border-slate-100/20", // Water
@@ -43,6 +27,32 @@ const ELEMENT_COLORS: Record<number, string> = {
 }
 
 export function LoShuGrid({ gridNumbers }: LoShuGridProps) {
+  const shouldReduceMotion = useReducedMotion()
+
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.1,
+        delayChildren: shouldReduceMotion ? 0 : 0.3,
+      },
+    },
+  }
+
+  const item: Variants = {
+    hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.8 },
+    show: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: shouldReduceMotion ? "tween" : "spring",
+        bounce: shouldReduceMotion ? 0 : 0.4,
+        duration: shouldReduceMotion ? 0.2 : undefined,
+      },
+    },
+  }
+
   return (
     <Card className="w-full max-w-[400px] border-primary/10 bg-card/50 backdrop-blur-sm">
       <CardHeader className="pb-4">

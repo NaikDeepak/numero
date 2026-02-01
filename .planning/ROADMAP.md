@@ -66,10 +66,11 @@ Plans:
   3. User can toggle between Light and Dark modes with smooth transition
   4. Animations maintain 60fps on mid-range devices (tested on actual hardware)
   5. Users with reduced-motion preference see clean UI without animations
-**Plans**: 1 plans
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Immersive UI: Final Integration
+- [x] 03-01-PLAN.md — Immersive UI: Final Integration
+- [ ] 03-02-PLAN.md — Reduced motion support for accessibility
 
 ### Phase 4: AI Infrastructure + Daily Forecasts
 **Goal**: AI service layer with cost controls delivering personalized daily numerology insights
@@ -113,6 +114,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation Setup | 3/3 | Completed | 2026-02-01 |
 | 2. Core Numerology | 6/6 | Completed | 2026-02-01 |
-| 3. Immersive UI | 3/3 | Completed | 2026-02-01 |
+| 3. Immersive UI | 1/2 | In Progress | - |
 | 4. AI Infrastructure + Daily Forecasts | 3/3 | Completed | 2026-02-01 |
 | 5. AI Reports + Compatibility | 2/2 | Completed | 2026-02-01 |
