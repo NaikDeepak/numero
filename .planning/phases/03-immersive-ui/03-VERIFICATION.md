@@ -1,32 +1,68 @@
-# Phase 03 Verification: Immersive UI
+---
+phase: 03-immersive-ui
+verified: 2026-02-01T12:00:00Z
+status: passed
+score: 5/5 must-haves verified
+re_verification:
+  previous_status: gaps_found
+  previous_score: 4/5
+  gaps_closed:
+    - "Reduced-motion preferences respected in Lo Shu Grid"
+    - "Reduced-motion preferences respected in Page Transitions"
+  gaps_remaining: []
+  regressions: []
+human_verification:
+  - test: "Motion Sensitivity"
+    expected: "Enable 'prefers-reduced-motion' in OS/Browser -> Verify grid appears instantly without staggering, pages fade without sliding."
+    why_human: "Visual confirmation of animation disablement requires rendering engine."
+---
 
-**Date:** 2026-02-01
-**Status:** PASS
-**Tester:** Antigravity (AI)
+# Phase 03: Immersive UI Verification Report
 
-## Verification Checklist
+**Phase Goal:** Modern minimal aesthetic with smooth animations differentiating from cosmic-themed competitors
+**Verified:** 2026-02-01
+**Status:** passed
+**Verifier:** Claude (gsd-verifier)
 
-### UI-01: Page Transitions
-- [x] **Implementation**: Created `src/app/template.tsx` using `framer-motion` to wrap page content.
-- [x] **Behavior**: Components animate in (`opacity: 0 -> 1`, `y: 10 -> 0`) on mount.
-- [x] **Exit Animations**: `AnimatePresence` in `template.tsx` handles exit animations automatically on route change.
+## Goal Achievement
 
-### UI-02: Animated Components
-- [x] **Number Count-up**: Created `AnimatedNumber` component using `useSpring` and `useTransform` for performant counting.
-- [x] **Grid Stagger**: Updated `LoShuGrid` to use `staggerChildren` (0.1s delay) for cell appearance.
-- [x] **Integration**: `HeroResult` uses `AnimatedNumber` for Moolank and Bhagyank with staggered delays.
+### Observable Truths
 
-### UI-03: Theming & Polish
-- [x] **Theme Toggle**: Implemented `ThemeToggle` with animated Sun/Moon icons using `next-themes`.
-- [x] **Cosmic Background**: Added `.bg-cosmic` utility in `globals.css` with dark/light mode specific gradients.
-- [x] **Glassmorphism**: Updated `Card` component to use `backdrop-blur-sm` and transparent backgrounds.
+| # | Truth | Status | Evidence |
+|---|---|---|---|
+| 1 | User experiences smooth page transitions | ✓ VERIFIED | `template.tsx` implements `AnimatePresence` wrapper |
+| 2 | Numerology grid displays with animated number reveals | ✓ VERIFIED | `lo-shu-grid.tsx` uses `staggerChildren` and spring physics |
+| 3 | User can toggle between Light and Dark modes | ✓ VERIFIED | `theme-toggle.tsx` and `globals.css` implement full theming |
+| 4 | Animations implemented using performant libraries | ✓ VERIFIED | `framer-motion` used throughout |
+| 5 | Reduced-motion preferences respected | ✓ VERIFIED | `useReducedMotion` hook implemented in `template.tsx` and `lo-shu-grid.tsx` |
 
-## Code Quality
-- [x] **Type Safety**: All components typed with TypeScript.
-- [x] **Build Success**: `npm run build` completed successfully.
-- [x] **Linting**: Fixed `firestore.indexes.json` syntax error; linting passes.
+**Score:** 5/5 truths verified
 
-## Notes
-- The `firestore.indexes.json` file contained comments which are not valid in standard JSON. These were removed to fix the build/lint process.
-- `CardHeader` import issue in `hero-result.tsx` was fixed.
-- `Variants` type issue in `lo-shu-grid.tsx` was fixed by importing the type from `framer-motion`.
+### Required Artifacts
+
+| Artifact | Expected | Status | Details |
+|---|---|---|---|
+| `src/app/template.tsx` | Page transition wrapper | ✓ VERIFIED | `shouldReduceMotion` logic added to variants |
+| `src/components/ui/theme-toggle.tsx` | Theme switcher | ✓ VERIFIED | Functional with animated icons |
+| `src/components/numerology/lo-shu-grid.tsx` | Animated grid | ✓ VERIFIED | `shouldReduceMotion` controls stagger and spring physics |
+| `src/app/globals.css` | Cosmic styles | ✓ VERIFIED | `.bg-cosmic` utility exists |
+
+### Key Link Verification
+
+| From | To | Via | Status | Details |
+|---|---|---|---|---|
+| `src/app/layout.tsx` | `src/components/ui/theme-toggle.tsx` | Import | ✓ WIRED | Toggle placed in layout |
+| `src/app/layout.tsx` | `src/app/globals.css` | ClassName | ✓ WIRED | `bg-cosmic` applied to body |
+| `src/components/numerology/hero-result.tsx` | `src/components/numerology/lo-shu-grid.tsx` | Component | ✓ WIRED | Grid renders real data |
+
+### Gaps Closed
+
+The following gaps identified in the previous verification have been successfully addressed:
+
+1. **Reduced Motion in Grid**: `src/components/numerology/lo-shu-grid.tsx` now uses `useReducedMotion` to disable staggering and switch from spring to tween animations when requested.
+2. **Reduced Motion in Transitions**: `src/app/template.tsx` now conditionally applies Y-axis movement based on `useReducedMotion`.
+
+---
+
+_Verified: 2026-02-01_
+_Verifier: Claude (gsd-verifier)_
