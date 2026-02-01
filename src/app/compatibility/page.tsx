@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowLeft, HeartHandshake, Loader2, RefreshCcw, AlertCircle } from "lucide-react"
+import { AlertCircle, ArrowLeft, HeartHandshake, Loader2, RefreshCcw } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { getCompatibility } from "@/app/actions/compatibility"
 import { CompatibilityResult } from "@/components/numerology/compatibility-result"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -30,7 +31,6 @@ import {
 } from "@/components/ui/select"
 import { GenderSchema, type NumerologyResult } from "@/lib/numerology/types"
 import { useHydratedProfile } from "@/store/use-profile-store"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 const PartnerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -139,7 +139,11 @@ export default function CompatibilityPage() {
                           <FormItem>
                             <FormLabel>Partner's Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter name" {...field} className="bg-background/50" />
+                              <Input
+                                placeholder="Enter name"
+                                {...field}
+                                className="bg-background/50"
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -181,12 +185,17 @@ export default function CompatibilityPage() {
                         )}
                       />
 
-                      <Button type="submit" className="w-full relative overflow-hidden group" disabled={loading}>
+                      <Button
+                        type="submit"
+                        className="w-full relative overflow-hidden group"
+                        disabled={loading}
+                      >
                         <div className="absolute inset-0 bg-gradient-to-r from-primary to-rose-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         <span className="relative flex items-center justify-center">
                           {loading ? (
                             <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing Cosmic Bonds...
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing Cosmic
+                              Bonds...
                             </>
                           ) : (
                             "Analyze Compatibility"
@@ -195,7 +204,10 @@ export default function CompatibilityPage() {
                       </Button>
 
                       {error && (
-                        <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 mt-4">
+                        <Alert
+                          variant="destructive"
+                          className="bg-destructive/10 border-destructive/20 mt-4"
+                        >
                           <AlertCircle className="h-4 w-4" />
                           <AlertTitle>Analysis Failed</AlertTitle>
                           <AlertDescription className="flex flex-col gap-2">

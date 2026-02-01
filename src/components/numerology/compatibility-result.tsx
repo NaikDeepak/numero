@@ -1,11 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Heart, Share2, Download, Sparkles } from "lucide-react"
+import { Download, Heart, Share2, Sparkles } from "lucide-react"
 import ReactMarkdown from "react-markdown"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface CompatibilityResultProps {
   analysis: string
@@ -39,7 +39,10 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
       animate="show"
       className="space-y-8 w-full max-w-4xl"
     >
-      <motion.div variants={item} className="flex flex-col md:flex-row gap-6 items-center justify-center">
+      <motion.div
+        variants={item}
+        className="flex flex-col md:flex-row gap-6 items-center justify-center"
+      >
         {/* User Card */}
         <Card className="flex-1 w-full bg-primary/5 border-primary/20 backdrop-blur-sm relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -48,10 +51,14 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
           </CardHeader>
           <CardContent className="flex justify-around text-center pb-8">
             <div className="relative">
-              <div className={`text-4xl font-bold transition-colors ${sharedMoolank ? "text-primary drop-shadow-[0_0_8px_rgba(var(--primary),0.5)]" : ""}`}>
+              <div
+                className={`text-4xl font-bold transition-colors ${sharedMoolank ? "text-primary drop-shadow-[0_0_8px_rgba(var(--primary),0.5)]" : ""}`}
+              >
                 {user.moolank}
               </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Moolank</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+                Moolank
+              </div>
               {sharedMoolank && (
                 <Badge className="absolute -top-6 left-1/2 -translate-x-1/2 bg-primary/20 text-primary border-primary/30 text-[8px] px-1 h-4">
                   MATCH
@@ -59,10 +66,14 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
               )}
             </div>
             <div className="relative">
-              <div className={`text-4xl font-bold transition-colors ${sharedBhagyank ? "text-primary drop-shadow-[0_0_8px_rgba(var(--primary),0.5)]" : ""}`}>
+              <div
+                className={`text-4xl font-bold transition-colors ${sharedBhagyank ? "text-primary drop-shadow-[0_0_8px_rgba(var(--primary),0.5)]" : ""}`}
+              >
                 {user.bhagyank}
               </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Bhagyank</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+                Bhagyank
+              </div>
               {sharedBhagyank && (
                 <Badge className="absolute -top-6 left-1/2 -translate-x-1/2 bg-primary/20 text-primary border-primary/30 text-[8px] px-1 h-4">
                   MATCH
@@ -75,12 +86,12 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
         <motion.div
           animate={{
             scale: [1, 1.2, 1],
-            rotate: [0, 10, -10, 0]
+            rotate: [0, 10, -10, 0],
           }}
           transition={{
             duration: 2,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut",
           }}
           className="flex items-center justify-center z-10"
         >
@@ -104,10 +115,14 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
           </CardHeader>
           <CardContent className="flex justify-around text-center pb-8">
             <div className="relative">
-              <div className={`text-4xl font-bold transition-colors ${sharedMoolank ? "text-secondary drop-shadow-[0_0_8px_rgba(var(--secondary),0.5)]" : ""}`}>
+              <div
+                className={`text-4xl font-bold transition-colors ${sharedMoolank ? "text-secondary drop-shadow-[0_0_8px_rgba(var(--secondary),0.5)]" : ""}`}
+              >
                 {partner.moolank}
               </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Moolank</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+                Moolank
+              </div>
               {sharedMoolank && (
                 <Badge className="absolute -top-6 left-1/2 -translate-x-1/2 bg-secondary/20 text-secondary border-secondary/30 text-[8px] px-1 h-4">
                   MATCH
@@ -115,10 +130,14 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
               )}
             </div>
             <div className="relative">
-              <div className={`text-4xl font-bold transition-colors ${sharedBhagyank ? "text-secondary drop-shadow-[0_0_8px_rgba(var(--secondary),0.5)]" : ""}`}>
+              <div
+                className={`text-4xl font-bold transition-colors ${sharedBhagyank ? "text-secondary drop-shadow-[0_0_8px_rgba(var(--secondary),0.5)]" : ""}`}
+              >
                 {partner.bhagyank}
               </div>
-              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Bhagyank</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+                Bhagyank
+              </div>
               {sharedBhagyank && (
                 <Badge className="absolute -top-6 left-1/2 -translate-x-1/2 bg-secondary/20 text-secondary border-secondary/30 text-[8px] px-1 h-4">
                   MATCH
@@ -132,10 +151,18 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
       <motion.div variants={item}>
         <Card className="bg-card/40 backdrop-blur-md border-primary/10 overflow-hidden relative">
           <div className="absolute top-0 right-0 p-4 flex gap-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40"
+            >
               <Share2 className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40"
+            >
               <Download className="h-4 w-4" />
             </Button>
           </div>
