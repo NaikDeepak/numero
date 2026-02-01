@@ -45,17 +45,19 @@ export async function GET(req: NextRequest) {
           })
           const prompt = generateCompatibilityPrompt(
             { name: name1, moolank: userNums.moolank, bhagyank: userNums.bhagyank },
-            { name: name2, moolank: partnerNums.moolank, bhagyank: partnerNums.bhagyank }
+            { name: name2, moolank: partnerNums.moolank, bhagyank: partnerNums.bhagyank },
           )
           const result = await model.generateContent(prompt)
           analysis = await result.response.text()
           forecastCache.set(cacheKey, analysis)
         } catch (aiError) {
           console.error("Compatibility AI failed:", aiError)
-          analysis = "Cosmic analysis currently unavailable. Focus on the core numbers and grids below."
+          analysis =
+            "Cosmic analysis currently unavailable. Focus on the core numbers and grids below."
         }
       } else {
-        analysis = "AI analysis requires an API key. Please check the core compatibility numbers below."
+        analysis =
+          "AI analysis requires an API key. Please check the core compatibility numbers below."
       }
     }
 

@@ -36,7 +36,10 @@ export async function generateCompatibilityPDF(data: CompatibilityPDFData): Prom
     // Header
     doc.fontSize(24).fillColor(primaryColor).text("Numero", { align: "center" })
     doc.moveDown(0.2)
-    doc.fontSize(10).fillColor(mutedColor).text("COSMIC COMPATIBILITY REPORT", { align: "center", characterSpacing: 2 })
+    doc
+      .fontSize(10)
+      .fillColor(mutedColor)
+      .text("COSMIC COMPATIBILITY REPORT", { align: "center", characterSpacing: 2 })
     doc.moveDown(2)
 
     // Score Section
@@ -56,14 +59,38 @@ export async function generateCompatibilityPDF(data: CompatibilityPDFData): Prom
     const colWidth = (doc.page.width - 100 - 20) / 2
 
     // User Column
-    doc.fontSize(14).fillColor(primaryColor).text(data.user.name, 50, profileY, { width: colWidth, align: "center" })
-    doc.fontSize(10).fillColor(mutedColor).text(`DOB: ${data.user.dob}`, { width: colWidth, align: "center" })
-    doc.fontSize(12).fillColor(textColor).text(`Moolank: ${data.user.result.moolank}  |  Bhagyank: ${data.user.result.bhagyank}`, { width: colWidth, align: "center" })
+    doc
+      .fontSize(14)
+      .fillColor(primaryColor)
+      .text(data.user.name, 50, profileY, { width: colWidth, align: "center" })
+    doc
+      .fontSize(10)
+      .fillColor(mutedColor)
+      .text(`DOB: ${data.user.dob}`, { width: colWidth, align: "center" })
+    doc
+      .fontSize(12)
+      .fillColor(textColor)
+      .text(`Moolank: ${data.user.result.moolank}  |  Bhagyank: ${data.user.result.bhagyank}`, {
+        width: colWidth,
+        align: "center",
+      })
 
     // Partner Column
-    doc.fontSize(14).fillColor(secondaryColor).text(data.partner.name, 50 + colWidth + 20, profileY, { width: colWidth, align: "center" })
-    doc.fontSize(10).fillColor(mutedColor).text(`DOB: ${data.partner.dob}`, { width: colWidth, align: "center" })
-    doc.fontSize(12).fillColor(textColor).text(`Moolank: ${data.partner.result.moolank}  |  Bhagyank: ${data.partner.result.bhagyank}`, { width: colWidth, align: "center" })
+    doc
+      .fontSize(14)
+      .fillColor(secondaryColor)
+      .text(data.partner.name, 50 + colWidth + 20, profileY, { width: colWidth, align: "center" })
+    doc
+      .fontSize(10)
+      .fillColor(mutedColor)
+      .text(`DOB: ${data.partner.dob}`, { width: colWidth, align: "center" })
+    doc
+      .fontSize(12)
+      .fillColor(textColor)
+      .text(
+        `Moolank: ${data.partner.result.moolank}  |  Bhagyank: ${data.partner.result.bhagyank}`,
+        { width: colWidth, align: "center" },
+      )
 
     doc.moveDown(2)
 
@@ -85,11 +112,42 @@ export async function generateCompatibilityPDF(data: CompatibilityPDFData): Prom
         doc.rect(cx, cy, cellSize, cellSize).stroke(borderColor)
 
         if (nums.includes(num)) {
-          doc.fontSize(12).fillColor(textColor).text(num.toString(), cx, cy + 8, { width: cellSize, align: "center" })
+          doc
+            .fontSize(12)
+            .fillColor(textColor)
+            .text(num.toString(), cx, cy + 8, { width: cellSize, align: "center" })
         } else {
-          doc.fontSize(12).fillColor("#DDDDDD").text(num.toString(), cx, cy + 8, { width: cellSize, align: "center" })
+          doc
+            .fontSize(12)
+            .fillColor("#DDDDDD")
+            .text(num.toString(), cx, cy + 8, { width: cellSize, align: "center" })
         }
       })
+    }
+
+    const renderRemedies = (name: string, gridNumbers: number[]) => {
+      const missing = getMissingNumbers(gridNumbers)
+      const remedies = getRemediesForNumbers(missing)
+
+      if (remedies.length > 0) {
+        if (doc.y > 650) doc.addPage()
+
+        doc.fontSize(16).fillColor(primaryColor).text(`Remedies for ${name}`, 50)
+        doc.moveDown(1)
+
+        remedies.forEach((r) => {
+          if (doc.y > 700) doc.addPage()
+
+          doc.fontSize(12).fillColor(textColor).text(`Number ${r.number}`, { underline: true })
+          doc.fontSize(9).fillColor(mutedColor).text(r.impact[0])
+          doc.moveDown(0.5)
+          doc.fontSize(9).fillColor(textColor).text("Recommended:", { oblique: true })
+          r.remedies.forEach((rem) => {
+            doc.fontSize(9).text(`• ${rem}`, { indent: 10 })
+          })
+          doc.moveDown(1)
+        })
+      }
     }
 
     renderGrid(gridX1, gridY, data.user.result.gridNumbers)
@@ -105,31 +163,16 @@ export async function generateCompatibilityPDF(data: CompatibilityPDFData): Prom
     doc.moveDown(2)
 
     // Remedies
-    const userMissing = getMissingNumbers(data.user.result.gridNumbers)
-    const userRemedies = getRemediesForNumbers(userMissing)
-
-    if (userRemedies.length > 0) {
-      if (doc.y > 650) doc.addPage()
-
-      doc.fontSize(16).fillColor(primaryColor).text(`Remedies for ${data.user.name}`, 50)
-      doc.moveDown(1)
-
-      userRemedies.forEach(r => {
-        if (doc.y > 700) doc.addPage()
-
-        doc.fontSize(12).fillColor(textColor).text(`Number ${r.number}`, { underline: true })
-        doc.fontSize(9).fillColor(mutedColor).text(r.impact[0])
-        doc.moveDown(0.5)
-        doc.fontSize(9).fillColor(textColor).text("Recommended:", { oblique: true })
-        r.remedies.forEach(rem => {
-          doc.fontSize(9).text(`• ${rem}`, { indent: 10 })
-        })
-        doc.moveDown(1)
-      })
-    }
+    renderRemedies(data.user.name, data.user.result.gridNumbers)
+    renderRemedies(data.partner.name, data.partner.result.gridNumbers)
 
     // Footer
-    doc.fontSize(8).fillColor(mutedColor).text("Generated by Numero AI • Professional Numerology Analysis", 50, doc.page.height - 50, { align: "center" })
+    doc
+      .fontSize(8)
+      .fillColor(mutedColor)
+      .text("Generated by Numero AI • Professional Numerology Analysis", 50, doc.page.height - 50, {
+        align: "center",
+      })
 
     doc.end()
   })

@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { motion } from "framer-motion"
 import { Download, Heart, Loader2, Share2, Sparkles, TrendingUp } from "lucide-react"
+import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -15,8 +15,22 @@ import { RemedySection } from "./remedy-section"
 
 interface CompatibilityResultProps {
   analysis: string
-  user: { name: string; dob: string; gender: Gender; moolank: number; bhagyank: number; gridNumbers: number[] }
-  partner: { name: string; dob: string; gender: Gender; moolank: number; bhagyank: number; gridNumbers: number[] }
+  user: {
+    name: string
+    dob: string
+    gender: Gender
+    moolank: number
+    bhagyank: number
+    gridNumbers: number[]
+  }
+  partner: {
+    name: string
+    dob: string
+    gender: Gender
+    moolank: number
+    bhagyank: number
+    gridNumbers: number[]
+  }
 }
 
 const container = {
@@ -87,6 +101,8 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
   const score = calculateCompatibilityScore(userResult, partnerResult)
   const userMissing = getMissingNumbers(user.gridNumbers)
   const userRemedies = getRemediesForNumbers(userMissing)
+  const partnerMissing = getMissingNumbers(partner.gridNumbers)
+  const partnerRemedies = getRemediesForNumbers(partnerMissing)
 
   // Determine score color
   const getScoreColor = (s: number) => {
@@ -278,8 +294,9 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
       </motion.div>
 
       {/* Remedies Section */}
-      <motion.div variants={item}>
+      <motion.div variants={item} className="grid grid-cols-1 gap-12">
         <RemedySection userName={user.name} remedies={userRemedies} />
+        <RemedySection userName={partner.name} remedies={partnerRemedies} />
       </motion.div>
     </motion.div>
   )

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest"
+import { describe, expect, it } from "vitest"
 import { calculateCompatibilityScore } from "./compatibility-logic"
 import type { NumerologyResult } from "./types"
 
@@ -7,21 +7,21 @@ describe("compatibility-logic", () => {
     moolank: 1,
     bhagyank: 1,
     kua: 4,
-    gridNumbers: [1, 1, 4, 1]
+    gridNumbers: [1, 1, 4, 1],
   }
 
   const user2: NumerologyResult = {
     moolank: 1,
     bhagyank: 1,
     kua: 4,
-    gridNumbers: [1, 1, 4, 1]
+    gridNumbers: [1, 1, 4, 1],
   }
 
   const user3: NumerologyResult = {
     moolank: 8,
     bhagyank: 8,
     kua: 2,
-    gridNumbers: [8, 8, 2, 8]
+    gridNumbers: [8, 8, 2, 8],
   }
 
   it("returns a high score for identical friendly profiles", () => {
@@ -46,19 +46,19 @@ describe("compatibility-logic", () => {
       moolank: 5,
       bhagyank: 5,
       kua: 5,
-      gridNumbers: [5] // Missing everything but 5
+      gridNumbers: [5], // Missing everything but 5
     }
     const personB: NumerologyResult = {
       moolank: 5,
       bhagyank: 5,
       kua: 5,
-      gridNumbers: [1, 2, 3, 4, 6, 7, 8, 9] // Fills all gaps of personA
+      gridNumbers: [1, 2, 3, 4, 6, 7, 8, 9], // Fills all gaps of personA
     }
     const personC: NumerologyResult = {
       moolank: 5,
       bhagyank: 5,
       kua: 5,
-      gridNumbers: [5] // Fills no gaps
+      gridNumbers: [5], // Fills no gaps
     }
 
     const scoreWithSynergy = calculateCompatibilityScore(personA, personB)
