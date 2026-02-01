@@ -23,8 +23,11 @@ export async function getCompatibility(user: ProfileInput, partner: ProfileInput
   if (!userNums || !partnerNums) return { error: "Invalid birth data provided" }
 
   // 2. Check Cache
-  // Key: sorted DOBs to ensure A+B is same as B+A
-  const keys = [user.dob + user.name, partner.dob + partner.name].sort()
+  // Key: sorted DOBs and normalized names to ensure A+B is same as B+A
+  const keys = [
+    `${user.dob}-${user.name.trim().toLowerCase()}`,
+    `${partner.dob}-${partner.name.trim().toLowerCase()}`,
+  ].sort()
   const cacheKey = `compat-${keys.join("-")}`
 
   if (forecastCache.has(cacheKey)) {
