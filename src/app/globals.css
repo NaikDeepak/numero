@@ -130,6 +130,20 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20;
+  }
+}
+
+@layer utilities {
+  .bg-cosmic {
+    background: radial-gradient(circle at 50% 0%, oklch(0.2 0.1 260 / 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 0% 50%, oklch(0.2 0.1 300 / 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 50%, oklch(0.2 0.1 200 / 0.1) 0%, transparent 50%);
+  }
+
+  .dark .bg-cosmic {
+    background: radial-gradient(circle at 50% 0%, oklch(0.3 0.1 260 / 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 0% 50%, oklch(0.3 0.1 300 / 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 100% 50%, oklch(0.3 0.1 200 / 0.15) 0%, transparent 60%);
   }
 }

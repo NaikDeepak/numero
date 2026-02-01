@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { AnimatedNumber } from "@/components/ui/animated-number"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { MoolankMeaning } from "@/lib/numerology/data-loader"
 import { analyzeGrid } from "@/lib/numerology/grid-utils"
@@ -40,7 +41,9 @@ export function HeroResult({ moolank, bhagyank, gridNumbers, nameNumbers }: Hero
                 <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
                   Moolank
                 </span>
-                <span className="text-7xl font-bold text-primary">{moolank}</span>
+                <span className="text-7xl font-bold text-primary">
+                  <AnimatedNumber value={moolank} delay={200} />
+                </span>
                 <p className="text-xs text-muted-foreground text-center">
                   Your Root Number represents your basic character and personality.
                 </p>
@@ -59,7 +62,9 @@ export function HeroResult({ moolank, bhagyank, gridNumbers, nameNumbers }: Hero
                 <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
                   Bhagyank
                 </span>
-                <span className="text-7xl font-bold text-secondary">{bhagyank}</span>
+                <span className="text-7xl font-bold text-secondary">
+                  <AnimatedNumber value={bhagyank} delay={400} />
+                </span>
                 <p className="text-xs text-muted-foreground text-center">
                   Your Destiny Number reveals your life path and ultimate goals.
                 </p>
