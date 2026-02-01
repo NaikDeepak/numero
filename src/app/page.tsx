@@ -1,12 +1,12 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { useProfileStore, useHydratedProfile } from "@/store/use-profile-store"
-import { NumerologyInputForm } from "@/components/numerology/input-form"
-import { HeroResult } from "@/components/numerology/hero-result"
-import { calculateNumerologyData } from "@/lib/numerology/engine"
-import { Button } from "@/components/ui/button"
 import { RefreshCcw } from "lucide-react"
+import { HeroResult } from "@/components/numerology/hero-result"
+import { NumerologyInputForm } from "@/components/numerology/input-form"
+import { Button } from "@/components/ui/button"
+import { calculateNumerologyData } from "@/lib/numerology/engine"
+import { useHydratedProfile, useProfileStore } from "@/store/use-profile-store"
 
 export default function Home() {
   const { profile, isHydrated } = useHydratedProfile()
@@ -58,7 +58,11 @@ export default function Home() {
               className="flex flex-col items-center space-y-8"
             >
               {results && (
-                <HeroResult moolank={results.moolank} bhagyank={results.bhagyank} />
+                <HeroResult
+                  moolank={results.moolank}
+                  bhagyank={results.bhagyank}
+                  gridNumbers={results.gridNumbers}
+                />
               )}
 
               <Button
