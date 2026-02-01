@@ -243,11 +243,13 @@ export default function CompatibilityPage() {
                   name: profile.name,
                   moolank: result.userNums.moolank,
                   bhagyank: result.userNums.bhagyank,
+                  gridNumbers: result.userNums.gridNumbers,
                 }}
                 partner={{
                   name: form.getValues().name,
                   moolank: result.partnerNums.moolank,
                   bhagyank: result.partnerNums.bhagyank,
+                  gridNumbers: result.partnerNums.gridNumbers,
                 }}
               />
               <Button

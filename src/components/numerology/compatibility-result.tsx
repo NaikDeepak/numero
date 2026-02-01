@@ -1,16 +1,21 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Download, Heart, Share2, Sparkles } from "lucide-react"
+import { Download, Heart, Share2, Sparkles, TrendingUp } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { calculateCompatibilityScore } from "@/lib/numerology/compatibility-logic"
+import { getMissingNumbers, getRemediesForNumbers } from "@/lib/numerology/remedies"
+import type { NumerologyResult } from "@/lib/numerology/types"
+import { CompatibilityGrid } from "./compatibility-grid"
+import { RemedySection } from "./remedy-section"
 
 interface CompatibilityResultProps {
   analysis: string
-  user: { name: string; moolank: number; bhagyank: number }
-  partner: { name: string; moolank: number; bhagyank: number }
+  user: { name: string; moolank: number; bhagyank: number; gridNumbers: number[] }
+  partner: { name: string; moolank: number; bhagyank: number; gridNumbers: number[] }
 }
 
 const container = {
@@ -32,13 +37,57 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
   const sharedMoolank = user.moolank === partner.moolank
   const sharedBhagyank = user.bhagyank === partner.bhagyank
 
+  const userResult: NumerologyResult = {
+    moolank: user.moolank,
+    bhagyank: user.bhagyank,
+    kua: "-", // Default if not passed
+    gridNumbers: user.gridNumbers,
+  }
+
+  const partnerResult: NumerologyResult = {
+    moolank: partner.moolank,
+    bhagyank: partner.bhagyank,
+    kua: "-",
+    gridNumbers: partner.gridNumbers,
+  }
+
+  const score = calculateCompatibilityScore(userResult, partnerResult)
+  const userMissing = getMissingNumbers(user.gridNumbers)
+  const userRemedies = getRemediesForNumbers(userMissing)
+
+  // Determine score color
+  const getScoreColor = (s: number) => {
+    if (s >= 80) return "text-emerald-500"
+    if (s >= 60) return "text-primary"
+    if (s >= 40) return "text-amber-500"
+    return "text-rose-500"
+  }
+
   return (
     <motion.div
       variants={container}
       initial="hidden"
       animate="show"
-      className="space-y-8 w-full max-w-4xl"
+      className="space-y-12 w-full max-w-4xl"
     >
+      {/* Score Header */}
+      <motion.div variants={item} className="text-center space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
+          <TrendingUp className="w-3.5 h-3.5" />
+          Compatibility Score
+        </div>
+        <div className="relative inline-block">
+          <div className={cn("text-8xl font-black tracking-tighter", getScoreColor(score))}>
+            {score}%
+          </div>
+          <div className="absolute -inset-4 bg-primary/5 blur-3xl -z-10 rounded-full" />
+        </div>
+        <p className="text-muted-foreground max-w-md mx-auto">
+          A deterministic measure of your numerological resonance based on root numbers, destiny
+          paths, and grid completion.
+        </p>
+      </motion.div>
+
       <motion.div
         variants={item}
         className="flex flex-col md:flex-row gap-6 items-center justify-center"
@@ -148,6 +197,15 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
         </Card>
       </motion.div>
 
+      {/* Comparison Grids */}
+      <motion.div variants={item}>
+        <CompatibilityGrid
+          user={{ name: user.name, gridNumbers: user.gridNumbers }}
+          partner={{ name: partner.name, gridNumbers: partner.gridNumbers }}
+        />
+      </motion.div>
+
+      {/* Analysis Section */}
       <motion.div variants={item}>
         <Card className="bg-card/40 backdrop-blur-md border-primary/10 overflow-hidden relative">
           <div className="absolute top-0 right-0 p-4 flex gap-2">
@@ -179,6 +237,15 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Remedies Section */}
+      <motion.div variants={item}>
+        <RemedySection userName={user.name} remedies={userRemedies} />
+      </motion.div>
     </motion.div>
   )
+}
+
+function cn(...classes: string[]) {
+  return classes.filter(Boolean).join(" ")
 }
