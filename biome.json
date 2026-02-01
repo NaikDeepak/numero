@@ -14,7 +14,7 @@
       "*.json",
       "**/*.md",
       "**/*.json",
-      ".planning/**/*.md"
+      ".planning/**/*"
     ]
   },
   "formatter": {
