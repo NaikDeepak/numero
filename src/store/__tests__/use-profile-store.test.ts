@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { beforeEach, describe, expect, it } from "vitest"
 import { useProfileStore } from "../use-profile-store"
 
 describe("useProfileStore", () => {
@@ -17,7 +17,7 @@ describe("useProfileStore", () => {
   })
 
   it("should set profile", () => {
-    const profile = { name: "John Doe", dob: "1990-01-01", gender: "male" as const }
+    const profile = { name: "John Doe", dob: "1990-01-01", gender: "Male" as const }
     useProfileStore.getState().setProfile(profile)
 
     const state = useProfileStore.getState()
@@ -25,7 +25,7 @@ describe("useProfileStore", () => {
   })
 
   it("should clear profile", () => {
-    const profile = { name: "John Doe", dob: "1990-01-01", gender: "male" as const }
+    const profile = { name: "John Doe", dob: "1990-01-01", gender: "Male" as const }
     useProfileStore.getState().setProfile(profile)
     useProfileStore.getState().clearProfile()
 
@@ -34,7 +34,7 @@ describe("useProfileStore", () => {
   })
 
   it("should persist profile in localStorage", () => {
-    const profile = { name: "Jane Doe", dob: "1992-05-15", gender: "female" as const }
+    const profile = { name: "Jane Doe", dob: "1992-05-15", gender: "Female" as const }
     useProfileStore.getState().setProfile(profile)
 
     const storedValue = localStorage.getItem("user-profile-storage")

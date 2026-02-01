@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { GenderSchema, NumerologyInputSchema } from "./types"
+import { NumerologyInputSchema } from "./types"
 
 describe("Numerology Schemas", () => {
   it("should validate valid input", () => {
