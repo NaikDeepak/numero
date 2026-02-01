@@ -13,7 +13,8 @@
       "*.mjs",
       "*.json",
       "**/*.md",
-      ".planning/**/*"
+      "**/*.json",
+      ".planning/**/*.md"
     ]
   },
   "formatter": {
