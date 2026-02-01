@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server"
-import { getGeminiClient, GEMINI_MODEL } from "@/lib/ai/gemini"
-import { generateReportPrompt, SYSTEM_INSTRUCTION } from "@/lib/ai/prompts"
-import { generateNumerologyPDF } from "@/lib/pdf/generator"
-import { calculateNumerologyData } from "@/lib/numerology/engine"
+import { type NextRequest, NextResponse } from "next/server"
 import { forecastCache } from "@/lib/ai/cache"
-import { Gender } from "@/lib/numerology/types"
+import { GEMINI_MODEL, getGeminiClient } from "@/lib/ai/gemini"
+import { generateReportPrompt, SYSTEM_INSTRUCTION } from "@/lib/ai/prompts"
+import { calculateNumerologyData } from "@/lib/numerology/engine"
+import type { Gender } from "@/lib/numerology/types"
+import { generateNumerologyPDF } from "@/lib/pdf/generator"
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
@@ -34,15 +34,22 @@ export async function GET(req: NextRequest) {
         try {
           const model = client.getGenerativeModel({
             model: GEMINI_MODEL,
-            systemInstruction: SYSTEM_INSTRUCTION
+            systemInstruction: SYSTEM_INSTRUCTION,
           })
-          const prompt = generateReportPrompt(name, dob, nums.moolank, nums.bhagyank, nums.gridNumbers)
+          const prompt = generateReportPrompt(
+            name,
+            dob,
+            nums.moolank,
+            nums.bhagyank,
+            nums.gridNumbers,
+          )
           const result = await model.generateContent(prompt)
           analysis = await result.response.text()
           forecastCache.set(cacheKey, analysis)
         } catch (aiError) {
           console.error("AI Generation failed:", aiError)
-          analysis = "We could not generate the AI portion of your report at this time. Please try again later."
+          analysis =
+            "We could not generate the AI portion of your report at this time. Please try again later."
         }
       } else {
         analysis = "AI service is currently unavailable (API Key missing). Please contact support."
@@ -55,17 +62,16 @@ export async function GET(req: NextRequest) {
       dob,
       moolank: nums.moolank,
       bhagyank: nums.bhagyank,
-      aiAnalysis: analysis
+      aiAnalysis: analysis,
     })
 
     // 4. Return Stream
     return new NextResponse(new Blob([new Uint8Array(pdfBuffer)]), {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="Numerology_Report_${name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf"`
-      }
+        "Content-Disposition": `attachment; filename="Numerology_Report_${name.replace(/[^a-zA-Z0-9]/g, "_")}.pdf"`,
+      },
     })
-
   } catch (error) {
     console.error("Report Generation Error:", error)
     return NextResponse.json({ error: "Failed to generate report" }, { status: 500 })
