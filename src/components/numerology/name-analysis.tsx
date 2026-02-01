@@ -1,9 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { User, Heart, Star } from "lucide-react"
-import { InterpretationCard } from "./interpretation-card"
+import { Heart, Star, User } from "lucide-react"
 import type { NameNumbers } from "@/lib/numerology/types"
+import { InterpretationCard } from "./interpretation-card"
 
 interface NameAnalysisProps {
   nameNumbers: NameNumbers

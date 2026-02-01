@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -27,7 +27,9 @@ export function InterpretationCard({
   const hasMore = Boolean(fullContent)
 
   return (
-    <Card className={cn("overflow-hidden border-primary/10 bg-card/50 backdrop-blur-sm", className)}>
+    <Card
+      className={cn("overflow-hidden border-primary/10 bg-card/50 backdrop-blur-sm", className)}
+    >
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
           {icon && <div className="text-primary">{icon}</div>}
@@ -35,9 +37,7 @@ export function InterpretationCard({
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="text-sm text-muted-foreground leading-relaxed">
-          {summary}
-        </div>
+        <div className="text-sm text-muted-foreground leading-relaxed">{summary}</div>
 
         <AnimatePresence initial={false}>
           {isExpanded && fullContent && (

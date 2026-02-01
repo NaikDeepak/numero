@@ -2,9 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { NumerologyInputSchema, type NumerologyInput } from "@/lib/numerology/types"
-import { useProfileStore } from "@/store/use-profile-store"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Form,
   FormControl,
@@ -21,7 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { type NumerologyInput, NumerologyInputSchema } from "@/lib/numerology/types"
+import { useProfileStore } from "@/store/use-profile-store"
 
 export function NumerologyInputForm() {
   const setProfile = useProfileStore((state) => state.setProfile)

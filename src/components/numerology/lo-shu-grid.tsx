@@ -44,9 +44,7 @@ function GridCell({ position, numbers, delay }: GridCellProps) {
         count > 0 ? colorClass : "bg-muted/30 text-muted-foreground/30 border-muted",
       )}
     >
-      <span className="text-2xl sm:text-3xl font-bold">
-        {count > 0 ? position : ""}
-      </span>
+      <span className="text-2xl sm:text-3xl font-bold">{count > 0 ? position : ""}</span>
       {count > 1 && (
         <span className="absolute top-1 right-2 text-[10px] sm:text-xs font-medium opacity-70">
           x{count}
@@ -71,12 +69,7 @@ export function LoShuGrid({ gridNumbers }: LoShuGridProps) {
     <div className="flex flex-col items-center space-y-6">
       <div className="grid grid-cols-3 gap-3 p-4 bg-background border rounded-2xl shadow-inner">
         {layout.flat().map((num, index) => (
-          <GridCell
-            key={num}
-            position={num}
-            numbers={gridNumbers}
-            delay={index * 0.1}
-          />
+          <GridCell key={num} position={num} numbers={gridNumbers} delay={index * 0.1} />
         ))}
       </div>
       <div className="flex flex-wrap justify-center gap-4 text-[10px] uppercase tracking-wider font-semibold opacity-60">

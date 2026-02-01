@@ -16,9 +16,7 @@ export function analyzeGrid(
 
   // Create a Set of unique, valid numbers present in the grid
   const presentNumbers = new Set(
-    gridNumbers
-      .map((n) => Math.floor(n))
-      .filter((n) => !Number.isNaN(n) && n >= 1 && n <= 9),
+    gridNumbers.map((n) => Math.floor(n)).filter((n) => !Number.isNaN(n) && n >= 1 && n <= 9),
   )
 
   const analysisResults: GridAnalysisResult[] = []

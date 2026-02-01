@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { analyzeGrid } from "@/lib/numerology/grid-utils"
 import type { MoolankMeaning } from "@/lib/numerology/data-loader"
+import { analyzeGrid } from "@/lib/numerology/grid-utils"
 import type { GridPatternDefinition, NameNumbers } from "@/lib/numerology/types"
 import gridDefinitions from "../../../api/data/gridAnalysisDefinitions.json"
 import moolankMeaningsRaw from "../../../api/data/moolankMeanings.json"
