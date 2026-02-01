@@ -81,7 +81,9 @@ describe("getCompatibility Server Action", () => {
     const mockClient = {
       getGenerativeModel: vi.fn().mockReturnValue(mockModel),
     }
-    vi.mocked(getGeminiClient).mockReturnValue(mockClient as unknown as ReturnType<typeof getGeminiClient>)
+    vi.mocked(getGeminiClient).mockReturnValue(
+      mockClient as unknown as ReturnType<typeof getGeminiClient>,
+    )
 
     const result = await getCompatibility(mockUser, mockPartner)
 
