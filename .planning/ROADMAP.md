@@ -1,0 +1,32 @@
+# Project Roadmap
+
+## Current Milestone: v1.1 Security & Engagement
+
+### Phase 6: Auth & User Accounts
+
+**Goal:** Secure login, profile sync, and premium tier gating.
+**Depends on:** Phase 5 (v1.0)
+**Status:** Proposed
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
+
+**Details:**
+Implement secure user authentication (Firebase), user profiles, and prepare for premium features.
+
+### Phase 7: Enhanced Compatibility Reports & Remedies
+
+**Goal:** Detailed compatibility reports with side-by-side grids, remedies, and PDF export.
+**Depends on:** Phase 6
+**Plans:** 3 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Implement remedy mapping and deterministic scoring logic
+- [ ] 07-02-PLAN.md — Create comparison grids and remedy UI components
+- [ ] 07-03-PLAN.md — Implement dual-profile PDF generation and export
+
+**Details:**
+Show more details in compatibility report like Lo Shu grid of both persons, export functionality, detailed analysis with each number, how they complete each other, missing number significance, and remedies.
+
+---
