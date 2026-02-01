@@ -99,11 +99,13 @@ Plans:
   3. User can view AI-driven compatibility analysis between two profiles
   4. Compatibility analysis goes beyond numeric score to provide relationship insights
   5. AI features reuse Phase 4 infrastructure (rate limiting, caching, persona consistency)
-**Plans**: 2 plans
+**Plans**: 4 plans
 
 Plans:
-- [x] 05-01-PLAN.md — AI-Enhanced PDF Report System
-- [x] 05-02-PLAN.md — AI-Driven Compatibility Analysis
+- [ ] 05-01-PLAN.md — AI-Enhanced PDF Foundation
+- [ ] 05-02-PLAN.md — PDF API and UI Integration
+- [ ] 05-03-PLAN.md — AI-Driven Compatibility Logic
+- [ ] 05-04-PLAN.md — Compatibility UI Refinement
 
 ## Progress
 
