@@ -62,7 +62,7 @@ export function HeroResult({ moolank, bhagyank, gridNumbers, nameNumbers }: Hero
                 <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
                   Bhagyank
                 </span>
-                <span className="text-7xl font-bold text-secondary">
+                <span className="text-7xl font-bold text-primary">
                   <AnimatedNumber value={bhagyank} delay={400} />
                 </span>
                 <p className="text-xs text-muted-foreground text-center">

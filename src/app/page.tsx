@@ -8,7 +8,6 @@ import { HeroResult } from "@/components/numerology/hero-result"
 import { NumerologyInputForm } from "@/components/numerology/input-form"
 import { ReportButton } from "@/components/numerology/report-button"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { calculateNameNumbers, calculateNumerologyData } from "@/lib/numerology/engine"
 import { useHydratedProfile, useProfileStore } from "@/store/use-profile-store"
 
@@ -41,10 +40,6 @@ export default function Home() {
             {profile ? `Welcome, ${profile.name}` : "Discover your numbers, define your destiny."}
           </p>
         </header>
-
-        <div className="absolute top-4 right-4 md:top-8 md:right-8">
-          <ThemeToggle />
-        </div>
 
         <AnimatePresence mode="wait">
           {!profile ? (
