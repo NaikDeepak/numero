@@ -13,7 +13,7 @@ This roadmap transforms Numero from a functional numerology app into an AI-first
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation Setup** - Modern stack scaffolding and deployment pipeline
-- [ ] **Phase 2: Core Numerology** - Port proven calculation engine with basic UI
+- [x] **Phase 2: Core Numerology** - Port proven calculation engine with basic UI
 - [ ] **Phase 3: Immersive UI** - Modern minimal aesthetic with motion design
 - [ ] **Phase 4: AI Infrastructure + Daily Forecasts** - AI service layer with personalized daily insights
 - [ ] **Phase 5: AI Reports + Compatibility** - Enhanced PDF reports and AI-driven compatibility analysis
