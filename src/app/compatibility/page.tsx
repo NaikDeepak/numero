@@ -241,12 +241,16 @@ export default function CompatibilityPage() {
                 analysis={result.analysis}
                 user={{
                   name: profile.name,
+                  dob: profile.dob,
+                  gender: profile.gender,
                   moolank: result.userNums.moolank,
                   bhagyank: result.userNums.bhagyank,
                   gridNumbers: result.userNums.gridNumbers,
                 }}
                 partner={{
                   name: form.getValues().name,
+                  dob: form.getValues().dob,
+                  gender: form.getValues().gender,
                   moolank: result.partnerNums.moolank,
                   bhagyank: result.partnerNums.bhagyank,
                   gridNumbers: result.partnerNums.gridNumbers,

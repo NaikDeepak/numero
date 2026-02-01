@@ -1,21 +1,22 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { Download, Heart, Share2, Sparkles, TrendingUp } from "lucide-react"
+import { Download, Heart, Loader2, Share2, Sparkles, TrendingUp } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { calculateCompatibilityScore } from "@/lib/numerology/compatibility-logic"
 import { getMissingNumbers, getRemediesForNumbers } from "@/lib/numerology/remedies"
-import type { NumerologyResult } from "@/lib/numerology/types"
+import type { Gender, NumerologyResult } from "@/lib/numerology/types"
 import { CompatibilityGrid } from "./compatibility-grid"
 import { RemedySection } from "./remedy-section"
 
 interface CompatibilityResultProps {
   analysis: string
-  user: { name: string; moolank: number; bhagyank: number; gridNumbers: number[] }
-  partner: { name: string; moolank: number; bhagyank: number; gridNumbers: number[] }
+  user: { name: string; dob: string; gender: Gender; moolank: number; bhagyank: number; gridNumbers: number[] }
+  partner: { name: string; dob: string; gender: Gender; moolank: number; bhagyank: number; gridNumbers: number[] }
 }
 
 const container = {
@@ -34,8 +35,40 @@ const item = {
 }
 
 export function CompatibilityResult({ analysis, user, partner }: CompatibilityResultProps) {
+  const [downloading, setDownloading] = useState(false)
   const sharedMoolank = user.moolank === partner.moolank
   const sharedBhagyank = user.bhagyank === partner.bhagyank
+
+  const handleDownload = async () => {
+    setDownloading(true)
+    try {
+      const params = new URLSearchParams({
+        name1: user.name,
+        dob1: user.dob,
+        gender1: user.gender,
+        name2: partner.name,
+        dob2: partner.dob,
+        gender2: partner.gender,
+      })
+      const response = await fetch(`/api/report/compatibility?${params.toString()}`)
+      if (!response.ok) throw new Error("Failed to generate PDF")
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `Compatibility_${user.name}_${partner.name}.pdf`.replace(/[^a-zA-Z0-9]/g, "_")
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (error) {
+      console.error("Download error:", error)
+      alert("Failed to download PDF report. Please try again.")
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   const userResult: NumerologyResult = {
     moolank: user.moolank,
@@ -220,8 +253,14 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
               variant="ghost"
               size="icon"
               className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40"
+              onClick={handleDownload}
+              disabled={downloading}
             >
-              <Download className="h-4 w-4" />
+              {downloading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
             </Button>
           </div>
           <CardHeader>
