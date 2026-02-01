@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 03-immersive-ui (Refinement)
-Plan: 01 of 3 (Immersive UI Foundation)
+Plan: 02 of 3 (Reduced Motion Support)
 Status: Phase Refinement
-Last activity: 2026-02-01 — Completed 03-01-PLAN.md
+Last activity: 2026-02-01 — Completed 03-02-PLAN.md
 
 Progress: [████████████████████] 100%
 
@@ -40,6 +40,7 @@ Progress: [████████████████████] 100%
 ## Accumulated Context
 
 ### Decisions
+- **Accessibility**: Adopted `useReducedMotion` hook for reactive, fine-grained control over animations rather than global CSS disable.
 - **UI Architecture**: Transitions handled in `template.tsx` to ensure animation on route changes.
 - **AI Model**: Standardized on `gemini-2.0-flash` for speed/cost balance.
 - **Caching**: Implemented server-side LRU cache for AI responses to minimize costs and latency.
@@ -55,5 +56,5 @@ None. AI infrastructure is live (needs API key to function fully).
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 03-01-PLAN.md (UI Foundation)
+Stopped at: Completed 03-02-PLAN.md (Reduced Motion Support)
 Resume file: None
