@@ -5,7 +5,7 @@ import { RefreshCcw } from "lucide-react"
 import { HeroResult } from "@/components/numerology/hero-result"
 import { NumerologyInputForm } from "@/components/numerology/input-form"
 import { Button } from "@/components/ui/button"
-import { calculateNumerologyData } from "@/lib/numerology/engine"
+import { calculateNameNumbers, calculateNumerologyData } from "@/lib/numerology/engine"
 import { useHydratedProfile, useProfileStore } from "@/store/use-profile-store"
 
 export default function Home() {
@@ -24,6 +24,7 @@ export default function Home() {
   }
 
   const results = profile ? calculateNumerologyData(profile.dob, profile.gender) : null
+  const nameNumbers = profile ? calculateNameNumbers(profile.name) : null
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 md:p-24 bg-background overflow-hidden">
@@ -62,6 +63,7 @@ export default function Home() {
                   moolank={results.moolank}
                   bhagyank={results.bhagyank}
                   gridNumbers={results.gridNumbers}
+                  nameNumbers={nameNumbers}
                 />
               )}
 
