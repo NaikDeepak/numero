@@ -1,13 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { authMiddleware } from "next-firebase-auth-edge"
+import { authMiddleware, redirectToLogin } from "next-firebase-auth-edge"
 import { clientConfig, serverConfig } from "./auth/config"
 
 const PUBLIC_PATHS = ["/login", "/register", "/"]
 
-// Ensure we have at least one signature key in development
-
 export async function middleware(request: NextRequest) {
-  return authMiddleware(request, {
+  return await authMiddleware(request, {
     loginPath: "/api/auth/login",
     logoutPath: "/api/auth/logout",
     apiKey: clientConfig.apiKey,
@@ -30,18 +28,24 @@ export async function middleware(request: NextRequest) {
       })
     },
     handleInvalidToken: async (reason) => {
-      console.info("Missing or invalid token", { reason })
+      console.info("[Middleware] ⚠️ Invalid token:", reason)
 
       if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
         return NextResponse.next()
       }
 
-      return NextResponse.redirect(new URL("/login", request.url))
+      return redirectToLogin(request, {
+        path: "/login",
+        publicPaths: PUBLIC_PATHS,
+      })
     },
     handleError: async (error) => {
-      console.error("Unhandled authentication error", { error })
+      console.error("[Middleware] ❌ Authentication error:", error)
 
-      return NextResponse.redirect(new URL("/login", request.url))
+      return redirectToLogin(request, {
+        path: "/login",
+        publicPaths: PUBLIC_PATHS,
+      })
     },
   })
 }

@@ -22,8 +22,22 @@ export default function UpgradePage() {
       // For this demo, we just toggle the status via server action
       const result = await togglePremiumStatus()
       if (result.success) {
+        // Refresh token to get new claims
+        const { auth } = await import("@/lib/firebase")
+        const token = await auth.currentUser?.getIdToken(true)
+
+        if (token) {
+          // Update session cookie via middleware
+          await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        }
+
         // Force a hard refresh to ensure all server components pick up the new claim
-        window.location.href = "/reports/premium"
+        window.location.href = "/"
       }
     } catch (error) {
       console.error("Upgrade failed:", error)

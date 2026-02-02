@@ -13,5 +13,6 @@ import { type NextRequest, NextResponse } from "next/server"
  * and return a response.
  */
 export async function POST(_request: NextRequest) {
+  console.log("[API Route] ✅ /api/auth/login hit!")
   return NextResponse.json({ success: true })
 }
