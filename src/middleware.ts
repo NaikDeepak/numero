@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     cookieSignatureKeys: serverConfig.cookieSignatureKeys,
     cookieSerializeOptions: serverConfig.cookieSerializeOptions,
     serviceAccount: serverConfig.serviceAccount,
-    handleValidToken: async ({ token, decodedToken }, headers) => {
+    handleValidToken: async ({ decodedToken }, headers) => {
       // Premium gating
       if (request.nextUrl.pathname.startsWith("/reports/premium")) {
         if (!(decodedToken.customClaims as { premium?: boolean })?.premium) {
