@@ -65,9 +65,10 @@ export function LoginForm() {
 
       router.push("/")
       router.refresh()
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Login error:", err)
-      setError(err.message || "An error occurred during login")
+      const message = err instanceof Error ? err.message : "An error occurred during login"
+      setError(message)
     } finally {
       setLoading(false)
     }

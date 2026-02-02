@@ -79,9 +79,10 @@ export function SignupForm() {
 
       router.push("/")
       router.refresh()
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Signup error:", err)
-      setError(err.message || "An error occurred during signup")
+      const message = err instanceof Error ? err.message : "An error occurred during signup"
+      setError(message)
     } finally {
       setLoading(false)
     }
