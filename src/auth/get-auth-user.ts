@@ -9,7 +9,9 @@ export async function getAuthUser(): Promise<AuthUser | null> {
   // Ensure we have a valid service account configuration before attempting to verify tokens
   if (!clientEmail || !privateKey || !privateKey.includes("BEGIN PRIVATE KEY")) {
     if (process.env.NODE_ENV !== "production") {
-      const pkStatus = privateKey ? `Present (starts with: ${privateKey.substring(0, 20)}...)` : "Missing"
+      const pkStatus = privateKey
+        ? `Present (starts with: ${privateKey.substring(0, 20)}...)`
+        : "Missing"
       console.warn(
         `[getAuthUser] ⚠️ Missing or invalid Firebase Admin Private Key. Returning null user. Check your .env.local. PrivateKey: ${pkStatus}`,
       )

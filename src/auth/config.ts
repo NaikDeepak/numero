@@ -25,20 +25,18 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Robustly filter cookie signature keys
-const rawKeys = [
-  process.env.AUTH_COOKIE_SIGNATURE_KEY_1,
-  process.env.AUTH_COOKIE_SIGNATURE_KEY_2,
-]
+const rawKeys = [process.env.AUTH_COOKIE_SIGNATURE_KEY_1, process.env.AUTH_COOKIE_SIGNATURE_KEY_2]
 
-const validKeys = rawKeys.filter((key): key is string =>
-  typeof key === "string" && key.trim().length > 0
+const validKeys = rawKeys.filter(
+  (key): key is string => typeof key === "string" && key.trim().length > 0,
 )
 
-const cookieSignatureKeys = validKeys.length > 0
-  ? validKeys
-  : process.env.NODE_ENV !== "production"
-    ? ["dev-secret-key-change-me-in-prod-1234567890"]
-    : []
+const cookieSignatureKeys =
+  validKeys.length > 0
+    ? validKeys
+    : process.env.NODE_ENV !== "production"
+      ? ["dev-secret-key-change-me-in-prod-1234567890"]
+      : []
 
 export const serverConfig = {
   cookieName: process.env.AUTH_COOKIE_NAME ?? "__session",

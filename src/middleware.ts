@@ -6,7 +6,6 @@ const PUBLIC_PATHS = ["/login", "/register", "/"]
 
 // Ensure we have at least one signature key in development
 
-
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
     loginPath: "/api/auth/login",
