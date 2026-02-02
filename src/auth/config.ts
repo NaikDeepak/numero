@@ -3,7 +3,7 @@ export const serverConfig = {
   cookieSignatureKeys: [
     process.env.AUTH_COOKIE_SIGNATURE_KEY_1 ?? "",
     process.env.AUTH_COOKIE_SIGNATURE_KEY_2 ?? "",
-  ],
+  ].filter((key) => key.length > 0),
   cookieSerializeOptions: {
     path: "/",
     httpOnly: true,
