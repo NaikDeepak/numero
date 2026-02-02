@@ -4,9 +4,9 @@ import "./globals.css"
 import { AuthProvider } from "@/auth/auth-provider"
 import { getAuthUser } from "@/auth/get-auth-user"
 import { ProfileSyncManager } from "@/components/auth/profile-sync-manager"
+import { NavMain } from "@/components/nav-main"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
-import { NavMain } from "@/components/nav-main"
 
 const inter = Inter({ subsets: ["latin"] })
 

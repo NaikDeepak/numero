@@ -1,12 +1,13 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "@/lib/firebase"
-import { useRouter } from "next/navigation"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,8 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2 } from "lucide-react"
+import { auth } from "@/lib/firebase"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -44,11 +44,7 @@ export function LoginForm() {
     setLoading(true)
     setError(null)
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      )
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password)
       const idToken = await userCredential.user.getIdToken()
 
       // Sync session cookie

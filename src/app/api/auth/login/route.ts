@@ -12,6 +12,6 @@ import { type NextRequest, NextResponse } from "next/server"
  * Authorization header, the middleware will set the session cookies
  * and return a response.
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   return NextResponse.json({ success: true })
 }

@@ -12,6 +12,11 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
+// Basic validation to prevent crash
+if (!firebaseConfig.apiKey && typeof window !== "undefined") {
+  console.error("NEXT_PUBLIC_FIREBASE_API_KEY is missing. Firebase features will not work.")
+}
+
 // Singleton pattern - only initialize if no apps exist
 // This prevents "Firebase app already exists" errors during hot module replacement
 let app: FirebaseApp

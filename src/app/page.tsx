@@ -8,6 +8,9 @@ import { HeroResult } from "@/components/numerology/hero-result"
 import { NumerologyInputForm } from "@/components/numerology/input-form"
 import { ReportButton } from "@/components/numerology/report-button"
 import { PremiumGate } from "@/components/premium-gate"
+import { Button } from "@/components/ui/button"
+import { calculateNameNumbers, calculateNumerologyData } from "@/lib/numerology/engine"
+import { useHydratedProfile, useProfileStore } from "@/store/use-profile-store"
 
 export default function Home() {
   const { profile, isHydrated } = useHydratedProfile()

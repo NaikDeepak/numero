@@ -1,9 +1,9 @@
 "use client"
 
-import { useAuth } from "@/auth/auth-provider"
-import { Button } from "@/components/ui/button"
 import { Lock } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from "@/auth/auth-provider"
+import { Button } from "@/components/ui/button"
 
 interface PremiumGateProps {
   children: React.ReactNode

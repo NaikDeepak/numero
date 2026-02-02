@@ -1,12 +1,12 @@
 "use client"
 
-import { useAuth } from "@/auth/auth-provider"
-import { auth } from "@/lib/firebase"
 import { signOut } from "firebase/auth"
+import { LogOut, User } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/auth/auth-provider"
 import { Button } from "@/components/ui/button"
-import { User, LogOut } from "lucide-react"
+import { auth } from "@/lib/firebase"
 
 export function NavMain() {
   const { user, loading } = useAuth()
@@ -38,7 +38,9 @@ export function NavMain() {
             )}
           </div>
           <Button variant="ghost" size="icon" className="rounded-full" asChild title="Profile">
-             <Link href="/profile"><User className="h-5 w-5" /></Link>
+            <Link href="/profile">
+              <User className="h-5 w-5" />
+            </Link>
           </Button>
           <Button variant="ghost" size="icon" onClick={handleLogout} title="Log out">
             <LogOut className="h-5 w-5" />

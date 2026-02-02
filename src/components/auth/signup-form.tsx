@@ -1,12 +1,13 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import { auth } from "@/lib/firebase"
-import { useRouter } from "next/navigation"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,8 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2 } from "lucide-react"
+import { auth } from "@/lib/firebase"
 
 const signupSchema = z
   .object({
@@ -56,7 +56,7 @@ export function SignupForm() {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         values.email,
-        values.password
+        values.password,
       )
 
       await updateProfile(userCredential.user, {
@@ -104,11 +104,7 @@ export function SignupForm() {
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="John Doe"
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input placeholder="John Doe" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

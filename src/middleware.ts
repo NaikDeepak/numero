@@ -5,10 +5,7 @@ import { clientConfig, serverConfig } from "./auth/config"
 const PUBLIC_PATHS = ["/login", "/register", "/"]
 
 // Ensure we have at least one signature key in development
-if (serverConfig.cookieSignatureKeys.length === 0 && process.env.NODE_ENV !== "production") {
-  console.warn("⚠️ No AUTH_COOKIE_SIGNATURE_KEY found. Using default dev key. Do not use in production.")
-  serverConfig.cookieSignatureKeys = ["dev-secret-key-change-me-in-prod-1234567890"]
-}
+
 
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
@@ -22,7 +19,7 @@ export async function middleware(request: NextRequest) {
     handleValidToken: async ({ token, decodedToken }, headers) => {
       // Premium gating
       if (request.nextUrl.pathname.startsWith("/reports/premium")) {
-        if (!decodedToken.customClaims.premium) {
+        if (!(decodedToken.customClaims as { premium?: boolean })?.premium) {
           return NextResponse.redirect(new URL("/upgrade", request.url))
         }
       }

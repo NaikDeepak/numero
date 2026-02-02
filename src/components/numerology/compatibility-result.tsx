@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Download, Heart, Loader2, Share2, Sparkles, TrendingUp } from "lucide-react"
 import { useState } from "react"
 import ReactMarkdown from "react-markdown"
+import { PremiumGate } from "@/components/premium-gate"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,7 +12,7 @@ import { calculateCompatibilityScore } from "@/lib/numerology/compatibility-logi
 import { getMissingNumbers, getRemediesForNumbers } from "@/lib/numerology/remedies"
 import type { Gender, NumerologyResult } from "@/lib/numerology/types"
 import { CompatibilityGrid } from "./compatibility-grid"
-import { PremiumGate } from "@/components/premium-gate"
+import { RemedySection } from "./remedy-section"
 
 interface CompatibilityResultProps {
   analysis: string

@@ -7,7 +7,6 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": [".planning/**/*"],
     "includes": [
       "src/**/*.ts",
       "src/**/*.tsx",
@@ -15,7 +14,8 @@
       "*.mjs",
       "*.json",
       "**/*.md",
-      "**/*.json"
+      "**/*.json",
+      ".planning/**/*"
     ]
   },
   "formatter": {
