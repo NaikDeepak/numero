@@ -33,7 +33,6 @@ interface AuthProviderProps {
 export const AuthProvider = ({ initialUser, children }: AuthProviderProps) => {
   const [user, setUser] = useState<AuthUser | null>(initialUser)
   const [loading, setLoading] = useState(!initialUser)
-  const router = useRouter()
 
   useEffect(() => {
     const unsubscribe = onIdTokenChanged(firebaseAuth, async (firebaseUser) => {
