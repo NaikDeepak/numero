@@ -11,7 +11,7 @@ import { calculateCompatibilityScore } from "@/lib/numerology/compatibility-logi
 import { getMissingNumbers, getRemediesForNumbers } from "@/lib/numerology/remedies"
 import type { Gender, NumerologyResult } from "@/lib/numerology/types"
 import { CompatibilityGrid } from "./compatibility-grid"
-import { RemedySection } from "./remedy-section"
+import { PremiumGate } from "@/components/premium-gate"
 
 interface CompatibilityResultProps {
   analysis: string
@@ -265,19 +265,21 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
             >
               <Share2 className="h-4 w-4" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40"
-              onClick={handleDownload}
-              disabled={downloading}
-            >
-              {downloading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Download className="h-4 w-4" />
-              )}
-            </Button>
+            <PremiumGate fallback={null}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40"
+                onClick={handleDownload}
+                disabled={downloading}
+              >
+                {downloading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
+              </Button>
+            </PremiumGate>
           </div>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-primary">

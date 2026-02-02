@@ -7,9 +7,7 @@ import { DailyForecast } from "@/components/numerology/daily-forecast"
 import { HeroResult } from "@/components/numerology/hero-result"
 import { NumerologyInputForm } from "@/components/numerology/input-form"
 import { ReportButton } from "@/components/numerology/report-button"
-import { Button } from "@/components/ui/button"
-import { calculateNameNumbers, calculateNumerologyData } from "@/lib/numerology/engine"
-import { useHydratedProfile, useProfileStore } from "@/store/use-profile-store"
+import { PremiumGate } from "@/components/premium-gate"
 
 export default function Home() {
   const { profile, isHydrated } = useHydratedProfile()
@@ -74,7 +72,9 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
                 {profile && (
-                  <ReportButton name={profile.name} dob={profile.dob} gender={profile.gender} />
+                  <PremiumGate showInline>
+                    <ReportButton name={profile.name} dob={profile.dob} gender={profile.gender} />
+                  </PremiumGate>
                 )}
                 <Button
                   variant="ghost"
