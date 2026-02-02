@@ -18,10 +18,11 @@ Delivering deeply personalized, AI-driven numerological insights in a visually s
 - ✓ [AI Compatibility] — v1.0 (Synergy analysis + numeric match)
 - ✓ [AI Reports] — v1.0 (Server-side PDF generation)
 - ✓ [Auth & User Accounts] — v1.1 (Secure login, profile sync, premium gating)
+- ✓ [Social Features] — v1.1 (Viral sharing via OG images & Native Share)
+- ✓ [Daily Engagement] — v1.1 (Push notifications via FCM)
 
 ### Active
-- [ ] **Social Features**: Seamless sharing of daily forecasts and numerology charts.
-- [ ] **Daily Engagement**: Real-time updates and push notifications for daily insights.
+- [ ] **Launch Polish**: Final monitoring setup and production environment configuration.
 
 ### Out of Scope
 - **Community Forums**: Defer complex community features to v2.
