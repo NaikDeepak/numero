@@ -10,17 +10,17 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Current Position
 
 Phase: 06 - Auth & User Accounts
-Plan: 01
+Plan: 03
 Status: In progress
-Last activity: 2026-02-02 — Completed 06-01-PLAN.md
+Last activity: 2026-02-02 — Completed 06-03-PLAN.md
 
-Progress: [████████████████░░░░] 83%
+Progress: [█████████████████░░░] 87%
 
 ## Accumulated Context
 
 ### Roadmap Evolution
 - Phase 7 completed: All features delivered including PDF export.
-- Phase 6 in progress: Implementing Auth foundation.
+- Phase 6 in progress: Implementing Auth foundation and Profile Sync.
 - Phase 8 added: Social Engagement (Viral sharing, daily cards, and push notifications)
 
 ### Decisions
@@ -31,11 +31,14 @@ Progress: [████████████████░░░░] 83%
 - **Compatibility**: Deterministic logic for remedies and scoring, AI for narrative synergy.
 - **Auth Library**: `next-firebase-auth-edge` for session management with Next.js 16.
 - **Auth Strategy**: Edge-runtime middleware protection with cookie-based sessions and custom claims for premium gating.
+- **Profile Sync**: Cloud-local hybrid synchronization with loop prevention (`lastSyncSource`) and seamless guest-to-user migration.
+- **SSR Auth**: Server-side session retrieval (`getAuthUser`) to provide immediate context and avoid hydration flashes.
 
 ### Pending Todos
 - [ ] Configure `GEMINI_API_KEY` in production environment.
 - [ ] Configure Firebase credentials in production environment.
 - [ ] Implement Client-side Auth Provider (06-02).
+- [ ] Implement Premium Tier & Role Management (06-04).
 
 ### Blockers/Concerns
 - **Rate Limiting Scale**: Current in-memory implementation won't scale horizontally. Need Redis for v1.1.
@@ -44,5 +47,5 @@ Progress: [████████████████░░░░] 83%
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 06-01-PLAN.md
+Stopped at: Completed 06-03-PLAN.md
 Resume file: None
