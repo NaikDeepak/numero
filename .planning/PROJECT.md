@@ -20,9 +20,10 @@ Delivering deeply personalized, AI-driven numerological insights in a visually s
 - ✓ [Auth & User Accounts] — v1.1 (Secure login, profile sync, premium gating)
 - ✓ [Social Features] — v1.1 (Viral sharing via OG images & Native Share)
 - ✓ [Daily Engagement] — v1.1 (Push notifications via FCM)
+- ✓ [Launch Polish] — v1.1 (SEO, PWA, Error Handling, Logging)
 
 ### Active
-- [ ] **Launch Polish**: Final monitoring setup and production environment configuration.
+- [ ] **Maintenance**: Monitor production logs and user feedback.
 
 ### Out of Scope
 - **Community Forums**: Defer complex community features to v2.
