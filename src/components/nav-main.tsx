@@ -31,10 +31,17 @@ export function NavMain() {
         <div className="flex items-center gap-3">
           <div className="flex flex-col items-end hidden sm:flex">
             <span className="text-sm font-medium">{user.displayName || "User"}</span>
-            {user.isPremium && (
+            {user.isPremium ? (
               <span className="text-[10px] bg-primary/20 text-primary px-1.5 rounded-full uppercase font-bold tracking-wider">
                 Premium
               </span>
+            ) : (
+              <Link
+                href="/upgrade"
+                className="text-[10px] text-amber-600 dark:text-amber-400 font-bold hover:underline"
+              >
+                Upgrade to Premium
+              </Link>
             )}
           </div>
           <Button variant="ghost" size="icon" className="rounded-full" asChild title="Profile">
