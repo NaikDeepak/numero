@@ -1,7 +1,7 @@
-import { type DecodedIdToken, getTokens } from "next-firebase-auth-edge"
 import { cookies } from "next/headers"
-import { serverConfig } from "@/auth/config"
+import { type DecodedIdToken, getTokens } from "next-firebase-auth-edge"
 import type { AuthUser } from "@/auth/auth-provider"
+import { serverConfig } from "@/auth/config"
 
 export async function getAuthUser(): Promise<AuthUser | null> {
   const tokens = await getTokens(await cookies(), {

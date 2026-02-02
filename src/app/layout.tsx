@@ -1,11 +1,12 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { AuthProvider } from "@/auth/auth-provider"
 import { getAuthUser } from "@/auth/get-auth-user"
 import { ProfileSyncManager } from "@/components/auth/profile-sync-manager"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { NavMain } from "@/components/nav-main"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,7 +29,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             enableSystem
             disableTransitionOnChange
           >
-            <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+            <div className="absolute top-4 right-4 z-50 flex items-center gap-4">
+              <NavMain />
               <ThemeToggle />
             </div>
             {children}
