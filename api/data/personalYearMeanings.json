@@ -1,0 +1,47 @@
+{
+  "1": {
+    "title": "New Beginnings & Action",
+    "description": "This is a year of new starts, independence, and high energy. It's the perfect time to plant seeds for the next 9-year cycle. Take initiative and trust your instincts.",
+    "keywords": ["New Start", "Independence", "Action", "Initiative"]
+  },
+  "2": {
+    "title": "Balance & Cooperation",
+    "description": "A year to focus on relationships, patience, and diplomacy. It's a time to wait for seeds planted in Year 1 to germinate. Collaboration is key.",
+    "keywords": ["Patience", "Partnership", "Diplomacy", "Sensitivity"]
+  },
+  "3": {
+    "title": "Creativity & Self-Expression",
+    "description": "A fun, social, and creative year. Express yourself through art, writing, or speaking. Enjoy life, but be careful not to scatter your energy too much.",
+    "keywords": ["Creativity", "Socializing", "Communication", "Joy"]
+  },
+  "4": {
+    "title": "Hard Work & Foundation",
+    "description": "This year is about building a solid foundation. Focus on work, organization, and practical matters. It might feel restrictive, but the effort will pay off.",
+    "keywords": ["Work", "Stability", "Organization", "Discipline"]
+  },
+  "5": {
+    "title": "Change & Freedom",
+    "description": "Expect the unexpected! This is a dynamic year of change, travel, and freedom. Embrace flexibility and be open to new opportunities.",
+    "keywords": ["Change", "Freedom", "Travel", "Adventure"]
+  },
+  "6": {
+    "title": "Responsibility & Family",
+    "description": "Focus shifts to home, family, and domestic responsibilities. It's a year for nurturing relationships, marriage, or settling down.",
+    "keywords": ["Family", "Responsibility", "Love", "Nurturing"]
+  },
+  "7": {
+    "title": "Introspection & Spirituality",
+    "description": "A quiet year for self-reflection, study, and spiritual growth. You might feel the need to withdraw socially to understand your deeper purpose.",
+    "keywords": ["Introspection", "Spirituality", "Analysis", "Rest"]
+  },
+  "8": {
+    "title": "Power & Achievement",
+    "description": "A year of harvest. Focus on career, finances, and material success. You will reap what you have sown in the previous years. Step into your power.",
+    "keywords": ["Success", "Money", "Power", "Authority"]
+  },
+  "9": {
+    "title": "Completion & Letting Go",
+    "description": "The end of a cycle. It's time to finish projects, let go of what no longer serves you, and prepare for the new cycle. Clean the slate.",
+    "keywords": ["Completion", "Release", "Humanitarianism", "Endings"]
+  }
+}

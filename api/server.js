@@ -15,6 +15,26 @@ import cors from "cors";
 import PDFDocument from "pdfkit";
 import { createRequire } from "module";
 import rateLimit from "express-rate-limit"; // Import rate limiter
+
+// Create require for ES modules
+const require = createRequire(import.meta.url);
+
+const admin = require("firebase-admin");
+const { getFirestore } = require("firebase-admin/firestore");
+
+// Initialize Firebase Admin
+try {
+  admin.initializeApp({
+    projectId: "digit-destiny"
+  });
+  console.log("Firebase Admin Initialized");
+} catch (error) {
+  console.error("Firebase Admin Initialization Failed:", error);
+}
+
+const db = getFirestore();
+
+// --- Configuration ---
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini SDK
 import {
   calculateNumerologyData,
@@ -28,7 +48,7 @@ import {
 } from "./utils/numerologyUtils.js";
 
 // --- Load JSON Data using createRequire ---
-const require = createRequire(import.meta.url);
+// require is already defined above
 // __filename and __dirname are now defined above
 
 // Function to resolve path and require JSON safely
@@ -54,6 +74,7 @@ const namePersonalityMeanings = loadJsonData("./data/namePersonalityMeanings.jso
 // --- NEW: Load Grid Analysis Definitions ---
 const gridAnalysisDefinitions = loadJsonData("./data/gridAnalysisDefinitions.json");
 const moolankMeanings = loadJsonData("./data/moolankMeanings.json"); // <-- Add missing moolankMeanings loading
+const personalYearMeanings = loadJsonData("./data/personalYearMeanings.json"); // Load personal year meanings
 console.log(
   "Grid Analysis Definitions Loaded:",
   Array.isArray(gridAnalysisDefinitions)
@@ -229,10 +250,27 @@ const geminiLimiter = rateLimit({
   skip: (req, res) => !geminiModel,
 });
 
+// --- Middleware: Verify Firebase Token ---
+const verifyToken = async (req, res, next) => {
+  const idToken = req.headers.authorization?.split("Bearer ")[1];
+
+  if (!idToken) {
+    return res.status(401).json({ error: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    req.user = decodedToken;
+    next();
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    return res.status(403).json({ error: "Unauthorized: Invalid token" });
+  }
+};
+
 // API Endpoint for Numerology Calculation (including Name) - Made async
 // Apply the rate limiter specifically to this route
 app.post("/api/calculate", geminiLimiter, async (req, res) => {
-  // <-- Add geminiLimiter middleware
   const { dob, gender, name } = req.body;
 
   // Basic validation
@@ -253,131 +291,87 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => {
         if (nameData) {
           responseData.nameNumerology = nameData; // Add name data to the response
         } else {
-          // Optionally inform the client if name calculation failed but DOB was ok
           console.warn(`Name numerology calculation failed for name: ${name}`);
-          responseData.nameNumerology = null; // Indicate failure or absence
+          responseData.nameNumerology = null;
         }
       } else {
-        responseData.nameNumerology = null; // Indicate name was not provided or empty
+        responseData.nameNumerology = null;
       }
 
-      // --- NEW: Analyze Grid ---
-      console.log(numerologyData.gridNumbers); // <-- Add log here
-      console.log(gridAnalysisDefinitions); // <-- Add log here
-
+      // --- Grid Analysis ---
       const gridAnalysis = analyzeGrid(numerologyData.gridNumbers, gridAnalysisDefinitions);
-      console.log(`[/api/calculate] Grid Analysis for DOB ${dob}:`, gridAnalysis); // <-- Add console log
       responseData.gridAnalysis = gridAnalysis;
 
-      // --- Add Moolank Meaning (with potential rewriting) ---
-      const moolankMeaningData = moolankMeanings?.[responseData.moolank?.toString()];
+      // --- Moolank Meaning ---
+      const moolankString = responseData.moolank?.toString();
+      const moolankMeaningData = moolankMeanings?.[moolankString];
+
       if (moolankMeaningData?.analysis) {
         // --- Rewrite analysis using Gemini and cache it ---
-        const originalAnalysis = moolankMeaningData.analysis;
-        const rewrittenAnalysis = await rewriteAnalysisWithGemini(originalAnalysis);
-
-        // Generate cache key
         const cacheKey = generateCacheKey(dob, gender, name);
-        const summaryCacheKey = `summary:${cacheKey}`; // Separate key for summary
-
-        // --- Rewrite main analysis and cache it ---
-        // const originalAnalysis = moolankMeaningData.analysis; // Already defined above
-        // const rewrittenAnalysis = await rewriteAnalysisWithGemini(originalAnalysis); // Already defined above
-        analysisCache.set(cacheKey, rewrittenAnalysis);
-        console.log(`[Cache] Stored main analysis for key: ${cacheKey}`);
-        setTimeout(() => {
-          if (analysisCache.delete(cacheKey)) {
-            console.log(`[Cache] Expired main analysis for key: ${cacheKey}`);
-          }
-        }, CACHE_DURATION_MS);
-        // --- End main analysis caching ---
-
-        // --- Generate conversational summary and cache it ---
-        const conversationalSummaryParagraphs = // Rename variable
-          await generateConversationalMoolankSummary(moolankMeaningData); // Generate summary (returns array or null)
-        // conversationalSummary is now an array of paragraphs or null
-        if (conversationalSummaryParagraphs && conversationalSummaryParagraphs.length > 0) {
-          analysisCache.set(summaryCacheKey, conversationalSummaryParagraphs); // Cache the array
-          console.log(`[Cache] Stored summary paragraphs for key: ${summaryCacheKey}`); // Update log
-          setTimeout(() => {
-            if (analysisCache.delete(summaryCacheKey)) {
-              console.log(`[Cache] Expired summary for key: ${summaryCacheKey}`);
-            }
-          }, CACHE_DURATION_MS);
-        }
-        // --- End summary generation/caching ---
-
-        // Prepare response for UI
-        responseData.moolankMeaning = {
-          grah: moolankMeaningData.grah,
-          rashi: moolankMeaningData.rashi,
-          keywords: moolankMeaningData.keywords,
-          analysis: rewrittenAnalysis, // Send rewritten main analysis
-          conversationalSummaryParagraphs: conversationalSummaryParagraphs, // Send array of paragraphs
-          // Raw lists are no longer needed by UI
-          // characteristics: moolankMeaningData.characteristics,
-          // negativeTraits: moolankMeaningData.negativeTraits,
-          // suggestions: moolankMeaningData.suggestions,
-        };
-        // --- End Gemini/Cache logic ---
-      } else if (moolankMeaningData) {
-        // If analysis text is missing, still try to generate summary if other fields exist
-        const conversationalSummaryParagraphs = // Rename variable
-          await generateConversationalMoolankSummary(moolankMeaningData);
-        // Cache the generated paragraphs if successful
-        const cacheKey = generateCacheKey(dob, gender, name); // Need cache key here too
         const summaryCacheKey = `summary:${cacheKey}`;
-        if (conversationalSummaryParagraphs && conversationalSummaryParagraphs.length > 0) {
-          analysisCache.set(summaryCacheKey, conversationalSummaryParagraphs);
-          console.log(
-            `[Cache] Stored summary paragraphs (no main analysis) for key: ${summaryCacheKey}`
-          );
-          setTimeout(() => {
-            if (analysisCache.delete(summaryCacheKey)) {
-              console.log(
-                `[Cache] Expired summary paragraphs (no main analysis) for key: ${summaryCacheKey}`
-              );
-            }
-          }, CACHE_DURATION_MS);
+
+        // Check cache or rewrite
+        let rewrittenAnalysis = analysisCache.get(cacheKey);
+        if (!rewrittenAnalysis) {
+          rewrittenAnalysis = await rewriteAnalysisWithGemini(moolankMeaningData.analysis);
+          analysisCache.set(cacheKey, rewrittenAnalysis);
+          setTimeout(() => analysisCache.delete(cacheKey), CACHE_DURATION_MS);
+        }
+
+        // Check cache or generate summary
+        let conversationalSummaryParagraphs = analysisCache.get(summaryCacheKey);
+        if (!conversationalSummaryParagraphs) {
+          conversationalSummaryParagraphs = await generateConversationalMoolankSummary(moolankMeaningData);
+          if (conversationalSummaryParagraphs && conversationalSummaryParagraphs.length > 0) {
+            analysisCache.set(summaryCacheKey, conversationalSummaryParagraphs);
+            setTimeout(() => analysisCache.delete(summaryCacheKey), CACHE_DURATION_MS);
+          }
         }
 
         responseData.moolankMeaning = {
           grah: moolankMeaningData.grah,
           rashi: moolankMeaningData.rashi,
           keywords: moolankMeaningData.keywords,
-          analysis: null, // Main analysis was missing
-          conversationalSummaryParagraphs: conversationalSummaryParagraphs, // Send array of paragraphs
-          // Raw lists are no longer needed by UI
-          // characteristics: moolankMeaningData.characteristics,
-          // negativeTraits: moolankMeaningData.negativeTraits,
-          // suggestions: moolankMeaningData.suggestions,
+          analysis: rewrittenAnalysis,
+          conversationalSummaryParagraphs: conversationalSummaryParagraphs,
+        };
+      } else if (moolankMeaningData) {
+        // Fallback if analysis missing but other data exists
+        const cacheKey = generateCacheKey(dob, gender, name);
+        const summaryCacheKey = `summary:${cacheKey}`;
+        let conversationalSummaryParagraphs = analysisCache.get(summaryCacheKey);
+        if (!conversationalSummaryParagraphs) {
+          conversationalSummaryParagraphs = await generateConversationalMoolankSummary(moolankMeaningData);
+          if (conversationalSummaryParagraphs && conversationalSummaryParagraphs.length > 0) {
+            analysisCache.set(summaryCacheKey, conversationalSummaryParagraphs);
+            setTimeout(() => analysisCache.delete(summaryCacheKey), CACHE_DURATION_MS);
+          }
+        }
+
+        responseData.moolankMeaning = {
+          grah: moolankMeaningData.grah,
+          rashi: moolankMeaningData.rashi,
+          keywords: moolankMeaningData.keywords,
+          analysis: null,
+          conversationalSummaryParagraphs: conversationalSummaryParagraphs,
         };
       } else {
         responseData.moolankMeaning = null;
       }
 
-      // --- Add Grid Analysis (needed for UI) ---
-      // Grid analysis was already added earlier in the try block
-      // responseData.gridAnalysis = gridAnalysis; // Already present
-
-      // --- Add Bhagyank House Meaning (needed for UI) ---
+      // --- Bhagyank Meaning ---
       const bhagyankString = responseData.bhagyank?.toString();
       responseData.bhagyankMeaning = houseMeanings?.[bhagyankString] || null;
 
-      // --- Add Name Number Meanings (if nameNumerology exists, needed for UI) ---
-      // Name numerology numbers are already in responseData.nameNumerology if calculated
-      // No need to add meanings here as they are handled by the PDF endpoint if needed
-
-      // --- Add Moolank-Bhagyank Relationship (needed for UI) ---
-      const moolankString = responseData.moolank?.toString(); // Define moolankString if not already defined
+      // --- Moolank-Bhagyank Relation ---
       if (moolankString && bhagyankString) {
-        responseData.moolankBhagyankRelation =
-          moolankBhagyankRelations?.[moolankString]?.[bhagyankString] || null;
+        responseData.moolankBhagyankRelation = moolankBhagyankRelations?.[moolankString]?.[bhagyankString] || null;
       } else {
         responseData.moolankBhagyankRelation = null;
       }
 
-      // --- Add Repeating/Missing Number Info (needed for UI) ---
+      // --- Repeating/Missing Numbers ---
       const gridNums = responseData.gridNumbers || [];
       const counts = gridNums.reduce((acc, num) => {
         acc[num] = (acc[num] || 0) + 1;
@@ -385,7 +379,7 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => {
       }, {});
 
       responseData.repeatingNumbersInfo = Object.entries(counts)
-        .filter(([num, count]) => count > 1 && num !== "0") // Exclude 0 if present
+        .filter(([num, count]) => count > 1 && num !== "0")
         .map(([num, count]) => {
           const repeatSequence = num.toString().repeat(count);
           return {
@@ -395,9 +389,9 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => {
             impact: repeatingNumberImpact?.[repeatSequence] || null,
           };
         })
-        .filter((info) => info.impact); // Only include if impact data exists
+        .filter((info) => info.impact);
 
-      const presentNumbers = new Set(gridNums.filter((n) => n !== 0)); // Exclude 0
+      const presentNumbers = new Set(gridNums.filter((n) => n !== 0));
       responseData.missingNumbersInfo = [];
       for (let i = 1; i <= 9; i++) {
         if (!presentNumbers.has(i)) {
@@ -411,19 +405,108 @@ app.post("/api/calculate", geminiLimiter, async (req, res) => {
           }
         }
       }
-      // --- End UI Data Enrichment ---
 
-      // Return the data needed for the UI
+      // NOTE: Personal Year/Month data is intentionally OMITTED here for security.
+      // It is only fetched via /api/get-premium-data after payment.
+
       res.json(responseData);
     } else {
-      // calculateNumerologyData returns null for invalid input format/values
-      res.status(400).json({ error: "Invalid input data provided (e.g., date format, values)." });
+      res.status(400).json({ error: "Invalid input data provided." });
     }
   } catch (error) {
     console.error("Calculation error:", error);
-    res.status(500).json({ error: "An internal server error occurred during calculation." });
+    res.status(500).json({ error: "An internal server error occurred." });
   }
 });
+
+// --- Payment Endpoints ---
+
+app.post("/api/initiate-payment", verifyToken, async (req, res) => {
+  try {
+    const { amount } = req.body;
+    const userId = req.user.uid; // Get from verified token
+
+    // Mock redirect URL (frontend route)
+    const redirectUrl = "http://localhost:5174/payment-success";
+
+    const result = await initiatePayment(amount, userId, redirectUrl);
+    res.json(result);
+  } catch (error) {
+    console.error("Error initiating payment:", error);
+    res.status(500).json({ error: "Payment initiation failed" });
+  }
+});
+
+app.post("/api/verify-payment", verifyToken, async (req, res) => {
+  try {
+    const { transactionId } = req.body;
+    const userId = req.user.uid;
+
+    const result = await verifyPayment(transactionId);
+
+    if (result.success) {
+      // PERSISTENCE: Save payment record to Firestore
+      await db.collection('payments').doc(userId).set({
+        status: 'COMPLETED',
+        amount: 900, // Should match initiated amount
+        transactionId: transactionId,
+        paymentDate: admin.firestore.FieldValue.serverTimestamp(),
+        plan: 'premium_report'
+      });
+
+      res.json({ success: true, message: "Payment verified and recorded." });
+    } else {
+      res.status(400).json({ success: false, message: "Payment verification failed" });
+    }
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    res.status(500).json({ error: "Payment verification failed" });
+  }
+});
+
+app.post("/api/get-premium-data", verifyToken, async (req, res) => {
+  try {
+    const { dob } = req.body;
+    const userId = req.user.uid;
+
+    // 1. Verify Payment Persistence
+    const paymentDoc = await db.collection('payments').doc(userId).get();
+
+    if (!paymentDoc.exists || paymentDoc.data().status !== 'COMPLETED') {
+      return res.status(403).json({ error: "Unauthorized. Payment required." });
+    }
+
+    if (!dob) {
+      return res.status(400).json({ error: "DOB is required." });
+    }
+
+    // 2. Calculate Premium Data ON DEMAND
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const [birthYear, birthMonth, birthDay] = dob.split("-").map(Number);
+
+    const personalYear = calculatePersonalYear(birthDay, birthMonth, currentYear);
+    const personalMonth = calculatePersonalMonth(personalYear, currentMonth);
+
+    const personalYearData = personalYearMeanings[personalYear.toString()] || {
+      title: "Unknown Year",
+      description: "No data available.",
+      keywords: []
+    };
+
+    // 3. Return Secure Data
+    res.json({
+      personalYear,
+      personalMonth,
+      personalYearData
+    });
+
+  } catch (error) {
+    console.error("Error fetching premium data:", error);
+    res.status(500).json({ error: "Failed to fetch premium data" });
+  }
+});
+
 
 // --- NEW: API Endpoint for PDF Report Generation ---
 // PDFDocument import moved to top
