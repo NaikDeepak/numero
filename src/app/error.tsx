@@ -3,6 +3,7 @@
 import { AlertTriangle, RefreshCw } from "lucide-react"
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { logger } from "@/lib/logger"
 
 export default function ErrorPage({
   error,
@@ -12,8 +13,12 @@ export default function ErrorPage({
   reset: () => void
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error("Application Error:", error)
+    // Log the error to our centralized logger
+    logger.error("Application Error caught by global boundary", {
+      message: error.message,
+      stack: error.stack,
+      digest: error.digest,
+    })
   }, [error])
 
   return (
