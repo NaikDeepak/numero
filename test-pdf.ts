@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs"
+import { writeFileSync } from "node:fs"
 import { generateCompatibilityPDF } from "./src/lib/pdf/compatibility"
 
 async function test() {
