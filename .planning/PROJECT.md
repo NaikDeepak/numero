@@ -17,9 +17,9 @@ Delivering deeply personalized, AI-driven numerological insights in a visually s
 - ✓ [Daily Forecasts] — v1.0 (AI-generated based on personal day)
 - ✓ [AI Compatibility] — v1.0 (Synergy analysis + numeric match)
 - ✓ [AI Reports] — v1.0 (Server-side PDF generation)
+- ✓ [Auth & User Accounts] — v1.1 (Secure login, profile sync, premium gating)
 
 ### Active
-- [ ] **Auth & User Accounts**: Secure login, profile sync, and premium tier gating.
 - [ ] **Social Features**: Seamless sharing of daily forecasts and numerology charts.
 - [ ] **Daily Engagement**: Real-time updates and push notifications for daily insights.
 
