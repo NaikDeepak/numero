@@ -13,6 +13,8 @@ interface DailyForecastProps {
   gender: Gender
 }
 
+import { ShareButton } from "@/components/social/share-button"
+
 export function DailyForecast({ dob, gender }: DailyForecastProps) {
   const [forecast, setForecast] = useState<string | null>(null)
   const [personalDay, setPersonalDay] = useState<number | null>(null)
@@ -64,11 +66,20 @@ export function DailyForecast({ dob, gender }: DailyForecastProps) {
             <Sparkles className="w-5 h-5 text-primary animate-pulse" />
             Daily Cosmic Forecast
           </CardTitle>
-          {personalDay && (
-            <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
-              Personal Day {personalDay}
-            </span>
-          )}
+          <div className="flex items-center gap-2">
+            {personalDay && (
+              <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
+                Personal Day {personalDay}
+              </span>
+            )}
+            <ShareButton
+              title="My Daily Cosmic Forecast"
+              text={`My Personal Day is ${personalDay}. Here's my forecast from Numero:`}
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 rounded-full"
+            />
+          </div>
         </CardHeader>
         <CardContent>
           {loading ? (

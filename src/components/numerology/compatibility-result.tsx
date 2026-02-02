@@ -1,10 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Download, Heart, Loader2, Share2, Sparkles, TrendingUp } from "lucide-react"
+import { Download, Heart, Loader2, Sparkles, TrendingUp } from "lucide-react"
 import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import { PremiumGate } from "@/components/premium-gate"
+import { ShareButton } from "@/components/social/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -259,13 +260,13 @@ export function CompatibilityResult({ analysis, user, partner }: CompatibilityRe
       <motion.div variants={item}>
         <Card className="bg-card/40 backdrop-blur-md border-primary/10 overflow-hidden relative">
           <div className="absolute top-0 right-0 p-4 flex gap-2">
-            <Button
+            <ShareButton
+              title="Cosmic Synergy"
+              text={`I checked my compatibility with ${partner.name} on Numero. We have a ${score}% Match!`}
               variant="ghost"
               size="icon"
               className="h-8 w-8 rounded-full bg-background/20 hover:bg-background/40"
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
+            />
             <PremiumGate fallback={null}>
               <Button
                 variant="ghost"
