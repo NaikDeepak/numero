@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { authMiddleware } from "next-firebase-auth-edge";
-import { clientConfig, serverConfig } from "./auth/config";
+import { type NextRequest, NextResponse } from "next/server"
+import { authMiddleware } from "next-firebase-auth-edge"
+import { clientConfig, serverConfig } from "./auth/config"
 
-const PUBLIC_PATHS = ["/login", "/register", "/"];
+const PUBLIC_PATHS = ["/login", "/register", "/"]
 
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
       // Premium gating
       if (request.nextUrl.pathname.startsWith("/reports/premium")) {
         if (!decodedToken.customClaims.premium) {
-          return NextResponse.redirect(new URL("/upgrade", request.url));
+          return NextResponse.redirect(new URL("/upgrade", request.url))
         }
       }
 
@@ -25,30 +25,25 @@ export async function middleware(request: NextRequest) {
         request: {
           headers,
         },
-      });
+      })
     },
     handleInvalidToken: async (reason) => {
-      console.info("Missing or invalid token", { reason });
+      console.info("Missing or invalid token", { reason })
 
       if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
-        return NextResponse.next();
+        return NextResponse.next()
       }
 
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url))
     },
     handleError: async (error) => {
-      console.error("Unhandled authentication error", { error });
+      console.error("Unhandled authentication error", { error })
 
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url))
     },
-  });
+  })
 }
 
 export const config = {
-  matcher: [
-    "/api/login",
-    "/api/logout",
-    "/",
-    "/((?!_next|favicon.ico|api|.*\\.).*)",
-  ],
-};
+  matcher: ["/api/auth/login", "/api/auth/logout", "/", "/((?!_next|favicon.ico|api|.*\\.).*)"],
+}

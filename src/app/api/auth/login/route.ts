@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server"
 
 /**
  * This route is intercepted by next-firebase-auth-edge middleware.
@@ -13,5 +13,5 @@ import { type NextRequest, NextResponse } from "next/server";
  * and return a response.
  */
 export async function POST(request: NextRequest) {
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true })
 }
