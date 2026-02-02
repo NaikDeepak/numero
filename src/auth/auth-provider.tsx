@@ -1,9 +1,8 @@
 "use client"
 
+import { onIdTokenChanged } from "firebase/auth"
 import { createContext, useContext, useEffect, useState } from "react"
-import { type User, onIdTokenChanged } from "firebase/auth"
 import { auth as firebaseAuth } from "@/lib/firebase"
-import { useRouter } from "next/navigation"
 
 export interface AuthUser {
   uid: string
@@ -63,11 +62,7 @@ export const AuthProvider = ({ initialUser, children }: AuthProviderProps) => {
     })
 
     return () => unsubscribe()
-  }, [router])
+  }, [])
 
-  return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>
 }
