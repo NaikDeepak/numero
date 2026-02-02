@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react"
 import { useAuth } from "@/auth/auth-provider"
-import { useProfileStore } from "@/store/use-profile-store"
 import { getProfile, saveProfile } from "@/lib/firebase/firestore"
+import { useProfileStore } from "@/store/use-profile-store"
 
 /**
  * Hook to synchronize user profile between LocalStorage (Zustand) and Firestore.
@@ -11,13 +11,7 @@ import { getProfile, saveProfile } from "@/lib/firebase/firestore"
  */
 export function useProfileSync() {
   const { user, loading: authLoading } = useAuth()
-  const {
-    profile,
-    isHydrated,
-    setProfileRemote,
-    lastSyncSource,
-    setSyncing,
-  } = useProfileStore()
+  const { profile, isHydrated, setProfileRemote, lastSyncSource, setSyncing } = useProfileStore()
 
   // Track if we've already performed the initial sync for the current user session
   const initialSyncDoneRef = useRef<string | null>(null)

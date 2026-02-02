@@ -11,12 +11,16 @@ export async function saveProfile(uid: string, profile: UserProfile): Promise<vo
   try {
     const userDocRef = doc(db, "users", uid)
 
-    await setDoc(userDocRef, {
-      profile: {
-        ...profile,
-        updatedAt: new Date().toISOString(),
-      }
-    }, { merge: true })
+    await setDoc(
+      userDocRef,
+      {
+        profile: {
+          ...profile,
+          updatedAt: new Date().toISOString(),
+        },
+      },
+      { merge: true },
+    )
   } catch (error) {
     console.error("Error saving profile to Firestore:", error)
     throw error
