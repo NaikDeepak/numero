@@ -6,11 +6,13 @@
 
 **Goal:** Secure login, profile sync, and premium tier gating.
 **Depends on:** Phase 5 (v1.0)
-**Status:** Proposed
-**Plans:** 0 plans
+**Status:** In Progress
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 6 to break down)
+- [ ] 06-01-PLAN.md — Auth Foundation & Session Management
+- [ ] 06-02-PLAN.md — Authentication UI & React 19 Provider
+- [ ] 06-03-PLAN.md — Cloud Sync & LocalStorage Migration
 
 **Details:**
 Implement secure user authentication (Firebase), user profiles, and prepare for premium features.
