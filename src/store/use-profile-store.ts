@@ -7,9 +7,13 @@ export type UserProfile = NumerologyInput
 interface ProfileState {
   profile: UserProfile | null
   isHydrated: boolean
+  isSyncing: boolean
+  lastSyncSource: "local" | "remote" | null
   setProfile: (profile: UserProfile) => void
+  setProfileRemote: (profile: UserProfile) => void
   clearProfile: () => void
   setHydrated: (state: boolean) => void
+  setSyncing: (syncing: boolean) => void
 }
 
 export const useProfileStore = create<ProfileState>()(
@@ -17,9 +21,13 @@ export const useProfileStore = create<ProfileState>()(
     (set) => ({
       profile: null,
       isHydrated: false,
-      setProfile: (profile) => set({ profile }),
-      clearProfile: () => set({ profile: null }),
+      isSyncing: false,
+      lastSyncSource: null,
+      setProfile: (profile) => set({ profile, lastSyncSource: "local" }),
+      setProfileRemote: (profile) => set({ profile, lastSyncSource: "remote" }),
+      clearProfile: () => set({ profile: null, lastSyncSource: null }),
       setHydrated: (state) => set({ isHydrated: state }),
+      setSyncing: (isSyncing) => set({ isSyncing }),
     }),
     {
       name: "user-profile-storage",
